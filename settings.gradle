@@ -1,0 +1,2 @@
+rootProject.name='Arsitektur MVVM dan greenDao'
+include ':app'
