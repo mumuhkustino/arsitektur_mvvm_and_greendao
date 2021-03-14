@@ -12,4 +12,11 @@
     <string name="menu_slideshow">Slideshow</string>
 
     <string name="home_second">Home Second</string>
+    <string name="menu_create">Menu Create</string>
+    <string name="menu_read">Menu Read</string>
+    <string name="menu_update">Menu Update</string>
+    <string name="menu_delete">Menu Delete</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
