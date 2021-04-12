@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.splash.SplashActivity">
+
+    <data>
+<!--        <import type="android.view.View"/>-->
+
+<!--        <variable-->
+<!--            name="view"-->
+<!--            type="com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.splash.SplashActivity" />-->
+
+        <variable
+            name="viewmodel"
+            type="com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.splash.SplashViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/splash_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingVertical="@dimen/activity_vertical_margin"
+        android:paddingHorizontal="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textSize="20sp"
+            tools:text="Arsitektur MVVM dan greenDao"/>
+
+    </RelativeLayout>
+
+</layout>

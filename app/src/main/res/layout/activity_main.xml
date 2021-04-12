@@ -1,25 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    tools:context=".ui.home.HomeFragment">
 
-    <include
-        layout="@layout/app_bar_main"
+    <data>
+        <import type="android.view.View"/>
+
+<!--        <variable-->
+<!--            name="view"-->
+<!--            type="com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.main.MainActivity" />-->
+
+        <variable
+            name="viewmodel"
+            type="com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.main.MainViewModel" />
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer" />
+        <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/drawerMain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true">
 
-</androidx.drawerlayout.widget.DrawerLayout>
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/layoutMain"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipChildren="false">
+
+                <LinearLayout
+                    android:id="@+id/layoutChildMain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.appbar.AppBarLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:elevation="5dp">
+
+                        <androidx.appcompat.widget.Toolbar
+                            android:id="@+id/toolbar"
+                            style="@style/Toolbar"
+                            app:subtitleTextColor="@color/white"
+                            app:title="@string/app_name"
+                            app:titleTextAppearance="@style/Toolbar.TitleText"
+                            app:titleTextColor="@color/white"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/light_gray"/>
+
+                    </com.google.android.material.appbar.AppBarLayout>
+
+                    <Button
+                        android:id="@+id/btn_menu_create"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/menu_create"/>
+
+                    <TextView
+                        android:id="@+id/text_execution_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@{viewmodel.appVersion}"
+                        tools:text="@string/app_name"/>
+
+                    <Button
+                        android:id="@+id/btn_menu_read"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/menu_read"/>
+
+                    <Button
+                        android:id="@+id/btn_menu_update"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/menu_update"/>
+
+                    <Button
+                        android:id="@+id/btn_menu_delete"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/menu_delete"/>
+
+                </LinearLayout>
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+            <com.google.android.material.navigation.NavigationView
+                android:id="@+id/navigationView"
+                style="@style/Widget.Design.NavigationView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                app:headerLayout="@layout/nav_header_main"
+                app:itemBackground="@color/white"
+                app:itemIconTint="@color/black_effective"
+                app:itemTextColor="@color/black_effective"
+                app:menu="@menu/activity_main_drawer">
+
+                <TextView
+                    android:id="@+id/tvAppVersion"
+                    style="@style/TextStyle.Title.Sub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:text="@{viewmodel.appVersion}"
+                    android:padding="5dp"/>
+
+            </com.google.android.material.navigation.NavigationView>
+
+        </androidx.drawerlayout.widget.DrawerLayout>
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{viewmodel.isLoading ? View.VISIBLE : View.GONE}"/>
+
+    </FrameLayout>
+
+</layout>
