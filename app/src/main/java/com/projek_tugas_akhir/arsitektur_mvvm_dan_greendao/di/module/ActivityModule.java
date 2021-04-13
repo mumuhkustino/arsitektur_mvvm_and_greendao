@@ -8,7 +8,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ViewModelProviderFactory;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.DataManager;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseActivity;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.main.MainViewModel;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDPagerAdapter;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDViewModel;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.splash.SplashViewModel;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils.rx.SchedulerProvider;
 
@@ -28,18 +29,23 @@ public class ActivityModule {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Provides
-    MainViewModel provideMainViewModel(DataManager dataManager, SchedulerProvider schedulerProvider) {
-        Supplier<MainViewModel> supplier = () -> new MainViewModel(dataManager, schedulerProvider);
-        ViewModelProviderFactory<MainViewModel> factory = new ViewModelProviderFactory<>(MainViewModel.class, supplier);
-        return new ViewModelProvider(activity, factory).get(MainViewModel.class);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Provides
     SplashViewModel provideSplashViewModel(DataManager dataManager, SchedulerProvider schedulerProvider) {
         Supplier<SplashViewModel> supplier = () -> new SplashViewModel(dataManager, schedulerProvider);
         ViewModelProviderFactory<SplashViewModel> factory = new ViewModelProviderFactory<>(SplashViewModel.class, supplier);
         return new ViewModelProvider(activity, factory).get(SplashViewModel.class);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Provides
+    CRUDViewModel provideCrudViewModel(DataManager dataManager, SchedulerProvider schedulerProvider) {
+        Supplier<CRUDViewModel> supplier = () -> new CRUDViewModel(dataManager, schedulerProvider);
+        ViewModelProviderFactory<CRUDViewModel> factory = new ViewModelProviderFactory<>(CRUDViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(CRUDViewModel.class);
+    }
+
+    @Provides
+    CRUDPagerAdapter providedCrudPagerAdapter() {
+        return new CRUDPagerAdapter(activity.getSupportFragmentManager());
     }
 
 }

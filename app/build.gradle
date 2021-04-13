@@ -94,6 +94,11 @@ dependencies {
 
     // dependency injection
     implementation "com.google.dagger:dagger:$rootProject.dagger2Version"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
 
     // reactive
@@ -131,3 +136,4 @@ dependencies {
 //configurations.all {
 //    resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
 //}
+

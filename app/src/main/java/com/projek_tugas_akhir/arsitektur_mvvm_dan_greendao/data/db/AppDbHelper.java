@@ -12,8 +12,6 @@ import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import io.reactivex.Flowable;
 import io.reactivex.Observable;
 
 @Singleton
@@ -68,23 +66,53 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
+    public Observable<List<Medicine>> getMedicineForHospitalId(Long hospitalId) {
+        return Observable.fromCallable(new Callable<List<Medicine>>() {
+            @Override
+            public List<Medicine> call() throws Exception {
+                return daoSession.getMedicineDao()._queryHospital_MedicineList(hospitalId);
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<Disease>> getDiseaseForHospitalId(Long hospitalId) {
+        return Observable.fromCallable(new Callable<List<Disease>>() {
+            @Override
+            public List<Disease> call() throws Exception {
+                return daoSession.getDiseaseDao()._queryHospital_DiseaseList(hospitalId);
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<Symptom>> getSymptomForDiseaseId(Long diseaseId) {
+        return Observable.fromCallable(new Callable<List<Symptom>>() {
+            @Override
+            public List<Symptom> call() throws Exception {
+                return daoSession.getSymptomDao()._queryDisease_SymptomList(diseaseId);
+            }
+        });
+    }
+
+    @Override
     public Observable<Boolean> isHospitalEmpty() {
-        return Observable.fromCallable(() -> daoSession.getHospitalDao().count() > 0);
+        return Observable.fromCallable(() -> daoSession.getHospitalDao().loadAll().isEmpty());
     }
 
     @Override
     public Observable<Boolean> isMedicineEmpty() {
-        return Observable.fromCallable(() -> daoSession.getMedicineDao().count() > 0);
+        return Observable.fromCallable(() -> daoSession.getMedicineDao().loadAll().isEmpty());
     }
 
     @Override
     public Observable<Boolean> isDiseaseEmpty() {
-        return Observable.fromCallable(() -> daoSession.getDiseaseDao().count() > 0);
+        return Observable.fromCallable(() -> daoSession.getDiseaseDao().loadAll().isEmpty());
     }
 
     @Override
     public Observable<Boolean> isSymptomEmpty() {
-        return Observable.fromCallable(() -> daoSession.getSymptomDao().count() > 0);
+        return Observable.fromCallable(() -> daoSession.getSymptomDao().loadAll().isEmpty());
     }
 
     @Override

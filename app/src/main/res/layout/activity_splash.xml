@@ -13,7 +13,7 @@
 <!--            type="com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.splash.SplashActivity" />-->
 
         <variable
-            name="viewmodel"
+            name="viewModel"
             type="com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.splash.SplashViewModel" />
     </data>
 

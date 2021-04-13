@@ -11,7 +11,7 @@ import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.R;
 
 public final class ViewUtils {
 
-    public ViewUtils() {
+    private ViewUtils() {
 
     }
 

@@ -27,11 +27,11 @@ public interface DbHelper {
 
     Observable<List<Symptom>> getAllSymptom();
 
-//    Observable<List<Medicine>> getMedicineForHospitalId(Long hospitalId);
-//
-//    Observable<List<Disease>> getDiseaseForHospitalId(Long hospitalId);
-//
-//    Observable<List<Symptom>> getSymptomForHospitalId(Long DiseaseId);
+    Observable<List<Medicine>> getMedicineForHospitalId(Long hospitalId);
+
+    Observable<List<Disease>> getDiseaseForHospitalId(Long hospitalId);
+
+    Observable<List<Symptom>> getSymptomForDiseaseId(Long diseaseId);
 
     Observable<Boolean> isHospitalEmpty();
 

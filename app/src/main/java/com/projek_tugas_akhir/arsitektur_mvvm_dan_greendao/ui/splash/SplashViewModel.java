@@ -17,40 +17,24 @@ public class SplashViewModel extends BaseViewModel<SplashNavigator> {
         Log.d("SVM", "startSeeding: Mulai");
         getCompositeDisposable().add(getDataManager()
                 .seedDatabaseHospital()
-                .flatMap(aBoolean -> getDataManager().seedDatabaseMedicine())
+                .flatMap(aBoolean -> getDataManager().seedDatabaseMedicine()
+                .flatMap(aBoolean1 -> getDataManager().seedDatabaseDisease()
+                .flatMap(aBoolean2 -> getDataManager().seedDatabaseSymptom())
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())))
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(aBoolean -> {
                     Log.d("SVM", "startSeeding: Selesai");
                     decideNextActivity();
                 }, throwable -> {
-                    Log.d("SVM", "startSeeding: Selesai");
+                    Log.d("SVM", "startSeeding: Error");
                     decideNextActivity();
                 }));
-//        getCompositeDisposable().add(getDataManager()
-//                .seedDatabaseHospital()
-//                .flatMap(aBoolean -> getDataManager().seedDatabaseDisease())
-//                .subscribeOn(getSchedulerProvider().io())
-//                .observeOn(getSchedulerProvider().ui())
-//                .subscribe(aBoolean -> {
-//                    decideNextActivity();
-//                }, throwable -> {
-//                    decideNextActivity();
-//                }));
-//        getCompositeDisposable().add(getDataManager()
-//                .seedDatabaseDisease()
-//                .flatMap(aBoolean -> getDataManager().seedDatabaseSymptom())
-//                .subscribeOn(getSchedulerProvider().io())
-//                .observeOn(getSchedulerProvider().ui())
-//                .subscribe(aBoolean -> {
-//                    decideNextActivity();
-//                }, throwable -> {
-//                    decideNextActivity();
-//                }));
     }
 
     private void decideNextActivity() {
-        getNavigator().openMainActivity();
+        getNavigator().openCRUDActivity();
     }
 
 }

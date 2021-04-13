@@ -17,13 +17,21 @@
     <string name="menu_update">Menu Update</string>
     <string name="menu_delete">Menu Delete</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+<!--    &lt;!&ndash; TODO: Remove or change this placeholder text &ndash;&gt;-->
+<!--    <string name="hello_blank_fragment">Hello blank fragment</string>-->
 
-    <!--play store-->
-    <string name="app_google_play_store_link">"https://play.google.com/store/apps/details?id="</string>
-    <string name="app_market_link">"market://details?id="</string>
+<!--    &lt;!&ndash;play store&ndash;&gt;-->
+<!--    <string name="app_google_play_store_link">"https://play.google.com/store/apps/details?id="</string>-->
+<!--    <string name="app_market_link">"market://details?id="</string>-->
 
     <string name="version">"version"</string>
+<!--    <string name="title_activity_c_r_u_d">CRUDActivity</string>-->
+    <string name="tab_text_1">INSERT</string>
+    <string name="tab_text_2">SELECT</string>
+    <string name="tab_text_3">UPDATE</string>
+    <string name="tab_text_4">DELETE</string>
+
+    <string name="retry">Retry</string>
+    <string name="empty_screen">We do not have anything\nhere right now.</string>
 
 </resources>

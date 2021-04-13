@@ -10,12 +10,12 @@ import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.R;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.databinding.ActivitySplashBinding;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.di.component.ActivityComponent;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseActivity;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.main.MainActivity;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDActivity;
 
 public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashViewModel> implements SplashNavigator {
     @Override
     public int getBindingVariable() {
-        return BR.viewmodel;
+        return BR.viewModel;
     }
 
     @Override
@@ -29,8 +29,8 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
     }
 
     @Override
-    public void openMainActivity() {
-        Intent intent = MainActivity.newIntent(SplashActivity.this);
+    public void openCRUDActivity() {
+        Intent intent = CRUDActivity.newIntent(SplashActivity.this);
         startActivity(intent);
         finish();
     }

@@ -1,6 +1,5 @@
 package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.DaoMaster;
