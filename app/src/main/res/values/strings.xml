@@ -1,31 +1,5 @@
 <resources>
     <string name="app_name">Arsitektur MVVM dan greenDao</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-
-    <string name="home_second">Home Second</string>
-    <string name="menu_create">Menu Create</string>
-    <string name="menu_read">Menu Read</string>
-    <string name="menu_update">Menu Update</string>
-    <string name="menu_delete">Menu Delete</string>
-
-<!--    &lt;!&ndash; TODO: Remove or change this placeholder text &ndash;&gt;-->
-<!--    <string name="hello_blank_fragment">Hello blank fragment</string>-->
-
-<!--    &lt;!&ndash;play store&ndash;&gt;-->
-<!--    <string name="app_google_play_store_link">"https://play.google.com/store/apps/details?id="</string>-->
-<!--    <string name="app_market_link">"market://details?id="</string>-->
-
-    <string name="version">"version"</string>
-<!--    <string name="title_activity_c_r_u_d">CRUDActivity</string>-->
     <string name="tab_text_1">INSERT</string>
     <string name="tab_text_2">SELECT</string>
     <string name="tab_text_3">UPDATE</string>
@@ -33,5 +7,7 @@
 
     <string name="retry">Retry</string>
     <string name="empty_screen">We do not have anything\nhere right now.</string>
+    <string name="num_of_data">NUM OF DATA</string>
+    <string name="execute">EXECUTE</string>
 
 </resources>

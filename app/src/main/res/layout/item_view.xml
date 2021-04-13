@@ -26,7 +26,6 @@
             android:orientation="vertical"
             app:cardCornerRadius="7dp"
             app:cardElevation="4dp">
-            android:onClick="@{() -> viewModel.onItemClick()}"
 
             <LinearLayout
                 android:layout_width="match_parent"

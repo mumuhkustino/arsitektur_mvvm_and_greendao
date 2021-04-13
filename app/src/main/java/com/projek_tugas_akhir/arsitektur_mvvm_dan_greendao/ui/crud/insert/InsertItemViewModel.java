@@ -2,7 +2,6 @@ package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.insert;
 
 import androidx.databinding.ObservableField;
 
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Hospital;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Medical;
 
 public class InsertItemViewModel {

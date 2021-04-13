@@ -67,32 +67,17 @@ public class AppDbHelper implements DbHelper {
 
     @Override
     public Observable<List<Medicine>> getMedicineForHospitalId(Long hospitalId) {
-        return Observable.fromCallable(new Callable<List<Medicine>>() {
-            @Override
-            public List<Medicine> call() throws Exception {
-                return daoSession.getMedicineDao()._queryHospital_MedicineList(hospitalId);
-            }
-        });
+        return Observable.fromCallable(() -> daoSession.getMedicineDao()._queryHospital_MedicineList(hospitalId));
     }
 
     @Override
     public Observable<List<Disease>> getDiseaseForHospitalId(Long hospitalId) {
-        return Observable.fromCallable(new Callable<List<Disease>>() {
-            @Override
-            public List<Disease> call() throws Exception {
-                return daoSession.getDiseaseDao()._queryHospital_DiseaseList(hospitalId);
-            }
-        });
+        return Observable.fromCallable(() -> daoSession.getDiseaseDao()._queryHospital_DiseaseList(hospitalId));
     }
 
     @Override
     public Observable<List<Symptom>> getSymptomForDiseaseId(Long diseaseId) {
-        return Observable.fromCallable(new Callable<List<Symptom>>() {
-            @Override
-            public List<Symptom> call() throws Exception {
-                return daoSession.getSymptomDao()._queryDisease_SymptomList(diseaseId);
-            }
-        });
+        return Observable.fromCallable(() -> daoSession.getSymptomDao()._queryDisease_SymptomList(diseaseId));
     }
 
     @Override
@@ -117,89 +102,65 @@ public class AppDbHelper implements DbHelper {
 
     @Override
     public Observable<Boolean> saveHospital(Hospital hospital) {
-        return Observable.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                daoSession.getHospitalDao().insertInTx(hospital);
-                return true;
-            }
+        return Observable.fromCallable(() -> {
+            daoSession.getHospitalDao().insertInTx(hospital);
+            return true;
         });
     }
 
     @Override
     public Observable<Boolean> saveMedicine(Medicine medicine) {
-        return Observable.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                daoSession.getMedicineDao().insertInTx(medicine);
-                return true;
-            }
+        return Observable.fromCallable(() -> {
+            daoSession.getMedicineDao().insertInTx(medicine);
+            return true;
         });
     }
 
     @Override
     public Observable<Boolean> saveDisease(Disease disease) {
-        return Observable.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                daoSession.getDiseaseDao().insertInTx(disease);
-                return true;
-            }
+        return Observable.fromCallable(() -> {
+            daoSession.getDiseaseDao().insertInTx(disease);
+            return true;
         });
     }
 
     @Override
     public Observable<Boolean> saveSymptom(Symptom symptom) {
-        return Observable.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                daoSession.getSymptomDao().insertInTx(symptom);
-                return true;
-            }
+        return Observable.fromCallable(() -> {
+            daoSession.getSymptomDao().insertInTx(symptom);
+            return true;
         });
     }
 
     @Override
     public Observable<Boolean> saveHospitalList(List<Hospital> hospitalList) {
-        return Observable.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                daoSession.getHospitalDao().insertInTx(hospitalList);
-                return true;
-            }
+        return Observable.fromCallable(() -> {
+            daoSession.getHospitalDao().insertInTx(hospitalList);
+            return true;
         });
     }
 
     @Override
     public Observable<Boolean> saveMedicineList(List<Medicine> medicineList) {
-        return Observable.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                daoSession.getMedicineDao().insertInTx(medicineList);
-                return true;
-            }
+        return Observable.fromCallable(() -> {
+            daoSession.getMedicineDao().insertInTx(medicineList);
+            return true;
         });
     }
 
     @Override
     public Observable<Boolean> saveDiseaseList(List<Disease> diseaseList) {
-        return Observable.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                daoSession.getDiseaseDao().insertInTx(diseaseList);
-                return true;
-            }
+        return Observable.fromCallable(() -> {
+            daoSession.getDiseaseDao().insertInTx(diseaseList);
+            return true;
         });
     }
 
     @Override
     public Observable<Boolean> saveSymptomList(List<Symptom> symptomList) {
-        return Observable.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                daoSession.getSymptomDao().insertInTx(symptomList);
-                return true;
-            }
+        return Observable.fromCallable(() -> {
+            daoSession.getSymptomDao().insertInTx(symptomList);
+            return true;
         });
     }
 

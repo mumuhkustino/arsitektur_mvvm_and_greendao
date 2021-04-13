@@ -1,17 +1,8 @@
 package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud;
 
-import android.util.Log;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.DataManager;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Medical;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseViewModel;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.insert.InsertNavigator;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils.rx.SchedulerProvider;
-
-import java.util.List;
 
 public class CRUDViewModel extends BaseViewModel {
 

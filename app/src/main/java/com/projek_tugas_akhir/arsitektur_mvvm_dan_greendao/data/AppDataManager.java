@@ -3,8 +3,6 @@ package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data;
 import android.content.Context;
 import android.util.Log;
 
-import androidx.core.util.Pair;
-
 import com.github.javafaker.Faker;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.DbHelper;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Disease;
@@ -20,12 +18,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 
 @Singleton
 public class AppDataManager implements DataManager {
@@ -85,7 +78,7 @@ public class AppDataManager implements DataManager {
 //    }
 
     @Override
-    public Single<List<Medical>> getMedical() {
+    public Single<List<Medical>> getMedical(Long numOfData) {
         Observable<List<Hospital>> hospitalsObservable = dbHelper.getAllHospital();
         Observable<List<Medicine>> medicinesObservable = dbHelper.getAllMedicine();
         Observable<List<Disease>> diseasesObservable = dbHelper.getAllDisease();
@@ -102,31 +95,35 @@ public class AppDataManager implements DataManager {
                                                                 )))
                                         ))
                         )).toList();
-        Disposable medicalDisposable = medicalsObservable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(medical -> Log.d(TAG, "getMedical: " + medical.size()));
-        return medicalsObservable;
+        List<Medical> medicals = new ArrayList<>();
+        List<Medical> tempMedicals = medicalsObservable.blockingGet();
+        for (int i = 0; i < numOfData; i++) {
+            medicals.add(tempMedicals.get(i));
+//            Log.d(TAG, "getMedical: " + medicals.get(i).getHospitalName());
+        }
+//        Log.d(TAG, "getMedical: " + medicals.size());
+//        Disposable medicalDisposable = medicalsObservable
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(medical -> Log.d(TAG, "getMedical: " + medical.size()));
+        return Single.just(medicals);
     }
 
     @Override
     public Observable<Boolean> seedDatabaseHospital() {
         Faker faker = new Faker();
         return dbHelper.isHospitalEmpty()
-                .concatMap(new Function<Boolean, ObservableSource<? extends Boolean>>() {
-                    @Override
-                    public ObservableSource<? extends Boolean> apply(Boolean aBoolean) throws Exception {
-                        if (aBoolean) {
-                            List<Hospital> hospitalList = new ArrayList<>();
-                            for (int i = 0; i < 10; i++) {
-                                Hospital hospital = new Hospital();
-                                hospital.setName(faker.medical().hospitalName());
-                                hospitalList.add(hospital);
-                            }
-                            return saveHospitalList(hospitalList);
+                .concatMap(aBoolean -> {
+                    if (aBoolean) {
+                        List<Hospital> hospitalList = new ArrayList<>();
+                        for (int i = 0; i < 10; i++) {
+                            Hospital hospital = new Hospital();
+                            hospital.setName(faker.medical().hospitalName());
+                            hospitalList.add(hospital);
                         }
-                        return Observable.just(false);
+                        return saveHospitalList(hospitalList);
                     }
+                    return Observable.just(false);
                 });
     }
 
@@ -134,20 +131,17 @@ public class AppDataManager implements DataManager {
     public Observable<Boolean> seedDatabaseMedicine() {
         Faker faker = new Faker();
         return dbHelper.isMedicineEmpty()
-                .concatMap(new Function<Boolean, ObservableSource<? extends Boolean>>() {
-                    @Override
-                    public ObservableSource<? extends Boolean> apply(Boolean aBoolean) throws Exception {
-                        if (aBoolean) {
-                            List<Medicine> medicineList = new ArrayList<>();
-                            for (int i = 0; i < 10; i++) {
-                                Medicine medicine = new Medicine();
-                                medicine.setName(faker.medical().medicineName());
-                                medicineList.add(medicine);
-                            }
-                            return saveMedicineList(medicineList);
+                .concatMap(aBoolean -> {
+                    if (aBoolean) {
+                        List<Medicine> medicineList = new ArrayList<>();
+                        for (int i = 0; i < 10; i++) {
+                            Medicine medicine = new Medicine();
+                            medicine.setName(faker.medical().medicineName());
+                            medicineList.add(medicine);
                         }
-                        return Observable.just(false);
+                        return saveMedicineList(medicineList);
                     }
+                    return Observable.just(false);
                 });
     }
 
@@ -155,20 +149,17 @@ public class AppDataManager implements DataManager {
     public Observable<Boolean> seedDatabaseDisease() {
         Faker faker = new Faker();
         return dbHelper.isDiseaseEmpty()
-            .concatMap(new Function<Boolean, ObservableSource<? extends Boolean>>() {
-                @Override
-                public ObservableSource<? extends Boolean> apply(Boolean aBoolean) throws Exception {
-                    if (aBoolean) {
-                        List<Disease> diseaseList = new ArrayList<>();
-                        for (int i = 0; i < 10; i++) {
-                            Disease disease = new Disease();
-                            disease.setName(faker.medical().diseaseName());
-                            diseaseList.add(disease);
-                        }
-                        return saveDiseaseList(diseaseList);
+            .concatMap(aBoolean -> {
+                if (aBoolean) {
+                    List<Disease> diseaseList = new ArrayList<>();
+                    for (int i = 0; i < 10; i++) {
+                        Disease disease = new Disease();
+                        disease.setName(faker.medical().diseaseName());
+                        diseaseList.add(disease);
                     }
-                    return Observable.just(false);
+                    return saveDiseaseList(diseaseList);
                 }
+                return Observable.just(false);
             });
     }
 
@@ -176,20 +167,17 @@ public class AppDataManager implements DataManager {
     public Observable<Boolean> seedDatabaseSymptom() {
         Faker faker = new Faker();
         return dbHelper.isSymptomEmpty()
-            .concatMap(new Function<Boolean, ObservableSource<? extends Boolean>>() {
-                @Override
-                public ObservableSource<? extends Boolean> apply(Boolean aBoolean) throws Exception {
-                    if (aBoolean) {
-                        List<Symptom> symptomList = new ArrayList<>();
-                        for (int i = 0; i < 10; i++) {
-                            Symptom symptom = new Symptom();
-                            symptom.setName(faker.medical().symptoms());
-                            symptomList.add(symptom);
-                        }
-                        return saveSymptomList(symptomList);
+            .concatMap(aBoolean -> {
+                if (aBoolean) {
+                    List<Symptom> symptomList = new ArrayList<>();
+                    for (int i = 0; i < 10; i++) {
+                        Symptom symptom = new Symptom();
+                        symptom.setName(faker.medical().symptoms());
+                        symptomList.add(symptom);
                     }
-                    return Observable.just(false);
+                    return saveSymptomList(symptomList);
                 }
+                return Observable.just(false);
             });
     }
 

@@ -1,19 +1,10 @@
 package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud;
 
-import android.content.Context;
-
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.R;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.delete.DeleteFragment;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.insert.InsertFragment;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.select.SelectFragment;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.update.UpdateFragment;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to

@@ -36,7 +36,7 @@
                     android:layout_marginTop="5dp"
                     android:paddingLeft="15dp"
                     android:layout_marginRight="10dp"
-                    android:text="@{viewModel.record}"
+                    android:text="@{viewModel.numOfRecord != null ? `RECORD : ` + viewModel.numOfRecord : `RECORD : 0`}"
                     tools:text="RECORD : XXXXXX"/>
 
                 <TextView
@@ -48,7 +48,7 @@
                     android:paddingRight="15dp"
                     android:layout_marginLeft="10dp"
                     android:gravity="end"
-                    android:text="@{viewModel.time}"
+                    android:text="@{viewModel.executionTime != null ? `TIME (MS) : ` + viewModel.executionTime : `TIME (MS) : 0`}"
                     tools:text="TIME (MS) : XXXXXX"/>
 
             </LinearLayout>
@@ -71,23 +71,31 @@
                     android:layout_gravity="bottom"
                     android:orientation="horizontal">
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextNumData"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
+                        android:background="@drawable/input_border_bottom"
+                        android:cursorVisible="true"
                         android:gravity="center"
-                        android:hint="Num Of Data"
+                        android:inputType="text"
+                        android:maxLength="11"
+                        android:textColor="@color/black_effective"
+                        android:textSize="18sp"
+                        android:hint="@string/num_of_data"
                         tools:text="Num Of Data"/>
 
                     <Button
                         android:id="@+id/btnExecute"
+                        style="@style/Button.Primary"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
-                        android:text="EXECUTE"
+                        android:onClick="@{() -> viewModel.onItemClick()}"
+                        android:text="@string/execute"
                         tools:text="EXECUTE"/>
 
                 </LinearLayout>

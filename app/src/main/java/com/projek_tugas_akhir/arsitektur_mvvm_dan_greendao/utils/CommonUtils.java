@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class CommonUtils {
+public final class CommonUtils {
 
     private CommonUtils() {
 

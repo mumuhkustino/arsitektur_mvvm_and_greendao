@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.Toast;
 
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.BR;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.R;
@@ -18,7 +19,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class InsertFragment extends BaseFragment<InsertFragmentBinding, InsertViewModel> implements InsertNavigator, InsertAdapter.InsertAdapterListener {
+public class InsertFragment extends BaseFragment<InsertFragmentBinding, InsertViewModel> implements InsertNavigator,
+        InsertAdapter.InsertAdapterListener {
 
     @Inject
     InsertAdapter insertAdapter;
@@ -49,6 +51,7 @@ public class InsertFragment extends BaseFragment<InsertFragmentBinding, InsertVi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
+//        viewModel.setListener(this);
         insertAdapter.setListener(this);
     }
 
@@ -57,9 +60,20 @@ public class InsertFragment extends BaseFragment<InsertFragmentBinding, InsertVi
         buildComponent.inject(this);
     }
 
+
+
     @Override
     public void onRetryClick() {
-        viewModel.fetchMedicals();
+        if (insertFragmentBinding.editTextNumData.getText() != null) {
+            try {
+                Long numOfData = Long.valueOf(insertFragmentBinding.editTextNumData.getText().toString());
+                viewModel.fetchMedicals(numOfData);
+            } catch (Exception e) {
+                Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -84,5 +98,19 @@ public class InsertFragment extends BaseFragment<InsertFragmentBinding, InsertVi
         insertFragmentBinding.insertRecyclerView.setLayoutManager(linearLayoutManager);
         insertFragmentBinding.insertRecyclerView.setItemAnimator(new DefaultItemAnimator());
         insertFragmentBinding.insertRecyclerView.setAdapter(insertAdapter);
+    }
+
+    @Override
+    public void onItemClick() {
+        if (insertFragmentBinding.editTextNumData.getText() != null) {
+            try {
+                Long numOfData = Long.valueOf(insertFragmentBinding.editTextNumData.getText().toString());
+                viewModel.fetchMedicals(numOfData);
+            } catch (Exception e) {
+                Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -11,12 +11,6 @@ import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.databinding.ActivityC
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.di.component.ActivityComponent;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseActivity;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.NavUtils;
-import androidx.core.app.TaskStackBuilder;
-
-import android.view.MenuItem;
-
 import javax.inject.Inject;
 
 public class CRUDActivity extends BaseActivity<ActivityCrudBinding, CRUDViewModel> {
@@ -40,21 +34,21 @@ public class CRUDActivity extends BaseActivity<ActivityCrudBinding, CRUDViewMode
         return R.layout.activity_crud;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            Intent upIntent = NavUtils.getParentActivityIntent(this);
-            upIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                TaskStackBuilder.create(this)
-                        .addNextIntentWithParentStack(upIntent)
-                        .startActivities();
-            } else {
-                NavUtils.navigateUpTo(this, upIntent);
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        if (item.getItemId() == android.R.id.home) {
+//            Intent upIntent = NavUtils.getParentActivityIntent(this);
+//            upIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+//                TaskStackBuilder.create(this)
+//                        .addNextIntentWithParentStack(upIntent)
+//                        .startActivities();
+//            } else {
+//                NavUtils.navigateUpTo(this, upIntent);
+//            }
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,11 +63,11 @@ public class CRUDActivity extends BaseActivity<ActivityCrudBinding, CRUDViewMode
     }
 
     private void setUp() {
-        setSupportActionBar(crudBinding.toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
+//        setSupportActionBar(crudBinding.toolbar);
+//        if (getSupportActionBar() != null) {
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//            getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        }
 
         pagerAdapter.setCount(4);
 

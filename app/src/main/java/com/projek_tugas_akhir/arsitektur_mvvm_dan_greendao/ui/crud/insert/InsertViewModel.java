@@ -18,22 +18,21 @@ public class InsertViewModel extends BaseViewModel<InsertNavigator> {
 
     private final MutableLiveData<Long> executionTime;
 
-    private final MutableLiveData<List<Medical>> medicalListLiveData;
+    private MutableLiveData<List<Medical>> medicalListLiveData;
 
     public InsertViewModel(DataManager dataManager, SchedulerProvider schedulerProvider) {
         super(dataManager, schedulerProvider);
         this.numOfRecord = new MutableLiveData<>();
         this.executionTime = new MutableLiveData<>();
         this.medicalListLiveData = new MutableLiveData<>();
-        fetchMedicals();
     }
 
-    public void fetchMedicals() {
+    public void fetchMedicals(Long numOfData) {
         setIsLoading(true);
         long startTime = System.nanoTime();
         executionTime.setValue(startTime);
         getCompositeDisposable().add(getDataManager()
-            .getMedical()
+            .getMedical(numOfData)
             .subscribeOn(getSchedulerProvider().io())
             .observeOn(getSchedulerProvider().ui())
             .subscribe(medicalList -> {
@@ -53,23 +52,23 @@ public class InsertViewModel extends BaseViewModel<InsertNavigator> {
         ));
     }
 
+    public void setMedicalListLiveData(MutableLiveData<List<Medical>> medicalListLiveData) {
+        this.medicalListLiveData = medicalListLiveData;
+    }
+
     public LiveData<List<Medical>> getMedicalListLiveData() {
         return medicalListLiveData;
     }
 
-    public MutableLiveData<Long> getNumOfRecord() {
-        return numOfRecord;
+    public LiveData<Long> getNumOfRecord() {
+            return numOfRecord;
     }
 
-    public String getRecord() {
-        return String.valueOf("RECORD : ").concat(numOfRecord.getValue().toString());
+    public LiveData<Long> getExecutionTime() {
+            return executionTime;
     }
 
-    public MutableLiveData<Long> getExecutionTime() {
-        return executionTime;
-    }
-
-    public String getTime() {
-        return String.valueOf("RECORD : ").concat(executionTime.getValue().toString());
+    public void onItemClick() {
+        getNavigator().onItemClick();
     }
 }
