@@ -8,7 +8,6 @@ import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Medicin
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Symptom;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -135,7 +134,7 @@ public class AppDbHelper implements DbHelper {
     @Override
     public Observable<Boolean> saveHospitalList(List<Hospital> hospitalList) {
         return Observable.fromCallable(() -> {
-            daoSession.getHospitalDao().insertInTx(hospitalList);
+            daoSession.getHospitalDao().insertOrReplaceInTx(hospitalList);
             return true;
         });
     }
@@ -143,7 +142,7 @@ public class AppDbHelper implements DbHelper {
     @Override
     public Observable<Boolean> saveMedicineList(List<Medicine> medicineList) {
         return Observable.fromCallable(() -> {
-            daoSession.getMedicineDao().insertInTx(medicineList);
+            daoSession.getMedicineDao().insertOrReplaceInTx(medicineList);
             return true;
         });
     }
@@ -151,7 +150,7 @@ public class AppDbHelper implements DbHelper {
     @Override
     public Observable<Boolean> saveDiseaseList(List<Disease> diseaseList) {
         return Observable.fromCallable(() -> {
-            daoSession.getDiseaseDao().insertInTx(diseaseList);
+            daoSession.getDiseaseDao().insertOrReplaceInTx(diseaseList);
             return true;
         });
     }
@@ -159,7 +158,7 @@ public class AppDbHelper implements DbHelper {
     @Override
     public Observable<Boolean> saveSymptomList(List<Symptom> symptomList) {
         return Observable.fromCallable(() -> {
-            daoSession.getSymptomDao().insertInTx(symptomList);
+            daoSession.getSymptomDao().insertOrReplaceInTx(symptomList);
             return true;
         });
     }

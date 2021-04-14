@@ -4,7 +4,7 @@ import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Medical;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.insert.InsertAdapter;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDAdapter;
 
 import java.util.List;
 
@@ -14,24 +14,25 @@ public final class BindingUtils {
 
     }
 
+//    @BindingAdapter({"adapterInsert"})
     @BindingAdapter({"adapter"})
     public static void addInsertItems(RecyclerView recyclerView, List<Medical> medicalList) {
-        InsertAdapter adapter = (InsertAdapter) recyclerView.getAdapter();
+        CRUDAdapter adapter = (CRUDAdapter) recyclerView.getAdapter();
         if (adapter != null) {
             adapter.clearItems();
             adapter.addItems(medicalList);
         }
     }
 
-//    @BindingAdapter({"adapter"})
+//    @BindingAdapter({"adapterSelect"})
 //    public static void addSelectItems(RecyclerView recyclerView, List<Medical> medicalList) {
-//        SelectAdapter adapter = (SelectAdapter) recyclerView.getAdapter();
+//        CRUDAdapter adapter = (CRUDAdapter) recyclerView.getAdapter();
 //        if (adapter != null) {
 //            adapter.clearItems();
 //            adapter.addItems(medicalList);
 //        }
 //    }
-//
+
 //    @BindingAdapter({"adapter"})
 //    public static void addUpdateItems(RecyclerView recyclerView, List<Medical> medicalList) {
 //        InsertAdapter adapter = (InsertAdapter) recyclerView.getAdapter();

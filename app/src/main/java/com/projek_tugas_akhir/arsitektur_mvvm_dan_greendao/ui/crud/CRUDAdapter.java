@@ -1,4 +1,4 @@
-package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.insert;
+package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +14,7 @@ import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseViewHolde
 
 import java.util.List;
 
-public class InsertAdapter extends RecyclerView.Adapter<BaseViewHolder> {
+public class CRUDAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public static final int VIEW_TYPE_EMPTY = 0;
 
@@ -22,11 +22,11 @@ public class InsertAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     private List<Medical> medicalList;
 
-    private InsertAdapterListener listener;
+    private CRUDAdapterListener listener;
 
-    public InsertAdapter(List<Medical> medicalList) {
+    public CRUDAdapter(List<Medical> medicalList) {
         this.medicalList = medicalList;
-        Log.d("IA", "InsertAdapter: " + medicalList.size());
+        Log.d("CRUDA", "CRUDAdapter: " + medicalList.size());
     }
 
     @NonNull
@@ -36,25 +36,26 @@ public class InsertAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             case VIEW_TYPE_NORMAL:
                 ItemViewBinding itemInsertViewBinding = ItemViewBinding.inflate(LayoutInflater.from(parent.getContext()),
                         parent, false);
-                return new InsertViewHolder(itemInsertViewBinding);
+                return new CRUDViewHolder(itemInsertViewBinding);
             case VIEW_TYPE_EMPTY:
             default:
                 ItemEmptyViewBinding emptyInsertViewBinding = ItemEmptyViewBinding.inflate(LayoutInflater.from(parent.getContext()),
                         parent, false);
-                return new EmptyViewHolder(emptyInsertViewBinding);
+                return new CRUDEmptyViewHolder(emptyInsertViewBinding);
         }
     }
 
     public void addItems(List<Medical> medicalList) {
         this.medicalList.addAll(medicalList);
         notifyDataSetChanged();
+        Log.d("CRUDA", "CRUDAdapter: " + medicalList.size());
     }
 
     public void clearItems() {
-        medicalList.clear();
+        this.medicalList.clear();
     }
 
-    public void setListener(InsertAdapterListener listener) {
+    public void setListener(CRUDAdapterListener listener) {
         this.listener = listener;
     }
 
@@ -74,23 +75,23 @@ public class InsertAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if (medicalList != null && !medicalList.isEmpty()) {
+        if (medicalList != null && medicalList.size() > 0) {
             return VIEW_TYPE_NORMAL;
         } else {
             return VIEW_TYPE_EMPTY;
         }
     }
 
-    public interface InsertAdapterListener {
+    public interface CRUDAdapterListener {
         void onRetryClick();
     }
 
-    public class InsertViewHolder extends BaseViewHolder {
+    public class CRUDViewHolder extends BaseViewHolder {
         private ItemViewBinding binding;
 
-        private InsertItemViewModel itemViewModel;
+        private CRUDItemViewModel itemViewModel;
 
-        public InsertViewHolder(ItemViewBinding binding) {
+        public CRUDViewHolder(ItemViewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
@@ -98,24 +99,24 @@ public class InsertAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         @Override
         public void onBind(int position) {
             final Medical medical = medicalList.get(position);
-            itemViewModel = new InsertItemViewModel((long) position, medical);
+            itemViewModel = new CRUDItemViewModel((long) position, medical);
             binding.setViewModel(itemViewModel);
             binding.executePendingBindings();
         }
     }
 
-    public class EmptyViewHolder extends BaseViewHolder implements InsertEmptyItemViewModel.InsertEmptyItemViewModelListener {
+    public class CRUDEmptyViewHolder extends BaseViewHolder implements CRUDEmptyItemViewModel.CRUDEmptyItemViewModelListener {
 
         private ItemEmptyViewBinding binding;
 
-        public EmptyViewHolder(ItemEmptyViewBinding binding) {
+        public CRUDEmptyViewHolder(ItemEmptyViewBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
 
         @Override
         public void onBind(int position) {
-            InsertEmptyItemViewModel emptyItemViewModel = new InsertEmptyItemViewModel(this);
+            CRUDEmptyItemViewModel emptyItemViewModel = new CRUDEmptyItemViewModel(this);
             binding.setViewModel(emptyItemViewModel);
         }
 

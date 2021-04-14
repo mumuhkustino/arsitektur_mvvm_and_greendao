@@ -88,7 +88,6 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     }
 
     private FragmentComponent getBuildComponent() {
-//        return null;
         return DaggerFragmentComponent.builder()
                 .applicationComponent(((MVVMgreenDao)(getContext().getApplicationContext())).applicationComponent)
                 .fragmentModule(new FragmentModule(this))

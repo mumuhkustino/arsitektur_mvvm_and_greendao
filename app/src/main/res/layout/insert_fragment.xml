@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.insert.InsertViewModel" />
+            type="com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDViewModel" />
 
     </data>
 
@@ -94,7 +94,7 @@
                         android:layout_weight="1"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
-                        android:onClick="@{() -> viewModel.onItemClick()}"
+                        android:onClick="@{() -> viewModel.onClick()}"
                         android:text="@string/execute"
                         tools:text="EXECUTE"/>
 

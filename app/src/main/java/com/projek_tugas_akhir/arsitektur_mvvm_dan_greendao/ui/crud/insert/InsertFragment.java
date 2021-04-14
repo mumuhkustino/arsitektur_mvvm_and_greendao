@@ -14,16 +14,19 @@ import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Medical
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.databinding.InsertFragmentBinding;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.di.component.FragmentComponent;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseFragment;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDAdapter;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDNavigator;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDViewModel;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class InsertFragment extends BaseFragment<InsertFragmentBinding, InsertViewModel> implements InsertNavigator,
-        InsertAdapter.InsertAdapterListener {
+public class InsertFragment extends BaseFragment<InsertFragmentBinding, CRUDViewModel> implements CRUDNavigator,
+        CRUDAdapter.CRUDAdapterListener {
 
     @Inject
-    InsertAdapter insertAdapter;
+    CRUDAdapter insertAdapter;
 
     InsertFragmentBinding insertFragmentBinding;
 
@@ -60,14 +63,13 @@ public class InsertFragment extends BaseFragment<InsertFragmentBinding, InsertVi
         buildComponent.inject(this);
     }
 
-
-
     @Override
     public void onRetryClick() {
         if (insertFragmentBinding.editTextNumData.getText() != null) {
             try {
                 Long numOfData = Long.valueOf(insertFragmentBinding.editTextNumData.getText().toString());
-                viewModel.fetchMedicals(numOfData);
+                viewModel.startSeeding(numOfData);
+                viewModel.fetchExecutionNumOfRecord();
             } catch (Exception e) {
                 Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
             }
@@ -101,11 +103,12 @@ public class InsertFragment extends BaseFragment<InsertFragmentBinding, InsertVi
     }
 
     @Override
-    public void onItemClick() {
+    public void onClick() {
         if (insertFragmentBinding.editTextNumData.getText() != null) {
             try {
                 Long numOfData = Long.valueOf(insertFragmentBinding.editTextNumData.getText().toString());
-                viewModel.fetchMedicals(numOfData);
+                viewModel.startSeeding(numOfData);
+                viewModel.fetchExecutionNumOfRecord();
             } catch (Exception e) {
                 Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
             }

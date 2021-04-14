@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.insert.InsertFragment;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.select.SelectFragment;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -31,7 +32,7 @@ public class CRUDPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return InsertFragment.newInstance();
             case 1:
-                return InsertFragment.newInstance();
+                return SelectFragment.newInstance();
             case 2:
                 return InsertFragment.newInstance();
             case 3:

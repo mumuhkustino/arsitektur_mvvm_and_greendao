@@ -10,14 +10,24 @@ import io.reactivex.Single;
 
 public interface DataManager extends DbHelper {
 
+    Single<List<Medical>> getMedical();
+
     Single<List<Medical>> getMedical(Long numOfData);
 
     Observable<Boolean> seedDatabaseHospital();
 
+    Observable<Boolean> seedDatabaseHospital(Long numOfData);
+
     Observable<Boolean> seedDatabaseMedicine();
+
+    Observable<Boolean> seedDatabaseMedicine(Long numOfData);
 
     Observable<Boolean> seedDatabaseDisease();
 
+    Observable<Boolean> seedDatabaseDisease(Long numOfData);
+
     Observable<Boolean> seedDatabaseSymptom();
+
+    Observable<Boolean> seedDatabaseSymptom(Long numOfData);
 
 }

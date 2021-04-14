@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.insert.InsertEmptyItemViewModel" />
+            type="com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDEmptyItemViewModel" />
 
     </data>
 
@@ -36,6 +36,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
             android:onClick="@{() -> viewModel.onRetryClick()}"
+            android:visibility="gone"
             android:text="@string/retry"
             android:textSize="20sp" />
     </LinearLayout>

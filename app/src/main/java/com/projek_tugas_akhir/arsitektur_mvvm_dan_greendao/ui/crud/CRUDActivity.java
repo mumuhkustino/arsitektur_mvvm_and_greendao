@@ -84,12 +84,12 @@ public class CRUDActivity extends BaseActivity<ActivityCrudBinding, CRUDViewMode
         crudBinding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
+                crudBinding.crudViewPager.setCurrentItem(tab.getPosition());
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                crudBinding.crudViewPager.setCurrentItem(tab.getPosition());
+//                crudBinding.crudViewPager.setCurrentItem(tab.getPosition());
             }
 
             @Override

@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ViewModelProviderFactory;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.DataManager;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseFragment;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.insert.InsertAdapter;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.insert.InsertViewModel;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDAdapter;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDViewModel;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils.rx.SchedulerProvider;
 
 import java.util.ArrayList;
@@ -34,16 +34,16 @@ public class FragmentModule {
     }
 
     @Provides
-    InsertAdapter provideInsertAdapter() {
-        return new InsertAdapter(new ArrayList<>());
+    CRUDAdapter provideInsertAdapter() {
+        return new CRUDAdapter(new ArrayList<>());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Provides
-    InsertViewModel provideInsertViewModel(DataManager dataManager, SchedulerProvider schedulerProvider) {
-        Supplier<InsertViewModel> supplier = () -> new InsertViewModel(dataManager, schedulerProvider);
-        ViewModelProviderFactory<InsertViewModel> factory = new ViewModelProviderFactory<>(InsertViewModel.class, supplier);
-        return new ViewModelProvider(fragment, factory).get(InsertViewModel.class);
+    CRUDViewModel provideCRUDViewModel(DataManager dataManager, SchedulerProvider schedulerProvider) {
+        Supplier<CRUDViewModel> supplier = () -> new CRUDViewModel(dataManager, schedulerProvider);
+        ViewModelProviderFactory<CRUDViewModel> factory = new ViewModelProviderFactory<>(CRUDViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(CRUDViewModel.class);
     }
 
 }
