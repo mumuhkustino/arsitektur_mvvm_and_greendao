@@ -2,6 +2,7 @@ package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -48,8 +49,38 @@ public class CRUDAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public void addItems(List<Medical> medicalList) {
         this.medicalList.addAll(medicalList);
         notifyDataSetChanged();
-        Log.d("CRUDA", "CRUDAdapter: " + medicalList.size());
+        Log.d("CRUDA", "addItems: " + medicalList.size());
     }
+
+    public void selectItems(List<Medical> medicalList) {
+        this.medicalList.addAll(medicalList);
+        notifyDataSetChanged();
+        Log.d("CRUDA", "selectItems: " + medicalList.size());
+    }
+
+    public void deleteItems(List<Medical> medicalList) {
+        this.medicalList.addAll(medicalList);
+        notifyDataSetChanged();
+        Log.d("CRUDA", "deleteItems: " + medicalList.size());
+    }
+
+//    public void deleteItem(List<Medical> medicalList) {
+//        this.medicalList.addAll(medicalList);
+//        notifyDataSetChanged();
+//        Log.d("CRUDA", "deleteItem: " + medicalList.size());
+//    }
+
+    public void updateItems(List<Medical> medicalList) {
+        this.medicalList.addAll(medicalList);
+        notifyDataSetChanged();
+        Log.d("CRUDA", "updateItems: " + medicalList.size());
+    }
+
+//    public void updateItem(List<Medical> medicalList) {
+//        this.medicalList.addAll(medicalList);
+//        notifyDataSetChanged();
+//        Log.d("CRUDA", "updateItem: " + medicalList.size());
+//    }
 
     public void clearItems() {
         this.medicalList.clear();
@@ -123,6 +154,8 @@ public class CRUDAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         @Override
         public void onRetryClick() {
             listener.onRetryClick();
+//            binding.tvMessage.setText("The fetching process was successful");
+//            binding.btnRetry.setVisibility(View.GONE);
         }
     }
 }

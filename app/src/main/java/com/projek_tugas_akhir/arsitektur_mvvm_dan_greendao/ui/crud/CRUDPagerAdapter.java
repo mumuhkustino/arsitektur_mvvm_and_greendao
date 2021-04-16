@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.delete.DeleteFragment;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.insert.InsertFragment;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.select.SelectFragment;
 
@@ -34,7 +35,7 @@ public class CRUDPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return SelectFragment.newInstance();
             case 2:
-                return InsertFragment.newInstance();
+                return DeleteFragment.newInstance();
             case 3:
                 return InsertFragment.newInstance();
             default:

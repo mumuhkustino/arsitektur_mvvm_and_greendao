@@ -30,7 +30,7 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
 //        fetchMedicals();
     }
 
-    public void fetchExecutionNumOfRecord() {
+    public void fetchExecutionNumOfRecord(long startTime) {
         setIsLoading(true);
         getCompositeDisposable().add(getDataManager()
                 .getMedical()
@@ -40,6 +40,9 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
                 .subscribe(medicalList -> {
                             if (medicalList != null && !medicalList.isEmpty()) {
                                 numOfRecord.setValue((long) medicalList.size());
+                                long endTime = System.nanoTime();
+                                long timeElapsed = endTime - startTime; //In NanoSeconds
+                                executionTime.setValue(timeElapsed/1000000); //To MilliSeconds
                                 Log.d("CVM", "fetchExecutionNumOfRecord: " + medicalList.size());
                             }
                             setIsLoading(false);
@@ -53,7 +56,7 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
     public void fetchMedicals() {
         setIsLoading(true);
         long startTime = System.nanoTime();
-            executionTime.setValue(startTime);
+//        executionTime.setValue(startTime);
         getCompositeDisposable().add(getDataManager()
                 .getMedical()
                 .subscribeOn(getSchedulerProvider().io())
@@ -61,11 +64,11 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
                 .toFlowable()
                 .subscribe(medicalList -> {
             if (medicalList != null && !medicalList.isEmpty()) {
+                medicalListLiveData.setValue(medicalList);
                 numOfRecord.setValue((long) medicalList.size());
                 long endTime = System.nanoTime();
                 long timeElapsed = endTime - startTime; //In NanoSeconds
                 executionTime.setValue(timeElapsed/1000000); //To MilliSeconds
-                medicalListLiveData.setValue(medicalList);
                 Log.d("CVM", "fetchMedicals: " + medicalList.size());
             }
             setIsLoading(false);
@@ -78,9 +81,9 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
 
     public void fetchMedicals(Long numOfData) {
 //    public void fetchMedicals() {
-        setIsLoading(true);
+//        setIsLoading(true);
         long startTime = System.nanoTime();
-        executionTime.setValue(startTime);
+//        executionTime.setValue(startTime);
         getCompositeDisposable().add(getDataManager()
 //            .getMedical()
             .getMedical(numOfData)
@@ -89,14 +92,13 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
             .toFlowable()
             .subscribe(medicalList -> {
                     if (medicalList != null && !medicalList.isEmpty()) {
+                        medicalListLiveData.setValue(medicalList);
                         numOfRecord.setValue((long) medicalList.size());
                         long endTime = System.nanoTime();
                         long timeElapsed = endTime - startTime; //In NanoSeconds
                         executionTime.setValue(timeElapsed/1000000); //To MilliSeconds
-                        medicalListLiveData.setValue(medicalList);
                         Log.d("CVM", "fetchMedicals 2 : " + medicalList.size());
                     }
-                    setIsLoading(false);
                 }, throwable -> {
                     setIsLoading(false);
                     getNavigator().handleError(throwable);
@@ -105,17 +107,17 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
     }
 
     public void startSeeding(Long numOfData) {
-        Log.d("CVM", "startSeeding: Mulai " + Math.round(Math.pow(numOfData, 0.25)));
-        Long num = Math.round(Math.pow(numOfData, 0.25));
+//        Log.d("CVM", "startSeeding: Mulai " + Math.round(Math.pow(numOfData, 0.25)));
+//        Long num = Math.round(Math.pow(numOfData, 0.25));
         setIsLoading(true);
         long startTime = System.nanoTime();
-        executionTime.setValue(startTime);
+//        executionTime.setValue(startTime);
         getCompositeDisposable().add(getDataManager()
 //                .seedDatabaseHospital()
-                .seedDatabaseHospital(num)
-                .flatMap(aBoolean -> getDataManager().seedDatabaseMedicine(num)
-                        .flatMap(aBoolean1 -> getDataManager().seedDatabaseDisease(num)
-                                .flatMap(aBoolean2 -> getDataManager().seedDatabaseSymptom(num))
+                .seedDatabaseHospital(numOfData)
+                .flatMap(aBoolean -> getDataManager().seedDatabaseMedicine(numOfData)
+                        .flatMap(aBoolean1 -> getDataManager().seedDatabaseDisease(numOfData)
+                                .flatMap(aBoolean2 -> getDataManager().seedDatabaseSymptom(numOfData))
                                 .subscribeOn(getSchedulerProvider().io())
                                 .observeOn(getSchedulerProvider().ui())))
                 .subscribeOn(getSchedulerProvider().io())
@@ -124,13 +126,11 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
                 .subscribe(aBoolean -> {
                     if (aBoolean != null) {
 //                        numOfRecord.setValue(numOfData);
-                        long endTime = System.nanoTime();
-                        long timeElapsed = endTime - startTime; //In NanoSeconds
-                        executionTime.setValue(timeElapsed/1000000); //To MilliSeconds
 //                        medicalListLiveData.setValue(medicalList);
                         Log.d("CVM", "startSeeding: " + aBoolean);
                     }
-                    setIsLoading(false);
+                    fetchExecutionNumOfRecord(startTime);
+//                    setIsLoading(false);
                 }, throwable -> {
                     setIsLoading(false);
                     Log.d("CVM", "startSeeding: " + throwable.getMessage());

@@ -1,4 +1,4 @@
-package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.select;
+package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.delete;
 
 import android.os.Bundle;
 
@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.BR;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.R;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Medical;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.databinding.FragmentSelectBinding;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.databinding.FragmentDeleteBinding;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.di.component.FragmentComponent;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseFragment;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDAdapter;
@@ -24,20 +24,20 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class SelectFragment extends BaseFragment<FragmentSelectBinding, CRUDViewModel> implements CRUDNavigator,
+public class DeleteFragment extends BaseFragment<FragmentDeleteBinding, CRUDViewModel> implements CRUDNavigator,
         CRUDAdapter.CRUDAdapterListener {
 
     @Inject
-    CRUDAdapter selectAdapter;
+    CRUDAdapter deleteAdapter;
 
-    FragmentSelectBinding selectFragmentBinding;
+    FragmentDeleteBinding fragmentDeleteBinding;
 
     @Inject
     LinearLayoutManager linearLayoutManager;
 
-    public static SelectFragment newInstance() {
+    public static DeleteFragment newInstance() {
         Bundle args = new Bundle();
-        SelectFragment fragment = new SelectFragment();
+        DeleteFragment fragment = new DeleteFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,16 +49,22 @@ public class SelectFragment extends BaseFragment<FragmentSelectBinding, CRUDView
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_select;
+        return R.layout.fragment_delete;
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
-//        viewModel.setListener(this);
-        selectAdapter.setListener(this);
+        deleteAdapter.setListener(this);
         viewModel.fetchMedicals();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        fragmentDeleteBinding = getViewDataBinding();
+        setUp();
     }
 
     @Override
@@ -67,12 +73,17 @@ public class SelectFragment extends BaseFragment<FragmentSelectBinding, CRUDView
     }
 
     @Override
-    public void onRetryClick() {
-        if (selectFragmentBinding.editTextNumData.getText() != null) {
+    public void handleError(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onClick() {
+        if (fragmentDeleteBinding.editTextNumData.getText() != null) {
             try {
-                Long numOfData = Long.valueOf(selectFragmentBinding.editTextNumData.getText().toString());
-                viewModel.fetchMedicals(numOfData);
-//                viewModel.fetchMedicals();
+                Long numOfData = Long.valueOf(fragmentDeleteBinding.editTextNumData.getText().toString());
+//                viewModel.fetchMedicals(numOfData);
+                viewModel.fetchMedicals();
             } catch (Exception e) {
                 Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
             }
@@ -82,43 +93,28 @@ public class SelectFragment extends BaseFragment<FragmentSelectBinding, CRUDView
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        selectFragmentBinding = getViewDataBinding();
-        setUp();
-    }
-
-    @Override
-    public void handleError(Throwable throwable) {
-
-    }
-
-    @Override
     public void updateMedical(List<Medical> medicalList) {
-        selectAdapter.selectItems(medicalList);
+        deleteAdapter.deleteItems(medicalList);
     }
 
     private void setUp() {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        selectFragmentBinding.selectRecyclerView.setLayoutManager(linearLayoutManager);
-        selectFragmentBinding.selectRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        selectFragmentBinding.selectRecyclerView.setAdapter(selectAdapter);
+        fragmentDeleteBinding.deleteRecyclerView.setLayoutManager(linearLayoutManager);
+        fragmentDeleteBinding.deleteRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        fragmentDeleteBinding.deleteRecyclerView.setAdapter(deleteAdapter);
     }
 
     @Override
-    public void onClick() {
-        if (selectFragmentBinding.editTextNumData.getText() != null) {
+    public void onRetryClick() {
+        if (fragmentDeleteBinding.editTextNumData.getText() != null) {
             try {
-                Long numOfData = Long.valueOf(selectFragmentBinding.editTextNumData.getText().toString());
-                viewModel.fetchMedicals(numOfData);
-                viewModel.setIsLoading(false);
-//                viewModel.fetchMedicals();
+                Long numOfData = Long.valueOf(fragmentDeleteBinding.editTextNumData.getText().toString());
+//                viewModel.fetchMedicals(numOfData);
+                viewModel.fetchMedicals();
             } catch (Exception e) {
                 Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
-                viewModel.fetchMedicals();
             }
         } else {
-            viewModel.fetchMedicals();
             Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
         }
     }

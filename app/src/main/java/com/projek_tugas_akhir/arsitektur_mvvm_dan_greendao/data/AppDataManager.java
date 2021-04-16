@@ -126,11 +126,11 @@ public class AppDataManager implements DataManager {
             medicals.add(tempMedicals.get(i));
         }
         Log.d(TAG, "getMedicals: " + medicals.size());
-        Disposable medicalDisposable = medicalsObservable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .toFlowable()
-                .subscribe(medical -> Log.d(TAG, "getMedical: " + medical.size()));
+//        Disposable medicalDisposable = medicalsObservable
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .toFlowable()
+//                .subscribe(medical -> Log.d(TAG, "getMedical: " + medical.size()));
         return Single.just(medicals);
 //        return medicalsObservable;
     }
@@ -156,28 +156,31 @@ public class AppDataManager implements DataManager {
 
     @Override
     public Observable<Boolean> seedDatabaseHospital(Long numOfData) {
+        if (numOfData >= 10000) {
+            numOfData /= 1000;
+//        } else {
+//            numOfData /= 1000;
+        }
+        if (numOfData >= 100) {
+            numOfData = (long) 100;
+        } else {
+            numOfData = (long) 10;
+        }
         Faker faker = new Faker();
         List<Hospital> hospitalList = dbHelper.getAllHospital().blockingSingle();
-        if (hospitalList.size() > 100) {
+        if (hospitalList.size() >= 100) {
             return saveHospitalList(hospitalList);
         } else {
-            int n = 100 - hospitalList.size();
-            if (numOfData < n)
-                n = numOfData.intValue();
-            for (int i = 0; i < n; i++) {
+//            int n = 100 - hospitalList.size();
+//            if (numOfData < n)
+//                n = numOfData.intValue();
+            numOfData -= hospitalList.size();
+            for (int i = 0; i < numOfData; i++) {
                 Hospital hospital = new Hospital();
                 hospital.setName(faker.medical().hospitalName());
                 hospitalList.add(hospital);
             }
-//        return Observable.just(dbHelper.getAllHospital().blockingSingle().addAll(hospitalList));
             return saveHospitalList(hospitalList);
-//        return dbHelper.isHospitalEmpty()
-//                .concatMap(aBoolean -> {
-//                    if (aBoolean) {
-//
-//                    }
-//                    return Observable.just(false);
-//                });
         }
     }
 
@@ -202,20 +205,30 @@ public class AppDataManager implements DataManager {
 
     @Override
     public Observable<Boolean> seedDatabaseMedicine(Long numOfData) {
+        if (numOfData >= 10000) {
+            numOfData /= 1000;
+//        } else {
+//            numOfData /= 1000;
+        }
+        if (numOfData <= 100) {
+            numOfData = (long) 10;
+        } else {
+            numOfData /= 10;
+        }
         Faker faker = new Faker();
         List<Medicine> medicineList = dbHelper.getAllMedicine().blockingSingle();
-        if (medicineList.size() > 100) {
+        if (medicineList.size() >= 100) {
             return saveMedicineList(medicineList);
         } else {
-            int n = 100 - medicineList.size();
-            if (numOfData < n)
-                n = numOfData.intValue();
-            for (int i = 0; i < n; i++) {
+//            int n = 100 - medicineList.size();
+//            if (numOfData < n)
+//                n = numOfData.intValue();
+            numOfData -= medicineList.size();
+            for (int i = 0; i < numOfData; i++) {
                 Medicine medicine = new Medicine();
                 medicine.setName(faker.medical().medicineName());
                 medicineList.add(medicine);
             }
-//        return Observable.just(dbHelper.getAllMedicine().blockingSingle().addAll(medicineList));
             return saveMedicineList(medicineList);
         }
     }
@@ -241,20 +254,22 @@ public class AppDataManager implements DataManager {
 
     @Override
     public Observable<Boolean> seedDatabaseDisease(Long numOfData) {
+        if (numOfData >= 10000) {
+            numOfData = (long) 10;
+        }
         Faker faker = new Faker();
         List<Disease> diseaseList = dbHelper.getAllDisease().blockingSingle();
-        if (diseaseList.size() > 10) {
+        if (diseaseList.size() >= 10) {
             return saveDiseaseList(diseaseList);
         } else {
-            int n = 10 - diseaseList.size();
-            if (numOfData < n)
-                n = numOfData.intValue();
-            for (int i = 0; i < n; i++) {
+//            int n = 10 - diseaseList.size();
+//            if (numOfData < n)
+//                n = numOfData.intValue();
+            for (int i = 0; i < numOfData; i++) {
                 Disease disease = new Disease();
                 disease.setName(faker.medical().diseaseName());
                 diseaseList.add(disease);
             }
-//        return Observable.just(dbHelper.getAllDisease().blockingSingle().addAll(diseaseList));
             return saveDiseaseList(diseaseList);
         }
     }
@@ -280,20 +295,22 @@ public class AppDataManager implements DataManager {
 
     @Override
     public Observable<Boolean> seedDatabaseSymptom(Long numOfData) {
+        if (numOfData >= 10000) {
+            numOfData = (long) 10;
+        }
         Faker faker = new Faker();
         List<Symptom> symptomList = dbHelper.getAllSymptom().blockingSingle();
         if (symptomList.size() >= 10) {
             return saveSymptomList(symptomList);
         } else {
-            int n = 10 - symptomList.size();
-            if (numOfData < n)
-                n = numOfData.intValue();
-            for (int i = 0; i < n; i++) {
+//            int n = 10 - symptomList.size();
+//            if (numOfData < n)
+//                int n = numOfData.intValue();
+            for (int i = 0; i < numOfData; i++) {
                 Symptom symptom = new Symptom();
                 symptom.setName(faker.medical().symptoms());
                 symptomList.add(symptom);
             }
-//        return Observable.just(dbHelper.getAllSymptom().blockingSingle().addAll(symptomList));
             return saveSymptomList(symptomList);
         }
     }

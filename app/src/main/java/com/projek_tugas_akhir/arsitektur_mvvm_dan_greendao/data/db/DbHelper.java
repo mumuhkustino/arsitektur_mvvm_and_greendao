@@ -19,6 +19,8 @@ public interface DbHelper {
 
     Observable<Long> insertSymptom(final Symptom symptom);
 
+    
+
     Observable<List<Hospital>> getAllHospital();
 
     Observable<List<Medicine>> getAllMedicine();

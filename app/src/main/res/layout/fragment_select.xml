@@ -58,11 +58,11 @@
                 android:layout_height="match_parent">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/insertRecyclerView"
+                    android:id="@+id/selectRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingBottom="80dp"
-                    app:adapter="@{viewModel.medicalListLiveData}"
+                    app:adapterSelect="@{viewModel.medicalListLiveData}"
                     tools:listitem="@layout/item_view" />
 
                 <LinearLayout
@@ -105,7 +105,7 @@
         </LinearLayout>
 
         <androidx.core.widget.ContentLoadingProgressBar
-            android:id="@+id/address_looking_up"
+            android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

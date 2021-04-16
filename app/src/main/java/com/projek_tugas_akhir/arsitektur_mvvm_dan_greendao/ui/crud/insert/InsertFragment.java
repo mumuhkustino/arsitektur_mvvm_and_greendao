@@ -11,7 +11,8 @@ import android.widget.Toast;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.BR;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.R;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Medical;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.databinding.InsertFragmentBinding;
+
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.databinding.FragmentInsertBinding;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.di.component.FragmentComponent;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseFragment;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDAdapter;
@@ -22,13 +23,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class InsertFragment extends BaseFragment<InsertFragmentBinding, CRUDViewModel> implements CRUDNavigator,
+public class InsertFragment extends BaseFragment<FragmentInsertBinding, CRUDViewModel> implements CRUDNavigator,
         CRUDAdapter.CRUDAdapterListener {
 
     @Inject
     CRUDAdapter insertAdapter;
 
-    InsertFragmentBinding insertFragmentBinding;
+    FragmentInsertBinding insertFragmentBinding;
 
     @Inject
     LinearLayoutManager linearLayoutManager;
@@ -47,7 +48,7 @@ public class InsertFragment extends BaseFragment<InsertFragmentBinding, CRUDView
 
     @Override
     public int getLayoutId() {
-        return R.layout.insert_fragment;
+        return R.layout.fragment_insert;
     }
 
     @Override
@@ -65,17 +66,17 @@ public class InsertFragment extends BaseFragment<InsertFragmentBinding, CRUDView
 
     @Override
     public void onRetryClick() {
-        if (insertFragmentBinding.editTextNumData.getText() != null) {
+//        if (insertFragmentBinding.editTextNumData.getText() != null) {
             try {
-                Long numOfData = Long.valueOf(insertFragmentBinding.editTextNumData.getText().toString());
-                viewModel.startSeeding(numOfData);
-                viewModel.fetchExecutionNumOfRecord();
+//                Long numOfData = Long.valueOf(insertFragmentBinding.editTextNumData.getText().toString());
+//                viewModel.startSeeding(numOfData);
+//                viewModel.fetchExecutionNumOfRecord();
             } catch (Exception e) {
                 Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
             }
-        } else {
-            Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
-        }
+//        } else {
+//            Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
+//        }
     }
 
     @Override
@@ -108,7 +109,7 @@ public class InsertFragment extends BaseFragment<InsertFragmentBinding, CRUDView
             try {
                 Long numOfData = Long.valueOf(insertFragmentBinding.editTextNumData.getText().toString());
                 viewModel.startSeeding(numOfData);
-                viewModel.fetchExecutionNumOfRecord();
+//                viewModel.fetchExecutionNumOfRecord();
             } catch (Exception e) {
                 Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
             }
