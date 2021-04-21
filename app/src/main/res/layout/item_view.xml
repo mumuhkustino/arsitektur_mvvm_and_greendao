@@ -69,29 +69,29 @@
                     android:text="@{viewModel.medicineName}"
                     tools:text="B" />
 
-                <TextView
-                    android:id="@+id/diseaseNameTextView"
-                    style="@style/TextStyle.Heading"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center"
-                    android:text="@{viewModel.diseaseName}"
-                    tools:text="A" />
+<!--                <TextView-->
+<!--                    android:id="@+id/diseaseNameTextView"-->
+<!--                    style="@style/TextStyle.Heading"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginHorizontal="10dp"-->
+<!--                    android:layout_marginTop="20dp"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="@{viewModel.diseaseName}"-->
+<!--                    tools:text="A" />-->
 
-                <TextView
-                    android:id="@+id/symptomNameTextView"
-                    style="@style/TextStyle.Heading"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center"
-                    android:text="@{viewModel.symptomName}"
-                    tools:text="B" />
+<!--                <TextView-->
+<!--                    android:id="@+id/symptomNameTextView"-->
+<!--                    style="@style/TextStyle.Heading"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginHorizontal="10dp"-->
+<!--                    android:layout_marginTop="20dp"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="@{viewModel.symptomName}"-->
+<!--                    tools:text="B" />-->
 
             </LinearLayout>
 

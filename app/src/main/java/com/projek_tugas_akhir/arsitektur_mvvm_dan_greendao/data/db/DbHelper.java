@@ -19,7 +19,13 @@ public interface DbHelper {
 
     Observable<Long> insertSymptom(final Symptom symptom);
 
-    
+    Observable<Boolean> deleteHospital(final Hospital hospital);
+
+    Observable<Boolean> deleteMedicine(final Medicine medicine);
+
+    Observable<Boolean> deleteDisease(final Disease disease);
+
+    Observable<Boolean> deleteSymptom(final Symptom symptom);
 
     Observable<List<Hospital>> getAllHospital();
 

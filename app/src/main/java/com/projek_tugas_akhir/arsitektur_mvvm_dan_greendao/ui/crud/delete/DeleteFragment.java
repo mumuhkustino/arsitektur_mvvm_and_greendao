@@ -83,6 +83,7 @@ public class DeleteFragment extends BaseFragment<FragmentDeleteBinding, CRUDView
             try {
                 Long numOfData = Long.valueOf(fragmentDeleteBinding.editTextNumData.getText().toString());
 //                viewModel.fetchMedicals(numOfData);
+                viewModel.deleteDatabase(numOfData);
                 viewModel.fetchMedicals();
             } catch (Exception e) {
                 Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
@@ -110,7 +111,8 @@ public class DeleteFragment extends BaseFragment<FragmentDeleteBinding, CRUDView
             try {
                 Long numOfData = Long.valueOf(fragmentDeleteBinding.editTextNumData.getText().toString());
 //                viewModel.fetchMedicals(numOfData);
-                viewModel.fetchMedicals();
+                viewModel.deleteDatabase(numOfData);
+//                viewModel.fetchMedicals();
             } catch (Exception e) {
                 Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
             }

@@ -116,10 +116,12 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
 //                .seedDatabaseHospital()
                 .seedDatabaseHospital(numOfData)
                 .flatMap(aBoolean -> getDataManager().seedDatabaseMedicine(numOfData)
-                        .flatMap(aBoolean1 -> getDataManager().seedDatabaseDisease(numOfData)
-                                .flatMap(aBoolean2 -> getDataManager().seedDatabaseSymptom(numOfData))
+//                        .flatMap(aBoolean1 -> getDataManager().seedDatabaseDisease(numOfData)
+//                                .flatMap(aBoolean2 -> getDataManager().seedDatabaseSymptom(numOfData))
                                 .subscribeOn(getSchedulerProvider().io())
-                                .observeOn(getSchedulerProvider().ui())))
+                                .observeOn(getSchedulerProvider().ui())
+//                )
+                )
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .toFlowable(BackpressureStrategy.DROP)
@@ -137,6 +139,73 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
 //                    decideNextActivity();
                 }));
     }
+
+    public void updateDatabase(Long numOfData) {
+        Log.d("CVM", "updateDatabase: Mulai ");
+//        Long num = Math.round(Math.pow(numOfData, 0.25));
+        setIsLoading(true);
+        long startTime = System.nanoTime();
+//        executionTime.setValue(startTime);
+        getCompositeDisposable().add(getDataManager()
+//                .seedDatabaseHospital()
+                .updateDatabaseHospital(numOfData)
+                .flatMap(aBoolean -> getDataManager().updateDatabaseMedicine(numOfData)
+//                        .flatMap(aBoolean1 -> getDataManager().updateDatabaseDisease(numOfData)
+//                                .flatMap(aBoolean2 -> getDataManager().updateDatabaseSymptom(numOfData))
+                                .subscribeOn(getSchedulerProvider().io())
+                                .observeOn(getSchedulerProvider().ui()))
+//        )
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .toFlowable(BackpressureStrategy.DROP)
+                .subscribe(aBoolean -> {
+                    if (aBoolean != null) {
+//                        numOfRecord.setValue(numOfData);
+//                        medicalListLiveData.setValue(medicalList);
+                        Log.d("CVM", "updateDatabase: Selesai " + aBoolean);
+                    }
+                    fetchExecutionNumOfRecord(startTime);
+//                    setIsLoading(false);
+                }, throwable -> {
+                    setIsLoading(false);
+                    Log.d("CVM", "updateDatabase: " + throwable.getMessage());
+//                    decideNextActivity();
+                }));
+    }
+
+    public void deleteDatabase(Long numOfData) {
+        Log.d("CVM", "deleteDatabase: Mulai ");
+//        Long num = Math.round(Math.pow(numOfData, 0.25));
+        setIsLoading(true);
+        long startTime = System.nanoTime();
+//        executionTime.setValue(startTime);
+        getCompositeDisposable().add(getDataManager()
+//                .seedDatabaseHospital()
+                .deleteDatabaseHospital(numOfData)
+                .flatMap(aBoolean -> getDataManager().deleteDatabaseMedicine(numOfData)
+//                        .flatMap(aBoolean1 -> getDataManager().deleteDatabaseDisease(numOfData)
+//                                .flatMap(aBoolean2 -> getDataManager().deleteDatabaseSymptom(numOfData))
+                                .subscribeOn(getSchedulerProvider().io())
+                                .observeOn(getSchedulerProvider().ui()))
+//        )
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .toFlowable(BackpressureStrategy.DROP)
+                .subscribe(aBoolean -> {
+                    if (aBoolean != null) {
+//                        numOfRecord.setValue(numOfData);
+//                        medicalListLiveData.setValue(medicalList);
+                        Log.d("CVM", "deleteDatabase: Selesai " + aBoolean);
+                    }
+                    fetchExecutionNumOfRecord(startTime);
+//                    setIsLoading(false);
+                }, throwable -> {
+                    setIsLoading(false);
+                    Log.d("CVM", "deleteDatabase: " + throwable.getMessage());
+//                    decideNextActivity();
+                }));
+    }
+
 
     public void setMedicalListLiveData(MutableLiveData<List<Medical>> medicalListLiveData) {
         this.medicalListLiveData = medicalListLiveData;

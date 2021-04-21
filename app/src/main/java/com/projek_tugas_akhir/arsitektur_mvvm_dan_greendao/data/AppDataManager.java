@@ -19,9 +19,6 @@ import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 @Singleton
 public class AppDataManager implements DataManager {
@@ -84,19 +81,21 @@ public class AppDataManager implements DataManager {
     public Single<List<Medical>> getMedical() {
         Observable<List<Hospital>> hospitalsObservable = dbHelper.getAllHospital();
         Observable<List<Medicine>> medicinesObservable = dbHelper.getAllMedicine();
-        Observable<List<Disease>> diseasesObservable = dbHelper.getAllDisease();
-        Observable<List<Symptom>> symptomsObservable = dbHelper.getAllSymptom();
+//        Observable<List<Disease>> diseasesObservable = dbHelper.getAllDisease();
+//        Observable<List<Symptom>> symptomsObservable = dbHelper.getAllSymptom();
         Single<List<Medical>> medicalsObservable = hospitalsObservable
                 .flatMap((hospitals) -> Observable.fromIterable(hospitals)
                         .flatMap(hospital -> medicinesObservable
                                 .flatMap((medicines) -> Observable.fromIterable(medicines)
-                                        .flatMap(medicine -> diseasesObservable
-                                                .flatMap(diseases -> Observable.fromIterable(diseases)
-                                                        .flatMap(disease -> symptomsObservable
-                                                                .flatMap((symptoms) -> Observable.fromIterable(symptoms)
-                                                                        .map((symptom) -> new Medical(hospital.getName(), medicine.getName(), disease.getName(), symptom.getName()))
-                                                                )))
-                                        ))
+//                                        .flatMap(medicine -> diseasesObservable
+//                                                .flatMap(diseases -> Observable.fromIterable(diseases)
+//                                                        .flatMap(disease -> symptomsObservable
+//                                                                .flatMap((symptoms) -> Observable.fromIterable(symptoms)
+//                                                                        .map((symptom) -> new Medical(hospital.getName(), medicine.getName(), disease.getName(), symptom.getName()))
+                                                .map((medicine) -> new Medical(hospital.getName(), medicine.getName(), "", ""))
+                                                                )
+//                        ))
+//                                        ))
                         )).toList();
         return medicalsObservable;
     }
@@ -106,19 +105,21 @@ public class AppDataManager implements DataManager {
 //    public Single<List<Medical>> getMedical() {
         Observable<List<Hospital>> hospitalsObservable = dbHelper.getAllHospital();
         Observable<List<Medicine>> medicinesObservable = dbHelper.getAllMedicine();
-        Observable<List<Disease>> diseasesObservable = dbHelper.getAllDisease();
-        Observable<List<Symptom>> symptomsObservable = dbHelper.getAllSymptom();
+//        Observable<List<Disease>> diseasesObservable = dbHelper.getAllDisease();
+//        Observable<List<Symptom>> symptomsObservable = dbHelper.getAllSymptom();
         Single<List<Medical>> medicalsObservable = hospitalsObservable
                 .flatMap((hospitals) -> Observable.fromIterable(hospitals)
                         .flatMap(hospital -> medicinesObservable
                                 .flatMap((medicines) -> Observable.fromIterable(medicines)
-                                        .flatMap(medicine -> diseasesObservable
-                                                .flatMap(diseases -> Observable.fromIterable(diseases)
-                                                        .flatMap(disease -> symptomsObservable
-                                                                .flatMap((symptoms) -> Observable.fromIterable(symptoms)
-                                                                        .map((symptom) -> new Medical(hospital.getName(), medicine.getName(), disease.getName(), symptom.getName()))
-                                                                )))
-                                        ))
+//                                        .flatMap(medicine -> diseasesObservable
+//                                                .flatMap(diseases -> Observable.fromIterable(diseases)
+//                                                        .flatMap(disease -> symptomsObservable
+//                                                                .flatMap((symptoms) -> Observable.fromIterable(symptoms)
+//                                                                        .map((symptom) -> new Medical(hospital.getName(), medicine.getName(), disease.getName(), symptom.getName()))
+                                                .map((medicine) -> new Medical(hospital.getName(), medicine.getName(), "", ""))
+                                                                )
+//                        ))
+//                                        ))
                         )).toList();
         List<Medical> medicals = new ArrayList<>();
         List<Medical> tempMedicals = medicalsObservable.blockingGet();
@@ -141,14 +142,15 @@ public class AppDataManager implements DataManager {
         return dbHelper.isHospitalEmpty()
                 .concatMap(aBoolean -> {
                     if (aBoolean) {
-                        List<Hospital> hospitalList = new ArrayList<>();
+//                        List<Hospital> hospitalList = new ArrayList<>();
 //                        for (int i = 0; i < 1021; i++) {
                         for (int i = 0; i < 10; i++) {
                             Hospital hospital = new Hospital();
                             hospital.setName(faker.medical().hospitalName());
-                            hospitalList.add(hospital);
+                            return saveHospital(hospital);
+//                            hospitalList.add(hospital);
                         }
-                        return saveHospitalList(hospitalList);
+//                        return saveHospitalList(hospitalList);
                     }
                     return Observable.just(false);
                 });
@@ -156,16 +158,17 @@ public class AppDataManager implements DataManager {
 
     @Override
     public Observable<Boolean> seedDatabaseHospital(Long numOfData) {
-        if (numOfData >= 10000) {
-            numOfData /= 1000;
-//        } else {
+//        if (numOfData >= 10000) {
 //            numOfData /= 1000;
-        }
-        if (numOfData >= 100) {
-            numOfData = (long) 100;
-        } else {
-            numOfData = (long) 10;
-        }
+////        } else {
+////            numOfData /= 1000;
+//        }
+//        if (numOfData >= 100) {
+//            numOfData = (long) 100;
+//        } else {
+//            numOfData = (long) 10;
+//        }
+        numOfData /= 10;
         Faker faker = new Faker();
         List<Hospital> hospitalList = dbHelper.getAllHospital().blockingSingle();
         if (hospitalList.size() >= 100) {
@@ -182,6 +185,59 @@ public class AppDataManager implements DataManager {
             }
             return saveHospitalList(hospitalList);
         }
+    }
+
+    @Override
+    public Observable<Boolean> updateDatabaseHospital(Long numOfData) {
+//        if (numOfData >= 10000) {
+//            numOfData /= 1000;
+//        }
+//        if (numOfData >= 100) {
+//            numOfData = (long) 100;
+//        } else {
+//            numOfData = (long) 10;
+//        }
+        numOfData -= 10;
+        List<Hospital> hospitalList = dbHelper.getAllHospital().blockingSingle();
+        if (numOfData > hospitalList.size())
+            numOfData = (long) hospitalList.size();
+        Log.d(TAG, "updateDatabaseHospital: " + numOfData);
+        for (int i = 0; i < numOfData; i++) {
+            Hospital hospital = hospitalList.get(i);
+            hospital.setName(hospital.getName() + " NEW");
+//            if (saveHospital(hospital).equals(Observable.just(true)))
+                saveHospital(hospital);
+//            else
+//                return Observable.just(false);
+//            hospitalList.set(i, hospital);
+        }
+//        return saveHospitalList(hospitalList);
+        return Observable.just(true);
+    }
+
+    @Override
+    public Observable<Boolean> deleteDatabaseHospital(Long numOfData) {
+//        if (numOfData >= 10000) {
+//            numOfData /= 1000;
+//        }
+//        if (numOfData >= 100) {
+//            numOfData = (long) 100;
+//        } else {
+            numOfData = (long) 10;
+//        }
+        numOfData -= 10;
+        List<Hospital> hospitalList = getAllHospital().blockingSingle();
+        if (numOfData >= hospitalList.size())
+            numOfData = (long) hospitalList.size();
+        Log.d(TAG, "deleteDatabaseHospital: " + numOfData);
+        for (int i = 0; i < numOfData; i++) {
+//            if (deleteHospital(hospitalList.get(i)).equals(Observable.just(true)))
+                deleteHospital(hospitalList.get(i));
+//            else
+//                return Observable.just(false);
+        }
+        saveHospitalList(getAllHospital().blockingSingle());
+        return Observable.just(true);
     }
 
     @Override
@@ -205,16 +261,16 @@ public class AppDataManager implements DataManager {
 
     @Override
     public Observable<Boolean> seedDatabaseMedicine(Long numOfData) {
-        if (numOfData >= 10000) {
-            numOfData /= 1000;
-//        } else {
+//        if (numOfData >= 10000) {
 //            numOfData /= 1000;
-        }
-        if (numOfData <= 100) {
-            numOfData = (long) 10;
-        } else {
+////        } else {
+////            numOfData /= 1000;
+//        }
+//        if (numOfData <= 100) {
+//            numOfData = (long) 10;
+//        } else {
             numOfData /= 10;
-        }
+//        }
         Faker faker = new Faker();
         List<Medicine> medicineList = dbHelper.getAllMedicine().blockingSingle();
         if (medicineList.size() >= 100) {
@@ -231,6 +287,61 @@ public class AppDataManager implements DataManager {
             }
             return saveMedicineList(medicineList);
         }
+    }
+
+    @Override
+    public Observable<Boolean> updateDatabaseMedicine(Long numOfData) {
+//        if (numOfData >= 10000) {
+//            numOfData /= 1000;
+//        }
+//        if (numOfData >= 100) {
+//            numOfData = (long) 100;
+//        } else {
+//            numOfData = (long) 10;
+//        }
+        numOfData /= 10;
+        List<Medicine> medicineList = dbHelper.getAllMedicine().blockingSingle();
+        if (numOfData > medicineList.size())
+            numOfData = (long) medicineList.size();
+        Log.d(TAG, "updateDatabaseMedicine: " + numOfData);
+        for (int i = 0; i < numOfData; i++) {
+            Medicine medicine = medicineList.get(i);
+            medicine.setName(medicine.getName() + " NEW");
+//            if (saveMedicine(medicine).equals(Observable.just(true)))
+                saveMedicine(medicine);
+//            else
+//                return Observable.just(false);
+//            medicineList.set(i, medicine);
+        }
+//        return saveMedicineList(medicineList);
+        return Observable.just(true);
+    }
+
+    @Override
+    public Observable<Boolean> deleteDatabaseMedicine(Long numOfData) {
+//        if (numOfData >= 10000) {
+//            numOfData /= 1000;
+//        }
+//        if (numOfData >= 100) {
+//            numOfData = (long) 100;
+//        } else {
+//            numOfData = (long) 10;
+//        }
+        numOfData /= 10;
+        List<Medicine> medicineList = getAllMedicine().blockingSingle();
+        if (numOfData >= medicineList.size())
+            numOfData = (long) medicineList.size();
+        numOfData = medicineList.size() - numOfData;
+        Log.d(TAG, "deleteDatabaseMedicine: " + numOfData);
+        for (int i = 0; i < numOfData; i++) {
+//            if (deleteMedicine(medicineList.get(i)).equals(Observable.just(true)))
+            Log.d(TAG, "deleteDatabaseMedicine: " + "MASUK");
+                deleteMedicine(medicineList.get(i));
+//            else
+//                return Observable.just(false);
+        }
+        saveMedicineList(getAllMedicine().blockingSingle());
+        return Observable.just(true);
     }
 
     @Override
@@ -258,20 +369,70 @@ public class AppDataManager implements DataManager {
             numOfData = (long) 10;
         }
         Faker faker = new Faker();
-        List<Disease> diseaseList = dbHelper.getAllDisease().blockingSingle();
-        if (diseaseList.size() >= 10) {
-            return saveDiseaseList(diseaseList);
+        List<Disease> diseaseListList = dbHelper.getAllDisease().blockingSingle();
+        if (diseaseListList.size() >= 10) {
+            return saveDiseaseList(diseaseListList);
         } else {
-//            int n = 10 - diseaseList.size();
+//            int n = 10 - symptomList.size();
 //            if (numOfData < n)
-//                n = numOfData.intValue();
+//                int n = numOfData.intValue();
             for (int i = 0; i < numOfData; i++) {
                 Disease disease = new Disease();
-                disease.setName(faker.medical().diseaseName());
-                diseaseList.add(disease);
+                disease.setName(faker.medical().symptoms());
+                diseaseListList.add(disease);
             }
-            return saveDiseaseList(diseaseList);
+            return saveDiseaseList(diseaseListList);
         }
+    }
+
+    @Override
+    public Observable<Boolean> updateDatabaseDisease(Long numOfData) {
+//        if (numOfData >= 10000) {
+//            numOfData /= 1000;
+//        }
+//        if (numOfData >= 100) {
+//            numOfData = (long) 100;
+//        } else {
+//            numOfData = (long) 10;
+//        }
+        List<Disease> diseaseList = dbHelper.getAllDisease().blockingSingle();
+        if (numOfData > diseaseList.size())
+            numOfData = (long) diseaseList.size();
+        Log.d(TAG, "updateDatabaseDisease: " + numOfData);
+        for (int i = 0; i < numOfData; i++) {
+            Disease disease = diseaseList.get(i);
+            disease.setName(disease.getName() + " NEW");
+//            if (saveDisease(disease).equals(Observable.just(true)))
+                saveDisease(disease);
+//            else
+//                return Observable.just(false);
+//            diseaseList.set(i, disease);
+        }
+//        return saveDiseaseList(medicineList);
+        return Observable.just(true);
+    }
+
+    @Override
+    public Observable<Boolean> deleteDatabaseDisease(Long numOfData) {
+//        if (numOfData >= 10000) {
+//            numOfData /= 1000;
+//        }
+//        if (numOfData >= 100) {
+//            numOfData = (long) 100;
+//        } else {
+//            numOfData = (long) 10;
+//        }
+        List<Medicine> medicineList = dbHelper.getAllMedicine().blockingSingle();
+        if (numOfData > medicineList.size())
+            numOfData = (long) medicineList.size();
+        Log.d(TAG, "deleteDatabaseDisease: " + numOfData);
+        for (int i = 0; i < numOfData; i++) {
+//            if (deleteMedicine(medicineList.get(i)).equals(Observable.just(true)))
+                deleteMedicine(medicineList.get(i));
+//            else
+//                return Observable.just(false);
+        }
+        return Observable.just(true);
     }
 
     @Override
@@ -316,6 +477,56 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Observable<Boolean> updateDatabaseSymptom(Long numOfData) {
+//        if (numOfData >= 10000) {
+//            numOfData /= 1000;
+//        }
+//        if (numOfData >= 100) {
+//            numOfData = (long) 100;
+//        } else {
+//            numOfData = (long) 10;
+//        }
+        List<Symptom> symptomList = dbHelper.getAllSymptom().blockingSingle();
+        if (numOfData > symptomList.size())
+            numOfData = (long) symptomList.size();
+        Log.d(TAG, "updateDatabaseSymptom: " + numOfData);
+        for (int i = 0; i < numOfData; i++) {
+            Symptom symptom = symptomList.get(i);
+            symptom.setName(symptom.getName() + " NEW");
+//            if (saveSymptom(symptom).equals(Observable.just(true)))
+                saveSymptom(symptom);
+//            else
+//                return Observable.just(false);
+//            symptomList.set(i, disease);
+        }
+//        return saveSymptomList(symptomList);
+        return Observable.just(true);
+    }
+
+    @Override
+    public Observable<Boolean> deleteDatabaseSymptom(Long numOfData) {
+//        if (numOfData >= 10000) {
+//            numOfData /= 1000;
+//        }
+//        if (numOfData >= 100) {
+//            numOfData = (long) 100;
+//        } else {
+//            numOfData = (long) 10;
+//        }
+        List<Symptom> symptomList = dbHelper.getAllSymptom().blockingSingle();
+        if (numOfData > symptomList.size())
+            numOfData = (long) symptomList.size();
+        Log.d(TAG, "deleteDatabaseSymptom: " + numOfData);
+        for (int i = 0; i < numOfData; i++) {
+//            if (deleteSymptom(symptomList.get(i)).equals(Observable.just(true)))
+                deleteSymptom(symptomList.get(i));
+//            else
+//                return Observable.just(false);
+        }
+        return Observable.just(true);
+    }
+
+    @Override
     public Observable<Long> insertHospital(Hospital hospital) {
         return dbHelper.insertHospital(hospital);
     }
@@ -333,6 +544,26 @@ public class AppDataManager implements DataManager {
     @Override
     public Observable<Long> insertSymptom(Symptom symptom) {
         return dbHelper.insertSymptom(symptom);
+    }
+
+    @Override
+    public Observable<Boolean> deleteHospital(Hospital hospital) {
+        return dbHelper.deleteHospital(hospital);
+    }
+
+    @Override
+    public Observable<Boolean> deleteMedicine(Medicine medicine) {
+        return dbHelper.deleteMedicine(medicine);
+    }
+
+    @Override
+    public Observable<Boolean> deleteDisease(Disease disease) {
+        return dbHelper.deleteDisease(disease);
+    }
+
+    @Override
+    public Observable<Boolean> deleteSymptom(Symptom symptom) {
+        return dbHelper.deleteSymptom(symptom);
     }
 
     @Override

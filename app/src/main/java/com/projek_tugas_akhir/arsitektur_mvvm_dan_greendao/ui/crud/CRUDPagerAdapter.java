@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.delete.DeleteFragment;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.insert.InsertFragment;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.select.SelectFragment;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.update.UpdateFragment;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
@@ -35,9 +36,9 @@ public class CRUDPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return SelectFragment.newInstance();
             case 2:
-                return DeleteFragment.newInstance();
+                return UpdateFragment.newInstance();
             case 3:
-                return InsertFragment.newInstance();
+                return DeleteFragment.newInstance();
             default:
                 return null;
         }

@@ -45,6 +45,38 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
+    public Observable<Boolean> deleteHospital(Hospital hospital) {
+        return Observable.fromCallable(() -> {
+            daoSession.getHospitalDao().delete(hospital);
+            return true;
+        });
+    }
+
+    @Override
+    public Observable<Boolean> deleteMedicine(Medicine medicine) {
+        return Observable.fromCallable(() -> {
+            daoSession.getMedicineDao().delete(medicine);
+            return true;
+        });
+    }
+
+    @Override
+    public Observable<Boolean> deleteDisease(Disease disease) {
+        return Observable.fromCallable(() -> {
+            daoSession.getDiseaseDao().delete(disease);
+            return true;
+        });
+    }
+
+    @Override
+    public Observable<Boolean> deleteSymptom(Symptom symptom) {
+        return Observable.fromCallable(() -> {
+            daoSession.getSymptomDao().delete(symptom);
+            return true;
+        });
+    }
+
+    @Override
     public Observable<List<Hospital>> getAllHospital() {
         return Observable.fromCallable(() -> daoSession.getHospitalDao().loadAll());
     }

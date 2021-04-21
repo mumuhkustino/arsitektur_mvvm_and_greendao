@@ -99,6 +99,7 @@ public class SelectFragment extends BaseFragment<FragmentSelectBinding, CRUDView
     }
 
     private void setUp() {
+        viewModel.fetchMedicals();
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         selectFragmentBinding.selectRecyclerView.setLayoutManager(linearLayoutManager);
         selectFragmentBinding.selectRecyclerView.setItemAnimator(new DefaultItemAnimator());

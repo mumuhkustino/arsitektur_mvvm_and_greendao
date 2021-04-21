@@ -57,6 +57,7 @@ public class InsertFragment extends BaseFragment<FragmentInsertBinding, CRUDView
         viewModel.setNavigator(this);
 //        viewModel.setListener(this);
         insertAdapter.setListener(this);
+        viewModel.fetchExecutionNumOfRecord(System.nanoTime());
     }
 
     @Override
