@@ -57,7 +57,6 @@ public class UpdateFragment extends BaseFragment<FragmentUpdateBinding, CRUDView
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
         updateAdapter.setListener(this);
-//        viewModel.fetchMedicals();
     }
 
     @Override
@@ -77,8 +76,6 @@ public class UpdateFragment extends BaseFragment<FragmentUpdateBinding, CRUDView
         if (fragmentUpdateBinding.editTextNumData.getText() != null) {
             try {
                 Long numOfData = Long.valueOf(fragmentUpdateBinding.editTextNumData.getText().toString());
-//                viewModel.fetchMedicals(numOfData);
-//                viewModel.fetchMedicals();
             } catch (Exception e) {
                 Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
             }
@@ -97,7 +94,6 @@ public class UpdateFragment extends BaseFragment<FragmentUpdateBinding, CRUDView
         if (fragmentUpdateBinding.editTextNumData.getText() != null) {
             try {
                 Long numOfData = Long.valueOf(fragmentUpdateBinding.editTextNumData.getText().toString());
-//                viewModel.selectDatabase(numOfData);
                 viewModel.updateDatabase(numOfData);
             } catch (Exception e) {
                 Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
@@ -113,7 +109,6 @@ public class UpdateFragment extends BaseFragment<FragmentUpdateBinding, CRUDView
     }
 
     private void setUp() {
-//        viewModel.fetchMedicals();
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         fragmentUpdateBinding.updateRecyclerView.setLayoutManager(linearLayoutManager);
         fragmentUpdateBinding.updateRecyclerView.setItemAnimator(new DefaultItemAnimator());

@@ -56,9 +56,7 @@ public class SelectFragment extends BaseFragment<FragmentSelectBinding, CRUDView
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
-//        viewModel.setListener(this);
         selectAdapter.setListener(this);
-//        viewModel.selectDatabase((long) 1000000);
     }
 
 
@@ -70,17 +68,7 @@ public class SelectFragment extends BaseFragment<FragmentSelectBinding, CRUDView
 
     @Override
     public void onRetryClick() {
-//        if (selectFragmentBinding.editTextNumData.getText() != null) {
-//            try {
-//                Long numOfData = Long.valueOf(selectFragmentBinding.editTextNumData.getText().toString());
-//                viewModel.fetchMedicals(numOfData);
-//                viewModel.fetchMedicals();
-//            } catch (Exception e) {
-//                Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
-//            }
-//        } else {
-//            Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
-//        }
+
     }
 
 
@@ -103,19 +91,6 @@ public class SelectFragment extends BaseFragment<FragmentSelectBinding, CRUDView
     }
 
     private void setUp() {
-//        if (selectFragmentBinding.editTextNumData.getText() != null) {
-//            try {
-//                Long numOfData = Long.valueOf(selectFragmentBinding.editTextNumData.getText().toString());
-//                viewModel.fetchMedicals(numOfData);
-//                viewModel.setIsLoading(false);
-//                viewModel.fetchMedicals();
-//            } catch (Exception e) {
-//                Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
-//            }
-//        } else {
-//            Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
-//        }
-//        viewModel.fetchMedicals();
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         selectFragmentBinding.selectRecyclerView.setLayoutManager(linearLayoutManager);
         selectFragmentBinding.selectRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -129,14 +104,10 @@ public class SelectFragment extends BaseFragment<FragmentSelectBinding, CRUDView
                 Long numOfData = Long.valueOf(selectFragmentBinding.editTextNumData.getText().toString());
 
                 viewModel.selectDatabase(numOfData);
-//                viewModel.setIsLoading(false);
-//                viewModel.fetchMedicals();
             } catch (Exception e) {
                 Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
-//                viewModel.fetchMedicals();
             }
         } else {
-//            viewModel.fetchMedicals();
             Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
         }
     }
