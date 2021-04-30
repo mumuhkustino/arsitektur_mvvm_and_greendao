@@ -12,9 +12,9 @@ public class CRUDItemViewModel {
 
     public final ObservableField<String> medicineName;
 
-    public final ObservableField<String> diseaseName;
+//    public final ObservableField<String> diseaseName;
 
-    public final ObservableField<String> symptomName;
+//    public final ObservableField<String> symptomName;
 
     public final Medical medical;
 
@@ -23,8 +23,8 @@ public class CRUDItemViewModel {
         this.id = new ObservableField<>(id);
         this.hospitalName = new ObservableField<>(medical.getHospitalName());
         this.medicineName = new ObservableField<>(medical.getMedicineName());
-        this.diseaseName = new ObservableField<>(medical.getDiseaseName());
-        this.symptomName = new ObservableField<>(medical.getSymptomName());
+//        this.diseaseName = new ObservableField<>(medical.getDiseaseName());
+//        this.symptomName = new ObservableField<>(medical.getSymptomName());
     }
 
 }

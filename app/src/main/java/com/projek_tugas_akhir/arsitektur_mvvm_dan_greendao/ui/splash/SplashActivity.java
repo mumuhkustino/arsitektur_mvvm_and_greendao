@@ -39,7 +39,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
-        viewModel.startSeeding();
+//        viewModel.startSeeding();
     }
 
 }

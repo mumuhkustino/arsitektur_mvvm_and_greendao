@@ -57,7 +57,6 @@ public class DeleteFragment extends BaseFragment<FragmentDeleteBinding, CRUDView
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
         deleteAdapter.setListener(this);
-        viewModel.fetchMedicals();
     }
 
     @Override
@@ -82,9 +81,9 @@ public class DeleteFragment extends BaseFragment<FragmentDeleteBinding, CRUDView
         if (fragmentDeleteBinding.editTextNumData.getText() != null) {
             try {
                 Long numOfData = Long.valueOf(fragmentDeleteBinding.editTextNumData.getText().toString());
-//                viewModel.fetchMedicals(numOfData);
+//                viewModel.selectDatabase(numOfData);
                 viewModel.deleteDatabase(numOfData);
-                viewModel.fetchMedicals();
+//                viewModel.fetchMedicals();
             } catch (Exception e) {
                 Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
             }
@@ -110,7 +109,7 @@ public class DeleteFragment extends BaseFragment<FragmentDeleteBinding, CRUDView
         if (fragmentDeleteBinding.editTextNumData.getText() != null) {
             try {
                 Long numOfData = Long.valueOf(fragmentDeleteBinding.editTextNumData.getText().toString());
-//                viewModel.fetchMedicals(numOfData);
+                viewModel.selectDatabase(numOfData);
                 viewModel.deleteDatabase(numOfData);
 //                viewModel.fetchMedicals();
             } catch (Exception e) {

@@ -13,25 +13,25 @@ public class SplashViewModel extends BaseViewModel<SplashNavigator> {
         super(dataManager, schedulerProvider);
     }
 
-    public void startSeeding() {
-        Log.d("SVM", "startSeeding: Mulai");
-        getCompositeDisposable().add(getDataManager()
-                .seedDatabaseHospital()
-                .flatMap(aBoolean -> getDataManager().seedDatabaseMedicine()
-                .flatMap(aBoolean1 -> getDataManager().seedDatabaseDisease()
-                .flatMap(aBoolean2 -> getDataManager().seedDatabaseSymptom())
-                .subscribeOn(getSchedulerProvider().io())
-                .observeOn(getSchedulerProvider().ui())))
-                .subscribeOn(getSchedulerProvider().io())
-                .observeOn(getSchedulerProvider().ui())
-                .subscribe(aBoolean -> {
-                    Log.d("SVM", "startSeeding: Selesai");
-                    decideNextActivity();
-                }, throwable -> {
-                    Log.d("SVM", "startSeeding: Error");
-                    decideNextActivity();
-                }));
-    }
+//    public void startSeeding() {
+//        Log.d("SVM", "startSeeding: Mulai");
+//        getCompositeDisposable().add(getDataManager()
+//                .seedDatabaseHospital()
+//                .flatMap(aBoolean -> getDataManager().seedDatabaseMedicine()
+//                .flatMap(aBoolean1 -> getDataManager().seedDatabaseDisease()
+//                .flatMap(aBoolean2 -> getDataManager().seedDatabaseSymptom())
+//                .subscribeOn(getSchedulerProvider().io())
+//                .observeOn(getSchedulerProvider().ui())))
+//                .subscribeOn(getSchedulerProvider().io())
+//                .observeOn(getSchedulerProvider().ui())
+//                .subscribe(aBoolean -> {
+//                    Log.d("SVM", "startSeeding: Selesai");
+//                    decideNextActivity();
+//                }, throwable -> {
+//                    Log.d("SVM", "startSeeding: Error");
+//                    decideNextActivity();
+//                }));
+//    }
 
     private void decideNextActivity() {
         getNavigator().openCRUDActivity();

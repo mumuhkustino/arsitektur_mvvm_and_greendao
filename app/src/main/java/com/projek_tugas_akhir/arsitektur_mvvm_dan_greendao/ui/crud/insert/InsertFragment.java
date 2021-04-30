@@ -5,6 +5,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -35,6 +37,7 @@ public class InsertFragment extends BaseFragment<FragmentInsertBinding, CRUDView
     LinearLayoutManager linearLayoutManager;
 
     public static InsertFragment newInstance() {
+        Log.d("IF", "setUp: Open Fragment");
         Bundle args = new Bundle();
         InsertFragment fragment = new InsertFragment();
         fragment.setArguments(args);
@@ -55,9 +58,7 @@ public class InsertFragment extends BaseFragment<FragmentInsertBinding, CRUDView
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
-//        viewModel.setListener(this);
         insertAdapter.setListener(this);
-        viewModel.fetchExecutionNumOfRecord(System.nanoTime());
     }
 
     @Override
@@ -67,17 +68,7 @@ public class InsertFragment extends BaseFragment<FragmentInsertBinding, CRUDView
 
     @Override
     public void onRetryClick() {
-//        if (insertFragmentBinding.editTextNumData.getText() != null) {
-            try {
-//                Long numOfData = Long.valueOf(insertFragmentBinding.editTextNumData.getText().toString());
-//                viewModel.startSeeding(numOfData);
-//                viewModel.fetchExecutionNumOfRecord();
-            } catch (Exception e) {
-                Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
-            }
-//        } else {
-//            Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
-//        }
+
     }
 
     @Override
@@ -109,8 +100,7 @@ public class InsertFragment extends BaseFragment<FragmentInsertBinding, CRUDView
         if (insertFragmentBinding.editTextNumData.getText() != null) {
             try {
                 Long numOfData = Long.valueOf(insertFragmentBinding.editTextNumData.getText().toString());
-                viewModel.startSeeding(numOfData);
-//                viewModel.fetchExecutionNumOfRecord();
+                viewModel.insertDatabase(numOfData);
             } catch (Exception e) {
                 Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
             }

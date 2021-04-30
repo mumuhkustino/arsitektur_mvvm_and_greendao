@@ -1,5 +1,8 @@
 package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
@@ -12,17 +15,18 @@ import org.greenrobot.greendao.DaoException;
 @Entity(nameInDb = "hospitals")
 public class Hospital {
 
-    @Id(autoincrement = true)
+    @Expose
+    @SerializedName("id")
+    @Id
     private Long id;
 
+    @Expose
+    @SerializedName("hospitalName")
     @Property(nameInDb = "name")
     private String name;
 
     @ToMany(referencedJoinProperty = "hospitalId")
     private List<Medicine> medicineList;
-
-    @ToMany(referencedJoinProperty = "hospitalId")
-    private List<Disease> diseaseList;
 
     /** Used to resolve relations */
     @Generated(hash = 2040040024)
@@ -85,34 +89,6 @@ public class Hospital {
     @Generated(hash = 1205167936)
     public synchronized void resetMedicineList() {
         medicineList = null;
-    }
-
-    /**
-     * To-many relationship, resolved on first access (and after reset).
-     * Changes to to-many relations are not persisted, make changes to the target entity.
-     */
-    @Generated(hash = 2042284744)
-    public List<Disease> getDiseaseList() {
-        if (diseaseList == null) {
-            final DaoSession daoSession = this.daoSession;
-            if (daoSession == null) {
-                throw new DaoException("Entity is detached from DAO context");
-            }
-            DiseaseDao targetDao = daoSession.getDiseaseDao();
-            List<Disease> diseaseListNew = targetDao._queryHospital_DiseaseList(id);
-            synchronized (this) {
-                if (diseaseList == null) {
-                    diseaseList = diseaseListNew;
-                }
-            }
-        }
-        return diseaseList;
-    }
-
-    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
-    @Generated(hash = 874122042)
-    public synchronized void resetDiseaseList() {
-        diseaseList = null;
     }
 
     /**

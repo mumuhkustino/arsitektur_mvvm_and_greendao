@@ -58,8 +58,10 @@ public class SelectFragment extends BaseFragment<FragmentSelectBinding, CRUDView
         viewModel.setNavigator(this);
 //        viewModel.setListener(this);
         selectAdapter.setListener(this);
-        viewModel.fetchMedicals();
+//        viewModel.selectDatabase((long) 1000000);
     }
+
+
 
     @Override
     public void performDependencyInjection(FragmentComponent buildComponent) {
@@ -68,18 +70,20 @@ public class SelectFragment extends BaseFragment<FragmentSelectBinding, CRUDView
 
     @Override
     public void onRetryClick() {
-        if (selectFragmentBinding.editTextNumData.getText() != null) {
-            try {
-                Long numOfData = Long.valueOf(selectFragmentBinding.editTextNumData.getText().toString());
-                viewModel.fetchMedicals(numOfData);
+//        if (selectFragmentBinding.editTextNumData.getText() != null) {
+//            try {
+//                Long numOfData = Long.valueOf(selectFragmentBinding.editTextNumData.getText().toString());
+//                viewModel.fetchMedicals(numOfData);
 //                viewModel.fetchMedicals();
-            } catch (Exception e) {
-                Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
-        }
+//            } catch (Exception e) {
+//                Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
+//            }
+//        } else {
+//            Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
+//        }
     }
+
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -99,7 +103,19 @@ public class SelectFragment extends BaseFragment<FragmentSelectBinding, CRUDView
     }
 
     private void setUp() {
-        viewModel.fetchMedicals();
+//        if (selectFragmentBinding.editTextNumData.getText() != null) {
+//            try {
+//                Long numOfData = Long.valueOf(selectFragmentBinding.editTextNumData.getText().toString());
+//                viewModel.fetchMedicals(numOfData);
+//                viewModel.setIsLoading(false);
+//                viewModel.fetchMedicals();
+//            } catch (Exception e) {
+//                Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
+//            }
+//        } else {
+//            Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
+//        }
+//        viewModel.fetchMedicals();
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         selectFragmentBinding.selectRecyclerView.setLayoutManager(linearLayoutManager);
         selectFragmentBinding.selectRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -111,15 +127,16 @@ public class SelectFragment extends BaseFragment<FragmentSelectBinding, CRUDView
         if (selectFragmentBinding.editTextNumData.getText() != null) {
             try {
                 Long numOfData = Long.valueOf(selectFragmentBinding.editTextNumData.getText().toString());
-                viewModel.fetchMedicals(numOfData);
-                viewModel.setIsLoading(false);
+
+                viewModel.selectDatabase(numOfData);
+//                viewModel.setIsLoading(false);
 //                viewModel.fetchMedicals();
             } catch (Exception e) {
                 Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
-                viewModel.fetchMedicals();
+//                viewModel.fetchMedicals();
             }
         } else {
-            viewModel.fetchMedicals();
+//            viewModel.fetchMedicals();
             Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
         }
     }

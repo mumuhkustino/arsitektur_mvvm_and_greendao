@@ -1,11 +1,13 @@
 package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.DaoMaster;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.DaoSession;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Disease;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Hospital;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.HospitalDao;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Medicine;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Symptom;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.MedicineDao;
 
 import java.util.List;
 
@@ -23,92 +25,101 @@ public class AppDbHelper implements DbHelper {
         daoSession = new DaoMaster(dbOpenHelper.getWritableDb()).newSession();
     }
 
-
     @Override
     public Observable<Long> insertHospital(Hospital hospital) {
-        return Observable.fromCallable(() -> daoSession.getHospitalDao().insert(hospital));
+        return Observable.fromCallable(() -> {
+            try {
+                return daoSession.getHospitalDao().insertOrReplace(hospital);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        });
     }
 
     @Override
     public Observable<Long> insertMedicine(Medicine medicine) {
-        return Observable.fromCallable(() -> daoSession.getMedicineDao().insert(medicine));
-    }
-
-    @Override
-    public Observable<Long> insertDisease(Disease disease) {
-        return Observable.fromCallable(() -> daoSession.getDiseaseDao().insert(disease));
-    }
-
-    @Override
-    public Observable<Long> insertSymptom(Symptom symptom) {
-        return Observable.fromCallable(() -> daoSession.getSymptomDao().insert(symptom));
+        return Observable.fromCallable(() -> {
+            try {
+                return daoSession.getMedicineDao().insertOrReplace(medicine);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        });
     }
 
     @Override
     public Observable<Boolean> deleteHospital(Hospital hospital) {
         return Observable.fromCallable(() -> {
-            daoSession.getHospitalDao().delete(hospital);
-            return true;
+            try {
+                final Hospital unique = daoSession.getHospitalDao().queryBuilder()
+                        .where(HospitalDao.Properties.Id.eq(hospital.getId())).unique();
+                daoSession.getHospitalDao().deleteInTx(unique);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
         });
     }
 
     @Override
     public Observable<Boolean> deleteMedicine(Medicine medicine) {
         return Observable.fromCallable(() -> {
-            daoSession.getMedicineDao().delete(medicine);
-            return true;
+            try {
+                final Medicine unique = daoSession.getMedicineDao().queryBuilder()
+                        .where(MedicineDao.Properties.Id.eq(medicine.getId())).unique();
+                daoSession.getMedicineDao().deleteInTx(unique);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
         });
     }
 
     @Override
-    public Observable<Boolean> deleteDisease(Disease disease) {
+    public Observable<Hospital> loadHospital(Hospital hospital) {
         return Observable.fromCallable(() -> {
-            daoSession.getDiseaseDao().delete(disease);
-            return true;
+            try {
+                final Hospital unique = daoSession.getHospitalDao().queryBuilder()
+                        .where(HospitalDao.Properties.Id.eq(hospital.getId())).unique();
+                return unique;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         });
     }
 
     @Override
-    public Observable<Boolean> deleteSymptom(Symptom symptom) {
+    public Observable<Medicine> loadMedicine(Medicine medicine) {
         return Observable.fromCallable(() -> {
-            daoSession.getSymptomDao().delete(symptom);
-            return true;
+            try {
+                final Medicine unique = daoSession.getMedicineDao().queryBuilder()
+                        .where(MedicineDao.Properties.Id.eq(medicine.getId())).unique();
+                return unique;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         });
     }
 
     @Override
     public Observable<List<Hospital>> getAllHospital() {
-        return Observable.fromCallable(() -> daoSession.getHospitalDao().loadAll());
+        return Observable.fromCallable(() -> daoSession.getHospitalDao().queryBuilder().list());
     }
 
     @Override
     public Observable<List<Medicine>> getAllMedicine() {
-        return Observable.fromCallable(() -> daoSession.getMedicineDao().loadAll());
-    }
-
-    @Override
-    public Observable<List<Disease>> getAllDisease() {
-        return Observable.fromCallable(() -> daoSession.getDiseaseDao().loadAll());
-    }
-
-    @Override
-    public Observable<List<Symptom>> getAllSymptom() {
-        return Observable.fromCallable(() -> daoSession.getSymptomDao().loadAll());
+        return Observable.fromCallable(() -> daoSession.getMedicineDao().queryBuilder().list());
     }
 
     @Override
     public Observable<List<Medicine>> getMedicineForHospitalId(Long hospitalId) {
         return Observable.fromCallable(() -> daoSession.getMedicineDao()._queryHospital_MedicineList(hospitalId));
-    }
-
-    @Override
-    public Observable<List<Disease>> getDiseaseForHospitalId(Long hospitalId) {
-        return Observable.fromCallable(() -> daoSession.getDiseaseDao()._queryHospital_DiseaseList(hospitalId));
-    }
-
-    @Override
-    public Observable<List<Symptom>> getSymptomForDiseaseId(Long diseaseId) {
-        return Observable.fromCallable(() -> daoSession.getSymptomDao()._queryDisease_SymptomList(diseaseId));
     }
 
     @Override
@@ -122,44 +133,28 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Boolean> isDiseaseEmpty() {
-        return Observable.fromCallable(() -> daoSession.getDiseaseDao().loadAll().isEmpty());
-    }
-
-    @Override
-    public Observable<Boolean> isSymptomEmpty() {
-        return Observable.fromCallable(() -> daoSession.getSymptomDao().loadAll().isEmpty());
-    }
-
-    @Override
     public Observable<Boolean> saveHospital(Hospital hospital) {
         return Observable.fromCallable(() -> {
-            daoSession.getHospitalDao().insertInTx(hospital);
-            return true;
+            try {
+                daoSession.getHospitalDao().insertOrReplaceInTx(hospital);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
         });
     }
 
     @Override
     public Observable<Boolean> saveMedicine(Medicine medicine) {
         return Observable.fromCallable(() -> {
-            daoSession.getMedicineDao().insertInTx(medicine);
-            return true;
-        });
-    }
-
-    @Override
-    public Observable<Boolean> saveDisease(Disease disease) {
-        return Observable.fromCallable(() -> {
-            daoSession.getDiseaseDao().insertInTx(disease);
-            return true;
-        });
-    }
-
-    @Override
-    public Observable<Boolean> saveSymptom(Symptom symptom) {
-        return Observable.fromCallable(() -> {
-            daoSession.getSymptomDao().insertInTx(symptom);
-            return true;
+            try {
+                daoSession.getMedicineDao().insertOrReplaceInTx(medicine);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
         });
     }
 
@@ -175,22 +170,6 @@ public class AppDbHelper implements DbHelper {
     public Observable<Boolean> saveMedicineList(List<Medicine> medicineList) {
         return Observable.fromCallable(() -> {
             daoSession.getMedicineDao().insertOrReplaceInTx(medicineList);
-            return true;
-        });
-    }
-
-    @Override
-    public Observable<Boolean> saveDiseaseList(List<Disease> diseaseList) {
-        return Observable.fromCallable(() -> {
-            daoSession.getDiseaseDao().insertOrReplaceInTx(diseaseList);
-            return true;
-        });
-    }
-
-    @Override
-    public Observable<Boolean> saveSymptomList(List<Symptom> symptomList) {
-        return Observable.fromCallable(() -> {
-            daoSession.getSymptomDao().insertOrReplaceInTx(symptomList);
             return true;
         });
     }
