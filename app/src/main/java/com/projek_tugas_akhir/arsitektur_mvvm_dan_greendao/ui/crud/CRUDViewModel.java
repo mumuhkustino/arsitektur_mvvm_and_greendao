@@ -33,8 +33,48 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
         this.medicalListLiveData = new MutableLiveData<>();
     }
 
+    public void insertDatabase(Long numOfData) {
+//        Long numHospital, numMedicine;
+//        if (numOfData < 100000) {
+//            numHospital = (long) 10;
+//            numMedicine = (long) 1000;
+//        } else if (numOfData < 500000) {
+//            numHospital = (long) 100;
+//            numMedicine = (long) 1000;
+//        } else if (numOfData < 1000000) {
+//            numHospital = (long) 500;
+//            numMedicine = (long) 1000;
+//        } else {
+//            numHospital = (long) 1000;
+//            numMedicine = (long) 1000;
+//        }
+        setIsLoading(true);
+        long startTime = System.currentTimeMillis();
+        getCompositeDisposable().add(getDataManager()
+                .seedDatabaseHospital(numOfData)
+                .subscribeOn(getSchedulerProvider().computation())
+                .observeOn(getSchedulerProvider().single())
+                .concatMap(aBoolean -> getDataManager().seedDatabaseMedicine(numOfData))
+                .toFlowable(BackpressureStrategy.DROP)
+                .subscribe(aBoolean -> {
+                            if (aBoolean) {
+                                this.numOfRecord.postValue((numOfData));
+                                long endTime = System.currentTimeMillis();
+                                long timeElapsed = endTime - startTime; //In MilliSeconds
+                                this.executionTime.postValue(timeElapsed); //To MilliSeconds
+                                Log.d("CVM", "insertDatabase: " + numOfData);
+                            }
+                            setIsLoading(false);
+                        }
+//                , throwable -> {
+//                    setIsLoading(false);
+//                    getNavigator().handleError(throwable);
+//                }
+                ));
+    }
+
     public void refreshMedical(Long numOfData, List<Hospital> hospitalList) {
-        this.medicalListLiveData.setValue(new ArrayList<>());
+        this.medicalListLiveData.postValue(new ArrayList<>());
         Long index = (long) 0;
         int size = 0;
         List<Medical> medicals = new ArrayList<>();
@@ -53,7 +93,7 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
 //            if (index >= numOfData) break;
         }
         Log.d("CVM", "refreshMedical = " + size);
-        this.medicalListLiveData.setValue(medicals);
+        this.medicalListLiveData.postValue(medicals);
     }
 
     public void selectDatabase(Long numOfData) {
@@ -61,16 +101,16 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
         long startTime = System.currentTimeMillis();
         getCompositeDisposable().add(getDataManager()
             .getAllHospital()
-            .subscribeOn(getSchedulerProvider().io())
-            .observeOn(getSchedulerProvider().ui())
+            .subscribeOn(getSchedulerProvider().computation())
+            .observeOn(getSchedulerProvider().single())
             .toFlowable(BackpressureStrategy.DROP)
             .subscribe(hospitalList -> {
                 if (hospitalList != null) {
                     refreshMedical(numOfData, hospitalList);
-                    this.numOfRecord.setValue(numOfData);
+                    this.numOfRecord.postValue(numOfData);
                     long endTime = System.currentTimeMillis();
                     long timeElapsed = endTime - startTime; //In MilliSeconds
-                    this.executionTime.setValue(timeElapsed); //To MilliSeconds
+                    this.executionTime.postValue(timeElapsed); //To MilliSeconds
                 }
                 setIsLoading(false);
             }, throwable -> {
@@ -80,7 +120,7 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
     }
 
     public void updateMedical(Long numOfData, List<Hospital> hospitalList) {
-        this.medicalListLiveData.setValue(new ArrayList<>());
+        this.medicalListLiveData.postValue(new ArrayList<>());
         Long index = (long) 0;
         int size = 0;
         List<Medical> medicals = new ArrayList<>();
@@ -97,7 +137,7 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
                                 .updateDatabaseMedicine(hospitalList.get(i)
                                         .getMedicineList()
                                         .get(j))
-                                .subscribeOn(getSchedulerProvider().io())
+                                .subscribeOn(getSchedulerProvider().computation())
                                 .observeOn(getSchedulerProvider().ui())
                                 .toFlowable(BackpressureStrategy.DROP)
                                 .subscribe(aBoolean -> {
@@ -117,7 +157,7 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
 //            if (index >= numOfData) break;
         }
         Log.d("CVM", "updateMedical = " + size);
-        this.medicalListLiveData.setValue(medicals);
+        this.medicalListLiveData.postValue(medicals);
     }
 
     public void updateDatabase(Long numOfData) {
@@ -125,16 +165,16 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
         long startTime = System.currentTimeMillis();
         getCompositeDisposable().add(getDataManager()
                 .getAllHospital()
-                .subscribeOn(getSchedulerProvider().io())
-                .observeOn(getSchedulerProvider().ui())
+                .subscribeOn(getSchedulerProvider().computation())
+                .observeOn(getSchedulerProvider().single())
                 .toFlowable(BackpressureStrategy.DROP)
                 .subscribe(hospitalList -> {
                     if (hospitalList != null) {
                         updateMedical(numOfData, hospitalList);
-                        this.numOfRecord.setValue(numOfData);
+                        this.numOfRecord.postValue(numOfData);
                         long endTime = System.currentTimeMillis();
                         long timeElapsed = endTime - startTime; //In MilliSeconds
-                        this.executionTime.setValue(timeElapsed); //To MilliSeconds
+                        this.executionTime.postValue(timeElapsed); //To MilliSeconds
                     }
                     setIsLoading(false);
                 }, throwable -> {
@@ -144,7 +184,7 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
     }
 
     public void deleteMedical(Long numOfData, List<Hospital> hospitalList) {
-        this.medicalListLiveData.setValue(new ArrayList<>());
+        this.medicalListLiveData.postValue(new ArrayList<>());
         Long index = (long) 0;
         int size = 0;
         List<Medical> medicals = new ArrayList<>();
@@ -160,7 +200,7 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
                         getCompositeDisposable().add(getDataManager()
 //                                .loadMedicine(med)
                                 .deleteDatabaseMedicine(med)
-                                .subscribeOn(getSchedulerProvider().io())
+                                .subscribeOn(getSchedulerProvider().computation())
                                 .observeOn(getSchedulerProvider().ui())
 //                                .concatMap(medicine -> {
 //                                    if (medicine != null)
@@ -185,7 +225,7 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
             }
         }
         Log.d("CVM", "deleteMedical = " + size);
-        this.medicalListLiveData.setValue(medicals);
+        this.medicalListLiveData.postValue(medicals);
     }
 
 
@@ -194,62 +234,22 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
         long startTime = System.currentTimeMillis();
         getCompositeDisposable().add(getDataManager()
                 .getAllHospital()
-                .subscribeOn(getSchedulerProvider().io())
-                .observeOn(getSchedulerProvider().ui())
+                .subscribeOn(getSchedulerProvider().computation())
+                .observeOn(getSchedulerProvider().single())
                 .toFlowable(BackpressureStrategy.DROP)
                 .subscribe(hospitalList -> {
                     if (hospitalList != null) {
                         deleteMedical(numOfData, hospitalList);
-                        this.numOfRecord.setValue(numOfData);
+                        this.numOfRecord.postValue(numOfData);
                         long endTime = System.currentTimeMillis();
                         long timeElapsed = endTime - startTime; //In MilliSeconds
-                        this.executionTime.setValue(timeElapsed); //To MilliSeconds
+                        this.executionTime.postValue(timeElapsed); //To MilliSeconds
                     }
                     setIsLoading(false);
                 }, throwable -> {
                     Log.d("CVM", "deleteDatabase: " + throwable.getMessage());
                     setIsLoading(false);
                 }));
-    }
-
-    public void insertDatabase(Long numOfData) {
-//        Long numHospital, numMedicine;
-//        if (numOfData < 100000) {
-//            numHospital = (long) 10;
-//            numMedicine = (long) 1000;
-//        } else if (numOfData < 500000) {
-//            numHospital = (long) 100;
-//            numMedicine = (long) 1000;
-//        } else if (numOfData < 1000000) {
-//            numHospital = (long) 500;
-//            numMedicine = (long) 1000;
-//        } else {
-//            numHospital = (long) 1000;
-//            numMedicine = (long) 1000;
-//        }
-        setIsLoading(true);
-        long startTime = System.currentTimeMillis();
-        getCompositeDisposable().add(getDataManager()
-                .seedDatabaseHospital(numOfData)
-                .subscribeOn(getSchedulerProvider().io())
-                .observeOn(getSchedulerProvider().ui())
-                .concatMap(aBoolean -> getDataManager().seedDatabaseMedicine(numOfData))
-                .toFlowable(BackpressureStrategy.DROP)
-                .subscribe(aBoolean -> {
-                    if (aBoolean) {
-                        this.numOfRecord.setValue((numOfData));
-                        long endTime = System.currentTimeMillis();
-                        long timeElapsed = endTime - startTime; //In MilliSeconds
-                        this.executionTime.setValue(timeElapsed); //To MilliSeconds
-                        Log.d("CVM", "insertDatabase: " + numOfData);
-                    }
-                    setIsLoading(false);
-                }
-//                , throwable -> {
-//                    setIsLoading(false);
-//                    getNavigator().handleError(throwable);
-//                }
-                ));
     }
 
     public void setMedicalListLiveData(MutableLiveData<List<Medical>> medicalListLiveData) {

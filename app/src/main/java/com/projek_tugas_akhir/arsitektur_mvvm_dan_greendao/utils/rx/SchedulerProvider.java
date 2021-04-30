@@ -10,4 +10,16 @@ public interface SchedulerProvider {
 
     Scheduler io();
 
+    Scheduler single();
+
+    Scheduler trampoline();
+
+    Scheduler fromA();
+
+    Scheduler fromB();
+
+    Scheduler fromC();
+
+    Scheduler immediate();
+
 }
