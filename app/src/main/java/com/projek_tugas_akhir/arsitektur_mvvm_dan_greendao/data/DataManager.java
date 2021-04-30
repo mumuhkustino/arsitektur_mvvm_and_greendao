@@ -15,7 +15,7 @@ public interface DataManager extends DbHelper {
 
 //    Single<List<Medical>> getMedical(Long numOfData);
 
-    Observable<Boolean> seedDatabaseHospital();
+//    Observable<Boolean> seedDatabaseHospital();
 
     Observable<Boolean> seedDatabaseHospital(Long numOfData);
 
@@ -23,12 +23,12 @@ public interface DataManager extends DbHelper {
 
     Observable<Boolean> deleteDatabaseHospital(Long numOfData);
 
-    Observable<Boolean> seedDatabaseMedicine();
+//    Observable<Boolean> seedDatabaseMedicine();
 
     Observable<Boolean> seedDatabaseMedicine(Long numOfData);
 
     Observable<Boolean> updateDatabaseMedicine(Medicine medicine);
 
-    Observable<Boolean> deleteDatabaseMedicine(Long numOfData);
+    Observable<Boolean> deleteDatabaseMedicine(Medicine medicine);
 
 }

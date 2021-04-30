@@ -158,14 +158,15 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
                         Medicine med = hospitalList.get(i).getMedicineList()
                             .remove(j);
                         getCompositeDisposable().add(getDataManager()
-                                .loadMedicine(med)
+//                                .loadMedicine(med)
+                                .deleteDatabaseMedicine(med)
                                 .subscribeOn(getSchedulerProvider().io())
                                 .observeOn(getSchedulerProvider().ui())
-                                .concatMap(medicine -> {
-                                    if (medicine != null)
-                                        return getDataManager().deleteMedicine(medicine);
-                                    return Observable.just(false);
-                                    })
+//                                .concatMap(medicine -> {
+//                                    if (medicine != null)
+//                                        return getDataManager().deleteMedicine(medicine);
+//                                    return Observable.just(false);
+//                                    })
                                 .toFlowable(BackpressureStrategy.DROP)
                                 .subscribe(aBoolean -> {
                                     if (aBoolean) {
