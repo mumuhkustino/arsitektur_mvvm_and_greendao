@@ -83,9 +83,8 @@ public class AppDbHelper implements DbHelper {
     public Observable<Hospital> loadHospital(Hospital hospital) {
         return Observable.fromCallable(() -> {
             try {
-                final Hospital unique = daoSession.getHospitalDao().queryBuilder()
+                return daoSession.getHospitalDao().queryBuilder()
                         .where(HospitalDao.Properties.Id.eq(hospital.getId())).unique();
-                return unique;
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
@@ -97,9 +96,8 @@ public class AppDbHelper implements DbHelper {
     public Observable<Medicine> loadMedicine(Medicine medicine) {
         return Observable.fromCallable(() -> {
             try {
-                final Medicine unique = daoSession.getMedicineDao().queryBuilder()
+                return daoSession.getMedicineDao().queryBuilder()
                         .where(MedicineDao.Properties.Id.eq(medicine.getId())).unique();
-                return unique;
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;

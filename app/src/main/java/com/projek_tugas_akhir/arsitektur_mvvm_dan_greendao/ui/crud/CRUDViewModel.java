@@ -34,20 +34,6 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
     }
 
     public void insertDatabase(Long numOfData) {
-//        Long numHospital, numMedicine;
-//        if (numOfData < 100000) {
-//            numHospital = (long) 10;
-//            numMedicine = (long) 1000;
-//        } else if (numOfData < 500000) {
-//            numHospital = (long) 100;
-//            numMedicine = (long) 1000;
-//        } else if (numOfData < 1000000) {
-//            numHospital = (long) 500;
-//            numMedicine = (long) 1000;
-//        } else {
-//            numHospital = (long) 1000;
-//            numMedicine = (long) 1000;
-//        }
         setIsLoading(true);
         long startTime = System.currentTimeMillis();
         getCompositeDisposable().add(getDataManager()
@@ -66,10 +52,10 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
                             }
                             setIsLoading(false);
                         }
-//                , throwable -> {
-//                    setIsLoading(false);
-//                    getNavigator().handleError(throwable);
-//                }
+                , throwable -> {
+                    setIsLoading(false);
+                    getNavigator().handleError(throwable);
+                }
                 ));
     }
 
@@ -90,7 +76,7 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
                     j++;
                 }
             }
-//            if (index >= numOfData) break;
+            if (index >= numOfData) break;
         }
         Log.d("CVM", "refreshMedical = " + size);
         this.medicalListLiveData.postValue(medicals);
@@ -138,7 +124,7 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
                                         .getMedicineList()
                                         .get(j))
                                 .subscribeOn(getSchedulerProvider().computation())
-                                .observeOn(getSchedulerProvider().ui())
+                                .observeOn(getSchedulerProvider().single())
                                 .toFlowable(BackpressureStrategy.DROP)
                                 .subscribe(aBoolean -> {
 //                                    if (aBoolean) {
@@ -154,7 +140,7 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
                     j++;
                 }
             }
-//            if (index >= numOfData) break;
+            if (index >= numOfData) break;
         }
         Log.d("CVM", "updateMedical = " + size);
         this.medicalListLiveData.postValue(medicals);
@@ -223,6 +209,7 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
                     }
                 }
             }
+            if (index >= numOfData) break;
         }
         Log.d("CVM", "deleteMedical = " + size);
         this.medicalListLiveData.postValue(medicals);

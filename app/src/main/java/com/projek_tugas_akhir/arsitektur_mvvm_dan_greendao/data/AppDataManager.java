@@ -15,17 +15,12 @@ import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils.AppConstants;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils.CommonUtils;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 @Singleton
 public class AppDataManager implements DataManager {
@@ -167,18 +162,31 @@ public class AppDataManager implements DataManager {
     public Observable<Boolean> seedDatabaseHospital(Long numOfData) {
         GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         final Gson gson = builder.create();
-//        if (numOfData < 100000) {
-//            numOfData = (long) 10000;
+        Long numHospital;
+        String pathJson;
+        if (numOfData < 100000) {
+            numHospital = (long) 10;
+            pathJson = AppConstants.SEED_DATABASE_HOSPITALS_10;
+        } else if (numOfData < 500000) {
+            numHospital = (long) 100;
+            pathJson = AppConstants.SEED_DATABASE_HOSPITALS_100;
+        } else if (numOfData < 1000000) {
+            numHospital = (long) 500;
+            pathJson = AppConstants.SEED_DATABASE_HOSPITALS_500;
+        } else {
+            numHospital = (long) 1000;
+            pathJson = AppConstants.SEED_DATABASE_HOSPITALS_1000;
+        }
         return dbHelper.getAllHospital().count()
                 .toObservable()
                 .concatMap(aLong -> {
-                    if (aLong < numOfData) {
+                    if (aLong < numHospital) {
                         Type type = $Gson$Types
                                 .newParameterizedTypeWithOwner(null, List.class,
                                         Hospital.class);
                         List<Hospital> hospitalList = gson.fromJson(
                                 CommonUtils.loadJSONFromAsset(context,
-                                        AppConstants.SEED_DATABASE_HOSPITALS),
+                                        pathJson),
                                 type);
                         return saveHospitalList(hospitalList);
                     }
@@ -187,7 +195,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Observable<Boolean> updateDatabaseHospital(Long numOfData) {
+    public Observable<Boolean> updateDatabaseHospital(Hospital hospital) {
 //        if (numOfData >= 10000) {
 //            numOfData /= 1000;
 //        }
@@ -210,32 +218,12 @@ public class AppDataManager implements DataManager {
 //            hospitalList.set(i, hospital);
 //        }
 //        return saveHospitalList(hospitalList);
-        return Observable.just(true);
+        return dbHelper.loadHospital(hospital).concatMap(hospital1 -> saveHospital(hospital));
     }
 
     @Override
-    public Observable<Boolean> deleteDatabaseHospital(Long numOfData) {
-//        if (numOfData >= 10000) {
-//            numOfData /= 1000;
-//        }
-//        if (numOfData >= 100) {
-//            numOfData = (long) 100;
-//        } else {
-            numOfData = (long) 10;
-//        }
-        numOfData -= 10;
-        List<Hospital> hospitalList = getAllHospital().blockingSingle();
-        if (numOfData >= hospitalList.size())
-            numOfData = (long) hospitalList.size();
-        Log.d(TAG, "deleteDatabaseHospital: " + numOfData);
-        for (int i = 0; i < numOfData; i++) {
-//            if (deleteHospital(hospitalList.get(i)).equals(Observable.just(true)))
-                deleteHospital(hospitalList.get(i));
-//            else
-//                return Observable.just(false);
-        }
-//        saveHospitalList(getAllHospital().blockingSingle());
-        return Observable.just(true);
+    public Observable<Boolean> deleteDatabaseHospital(Hospital hospital) {
+        return dbHelper.loadHospital(hospital).concatMap(hospital1 -> deleteHospital(hospital));
     }
 
 //    @Override
@@ -261,16 +249,29 @@ public class AppDataManager implements DataManager {
     public Observable<Boolean> seedDatabaseMedicine(Long numOfData) {
         GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         final Gson gson = builder.create();
-//        if (numOfData < 100000) {
-//            numOfData = (long) 10000;
+        Long numMedicine;
+        String pathJson;
+        if (numOfData < 100000) {
+            numMedicine = (long) 10000;
+            pathJson = AppConstants.SEED_DATABASE_MEDICINES_10;
+        } else if (numOfData < 500000) {
+            numMedicine = (long) 100000;
+            pathJson = AppConstants.SEED_DATABASE_MEDICINES_100;
+        } else if (numOfData < 1000000) {
+            numMedicine = (long) 500000;
+            pathJson = AppConstants.SEED_DATABASE_MEDICINES_500;
+        } else {
+            numMedicine = (long) 1000000;
+            pathJson = AppConstants.SEED_DATABASE_MEDICINES_1000;
+        }
         return dbHelper.getAllMedicine().count()
                 .toObservable()
                 .concatMap(aLong -> {
-                    if (aLong < numOfData) {
+                    if (aLong < numMedicine) {
                         Type type = new TypeToken<List<Medicine>>(){}.getType();
                         List<Medicine> medicineList = gson.fromJson(
                                 CommonUtils.loadJSONFromAsset(context,
-                                        AppConstants.SEED_DATABASE_MEDICINES),
+                                        pathJson),
                                 type);
                         return saveMedicineList(medicineList);
                     }

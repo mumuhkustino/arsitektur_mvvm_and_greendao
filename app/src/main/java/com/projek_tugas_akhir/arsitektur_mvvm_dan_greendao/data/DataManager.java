@@ -1,6 +1,7 @@
 package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data;
 
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.DbHelper;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Hospital;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Medical;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Medicine;
 
@@ -19,9 +20,9 @@ public interface DataManager extends DbHelper {
 
     Observable<Boolean> seedDatabaseHospital(Long numOfData);
 
-    Observable<Boolean> updateDatabaseHospital(Long numOfData);
+    Observable<Boolean> updateDatabaseHospital(Hospital hospital);
 
-    Observable<Boolean> deleteDatabaseHospital(Long numOfData);
+    Observable<Boolean> deleteDatabaseHospital(Hospital hospital);
 
 //    Observable<Boolean> seedDatabaseMedicine();
 
