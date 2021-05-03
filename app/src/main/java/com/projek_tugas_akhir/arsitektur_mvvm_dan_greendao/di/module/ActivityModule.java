@@ -10,7 +10,6 @@ import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.DataManager;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseActivity;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDPagerAdapter;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDViewModel;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.splash.SplashViewModel;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils.rx.SchedulerProvider;
 
 import java.util.function.Supplier;
@@ -25,14 +24,6 @@ public class ActivityModule {
 
     public ActivityModule(BaseActivity<?, ?> activity) {
         this.activity = activity;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Provides
-    SplashViewModel provideSplashViewModel(DataManager dataManager, SchedulerProvider schedulerProvider) {
-        Supplier<SplashViewModel> supplier = () -> new SplashViewModel(dataManager, schedulerProvider);
-        ViewModelProviderFactory<SplashViewModel> factory = new ViewModelProviderFactory<>(SplashViewModel.class, supplier);
-        return new ViewModelProvider(activity, factory).get(SplashViewModel.class);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

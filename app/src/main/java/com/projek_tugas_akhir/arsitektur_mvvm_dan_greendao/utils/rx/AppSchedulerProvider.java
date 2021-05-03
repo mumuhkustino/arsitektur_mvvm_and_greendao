@@ -34,7 +34,7 @@ public class AppSchedulerProvider implements SchedulerProvider {
 
     @Override
     public Scheduler fromA() {
-        return Schedulers.from(Executors.newFixedThreadPool(8));
+        return Schedulers.from(Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()));
     }
 
     @Override

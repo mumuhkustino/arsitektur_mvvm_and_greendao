@@ -1,7 +1,5 @@
 package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db;
 
-import android.database.sqlite.SQLiteDatabase;
-
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.DaoMaster;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.DaoSession;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Hospital;
@@ -13,7 +11,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import io.reactivex.Observable;
+
+import io.reactivex.Flowable;
 
 @Singleton
 public class AppDbHelper implements DbHelper {
@@ -26,8 +25,8 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Long> insertHospital(Hospital hospital) {
-        return Observable.fromCallable(() -> {
+    public Flowable<Long> insertHospital(Hospital hospital) {
+        return Flowable.fromCallable(() -> {
             try {
                 return daoSession.getHospitalDao().insertOrReplace(hospital);
             } catch (Exception e) {
@@ -38,8 +37,8 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Long> insertMedicine(Medicine medicine) {
-        return Observable.fromCallable(() -> {
+    public Flowable<Long> insertMedicine(Medicine medicine) {
+        return Flowable.fromCallable(() -> {
             try {
                 return daoSession.getMedicineDao().insertOrReplace(medicine);
             } catch (Exception e) {
@@ -50,8 +49,8 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Boolean> deleteHospital(Hospital hospital) {
-        return Observable.fromCallable(() -> {
+    public Flowable<Boolean> deleteHospital(Hospital hospital) {
+        return Flowable.fromCallable(() -> {
             try {
                 final Hospital unique = daoSession.getHospitalDao().queryBuilder()
                         .where(HospitalDao.Properties.Id.eq(hospital.getId())).unique();
@@ -65,8 +64,8 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Boolean> deleteMedicine(Medicine medicine) {
-        return Observable.fromCallable(() -> {
+    public Flowable<Boolean> deleteMedicine(Medicine medicine) {
+        return Flowable.fromCallable(() -> {
             try {
                 final Medicine unique = daoSession.getMedicineDao().queryBuilder()
                         .where(MedicineDao.Properties.Id.eq(medicine.getId())).unique();
@@ -80,8 +79,8 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Hospital> loadHospital(Hospital hospital) {
-        return Observable.fromCallable(() -> {
+    public Flowable<Hospital> loadHospital(Hospital hospital) {
+        return Flowable.fromCallable(() -> {
             try {
                 return daoSession.getHospitalDao().queryBuilder()
                         .where(HospitalDao.Properties.Id.eq(hospital.getId())).unique();
@@ -93,8 +92,8 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Medicine> loadMedicine(Medicine medicine) {
-        return Observable.fromCallable(() -> {
+    public Flowable<Medicine> loadMedicine(Medicine medicine) {
+        return Flowable.fromCallable(() -> {
             try {
                 return daoSession.getMedicineDao().queryBuilder()
                         .where(MedicineDao.Properties.Id.eq(medicine.getId())).unique();
@@ -106,33 +105,35 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<List<Hospital>> getAllHospital() {
-        return Observable.fromCallable(() -> daoSession.getHospitalDao().queryBuilder().list());
+    public Flowable<List<Hospital>> getAllHospital() {
+//        return Flowable.fromCallable(() -> daoSession.getHospitalDao().queryBuilder().list());
+        return Flowable.fromCallable(() -> daoSession.getHospitalDao().loadAll());
     }
 
     @Override
-    public Observable<List<Medicine>> getAllMedicine() {
-        return Observable.fromCallable(() -> daoSession.getMedicineDao().queryBuilder().list());
+    public Flowable<List<Medicine>> getAllMedicine() {
+//        return Flowable.fromCallable(() -> daoSession.getMedicineDao().queryBuilder().list());
+        return Flowable.fromCallable(() -> daoSession.getMedicineDao().loadAll());
     }
 
     @Override
-    public Observable<List<Medicine>> getMedicineForHospitalId(Long hospitalId) {
-        return Observable.fromCallable(() -> daoSession.getMedicineDao()._queryHospital_MedicineList(hospitalId));
+    public Flowable<List<Medicine>> getMedicineForHospitalId(Long hospitalId) {
+        return Flowable.fromCallable(() -> daoSession.getMedicineDao()._queryHospital_MedicineList(hospitalId));
     }
 
     @Override
-    public Observable<Boolean> isHospitalEmpty() {
-        return Observable.fromCallable(() -> daoSession.getHospitalDao().loadAll().isEmpty());
+    public Flowable<Boolean> isHospitalEmpty() {
+        return Flowable.fromCallable(() -> daoSession.getHospitalDao().loadAll().isEmpty());
     }
 
     @Override
-    public Observable<Boolean> isMedicineEmpty() {
-        return Observable.fromCallable(() -> daoSession.getMedicineDao().loadAll().isEmpty());
+    public Flowable<Boolean> isMedicineEmpty() {
+        return Flowable.fromCallable(() -> daoSession.getMedicineDao().loadAll().isEmpty());
     }
 
     @Override
-    public Observable<Boolean> saveHospital(Hospital hospital) {
-        return Observable.fromCallable(() -> {
+    public Flowable<Boolean> saveHospital(Hospital hospital) {
+        return Flowable.fromCallable(() -> {
             try {
                 daoSession.getHospitalDao().insertOrReplaceInTx(hospital);
                 return true;
@@ -144,8 +145,8 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Boolean> saveMedicine(Medicine medicine) {
-        return Observable.fromCallable(() -> {
+    public Flowable<Boolean> saveMedicine(Medicine medicine) {
+        return Flowable.fromCallable(() -> {
             try {
                 daoSession.getMedicineDao().insertOrReplaceInTx(medicine);
                 return true;
@@ -157,16 +158,16 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Observable<Boolean> saveHospitalList(List<Hospital> hospitalList) {
-        return Observable.fromCallable(() -> {
+    public Flowable<Boolean> saveHospitalList(List<Hospital> hospitalList) {
+        return Flowable.fromCallable(() -> {
             daoSession.getHospitalDao().insertOrReplaceInTx(hospitalList);
             return true;
         });
     }
 
     @Override
-    public Observable<Boolean> saveMedicineList(List<Medicine> medicineList) {
-        return Observable.fromCallable(() -> {
+    public Flowable<Boolean> saveMedicineList(List<Medicine> medicineList) {
+        return Flowable.fromCallable(() -> {
             daoSession.getMedicineDao().insertOrReplaceInTx(medicineList);
             return true;
         });

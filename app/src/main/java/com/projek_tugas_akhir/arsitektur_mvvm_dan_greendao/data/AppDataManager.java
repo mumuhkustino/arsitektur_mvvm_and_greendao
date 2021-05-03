@@ -3,7 +3,6 @@ package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data;
 import android.content.Context;
 import android.util.Log;
 
-import com.github.javafaker.Faker;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.$Gson$Types;
@@ -20,7 +19,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 
 @Singleton
 public class AppDataManager implements DataManager {
@@ -159,43 +158,45 @@ public class AppDataManager implements DataManager {
 ////    }
 
     @Override
-    public Observable<Boolean> seedDatabaseHospital(Long numOfData) {
+    public Flowable<Boolean> seedDatabaseHospital(Long numOfData) {
         GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         final Gson gson = builder.create();
-        Long numHospital;
+//        Long numHospital;
         String pathJson;
         if (numOfData < 100000) {
-            numHospital = (long) 10;
+//            numHospital = (long) 10;
             pathJson = AppConstants.SEED_DATABASE_HOSPITALS_10;
         } else if (numOfData < 500000) {
-            numHospital = (long) 100;
+//            numHospital = (long) 100;
             pathJson = AppConstants.SEED_DATABASE_HOSPITALS_100;
         } else if (numOfData < 1000000) {
-            numHospital = (long) 500;
+//            numHospital = (long) 500;
             pathJson = AppConstants.SEED_DATABASE_HOSPITALS_500;
         } else {
-            numHospital = (long) 1000;
+//            numHospital = (long) 1000;
             pathJson = AppConstants.SEED_DATABASE_HOSPITALS_1000;
         }
-        return dbHelper.getAllHospital().count()
-                .toObservable()
-                .concatMap(aLong -> {
-                    if (aLong < numHospital) {
-                        Type type = $Gson$Types
-                                .newParameterizedTypeWithOwner(null, List.class,
-                                        Hospital.class);
-                        List<Hospital> hospitalList = gson.fromJson(
-                                CommonUtils.loadJSONFromAsset(context,
-                                        pathJson),
-                                type);
-                        return saveHospitalList(hospitalList);
-                    }
-                    return Observable.just(false);
-                });
+//        return
+//                dbHelper.getAllHospital().count()
+//                .toFlowable()
+//                .concatMap(aLong -> {
+//                    if (aLong < numHospital) {
+        try {
+                Type type = $Gson$Types
+                        .newParameterizedTypeWithOwner(null, List.class,
+                                Hospital.class);
+                List<Hospital> hospitalList = gson.fromJson(
+                        CommonUtils.loadJSONFromAsset(context,
+                                pathJson),
+                        type);
+                return saveHospitalList(hospitalList);
+            } catch (Exception e) {
+            return Flowable.just(false);
+        }
     }
 
     @Override
-    public Observable<Boolean> updateDatabaseHospital(Hospital hospital) {
+    public Flowable<Boolean> updateDatabaseHospital(Hospital hospital) {
 //        if (numOfData >= 10000) {
 //            numOfData /= 1000;
 //        }
@@ -222,7 +223,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Observable<Boolean> deleteDatabaseHospital(Hospital hospital) {
+    public Flowable<Boolean> deleteDatabaseHospital(Hospital hospital) {
         return dbHelper.loadHospital(hospital).concatMap(hospital1 -> deleteHospital(hospital));
     }
 
@@ -246,41 +247,43 @@ public class AppDataManager implements DataManager {
 //    }
 
     @Override
-    public Observable<Boolean> seedDatabaseMedicine(Long numOfData) {
+    public Flowable<Boolean> seedDatabaseMedicine(Long numOfData) {
         GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         final Gson gson = builder.create();
-        Long numMedicine;
+//        Long numMedicine;
         String pathJson;
         if (numOfData < 100000) {
-            numMedicine = (long) 10000;
+//            numMedicine = (long) 10000;
             pathJson = AppConstants.SEED_DATABASE_MEDICINES_10;
         } else if (numOfData < 500000) {
-            numMedicine = (long) 100000;
+//            numMedicine = (long) 100000;
             pathJson = AppConstants.SEED_DATABASE_MEDICINES_100;
         } else if (numOfData < 1000000) {
-            numMedicine = (long) 500000;
+//            numMedicine = (long) 500000;
             pathJson = AppConstants.SEED_DATABASE_MEDICINES_500;
         } else {
-            numMedicine = (long) 1000000;
+//            numMedicine = (long) 1000000;
             pathJson = AppConstants.SEED_DATABASE_MEDICINES_1000;
         }
-        return dbHelper.getAllMedicine().count()
-                .toObservable()
-                .concatMap(aLong -> {
-                    if (aLong < numMedicine) {
-                        Type type = new TypeToken<List<Medicine>>(){}.getType();
-                        List<Medicine> medicineList = gson.fromJson(
-                                CommonUtils.loadJSONFromAsset(context,
-                                        pathJson),
-                                type);
-                        return saveMedicineList(medicineList);
-                    }
-                    return Observable.just(false);
-                });
+//        return
+//                dbHelper.getAllMedicine().count()
+//                .toFlowable()
+//                .flatMap(aLong -> {
+//                    if (aLong < numMedicine) {
+        try {
+                Type type = new TypeToken<List<Medicine>>(){}.getType();
+                List<Medicine> medicineList = gson.fromJson(
+                        CommonUtils.loadJSONFromAsset(context,
+                                pathJson),
+                        type);
+                return saveMedicineList(medicineList);
+        } catch (Exception e) {
+            return Flowable.just(false);
+        }
     }
 
     @Override
-    public Observable<Boolean> updateDatabaseMedicine(Medicine medicine) {
+    public Flowable<Boolean> updateDatabaseMedicine(Medicine medicine) {
 //        if (numOfData >= 10000) {
 //            numOfData /= 1000;
 //        }
@@ -308,7 +311,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Observable<Boolean> deleteDatabaseMedicine(Medicine medicine) {
+    public Flowable<Boolean> deleteDatabaseMedicine(Medicine medicine) {
 //        if (numOfData >= 10000) {
 //            numOfData /= 1000;
 //        }
@@ -335,57 +338,57 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Observable<Long> insertHospital(Hospital hospital) {
+    public Flowable<Long> insertHospital(Hospital hospital) {
         return dbHelper.insertHospital(hospital);
     }
 
     @Override
-    public Observable<Long> insertMedicine(Medicine medicine) {
+    public Flowable<Long> insertMedicine(Medicine medicine) {
         return dbHelper.insertMedicine(medicine);
     }
 
     @Override
-    public Observable<Boolean> deleteHospital(Hospital hospital) {
+    public Flowable<Boolean> deleteHospital(Hospital hospital) {
         return dbHelper.deleteHospital(hospital);
     }
 
     @Override
-    public Observable<Boolean> deleteMedicine(Medicine medicine) {
+    public Flowable<Boolean> deleteMedicine(Medicine medicine) {
         return dbHelper.deleteMedicine(medicine);
     }
 
     @Override
-    public Observable<Hospital> loadHospital(Hospital hospital) {
+    public Flowable<Hospital> loadHospital(Hospital hospital) {
         return dbHelper.loadHospital(hospital);
     }
 
     @Override
-    public Observable<Medicine> loadMedicine(Medicine medicine) {
+    public Flowable<Medicine> loadMedicine(Medicine medicine) {
         return dbHelper.loadMedicine(medicine);
     }
 
     @Override
-    public Observable<List<Hospital>> getAllHospital() {
+    public Flowable<List<Hospital>> getAllHospital() {
         return dbHelper.getAllHospital();
     }
 
     @Override
-    public Observable<List<Medicine>> getAllMedicine() {
+    public Flowable<List<Medicine>> getAllMedicine() {
         return dbHelper.getAllMedicine();
     }
 
     @Override
-    public Observable<List<Medicine>> getMedicineForHospitalId(Long hospitalId) {
+    public Flowable<List<Medicine>> getMedicineForHospitalId(Long hospitalId) {
         return dbHelper.getMedicineForHospitalId(hospitalId);
     }
 
     @Override
-    public Observable<Boolean> isHospitalEmpty() {
+    public Flowable<Boolean> isHospitalEmpty() {
         return dbHelper.isHospitalEmpty();
     }
 
     @Override
-    public Observable<Boolean> isMedicineEmpty() {
+    public Flowable<Boolean> isMedicineEmpty() {
         return dbHelper.isMedicineEmpty();
     }
 
@@ -400,24 +403,24 @@ public class AppDataManager implements DataManager {
 //    }
 
     @Override
-    public Observable<Boolean> saveHospital(Hospital hospital) {
+    public Flowable<Boolean> saveHospital(Hospital hospital) {
         return dbHelper.saveHospital(hospital);
     }
 
     @Override
-    public Observable<Boolean> saveMedicine(Medicine medicine) {
+    public Flowable<Boolean> saveMedicine(Medicine medicine) {
         return dbHelper.saveMedicine(medicine);
     }
 
     @Override
-    public Observable<Boolean> saveHospitalList(List<Hospital> hospitalList) {
-        Log.d(TAG, "saveHospitalList: " + hospitalList.size());
+    public Flowable<Boolean> saveHospitalList(List<Hospital> hospitalList) {
+//        Log.d(TAG, "saveHospitalList: " + hospitalList.size());
         return dbHelper.saveHospitalList(hospitalList);
     }
 
     @Override
-    public Observable<Boolean> saveMedicineList(List<Medicine> medicineList) {
-        Log.d(TAG, "saveMedicineList: " + medicineList.size());
+    public Flowable<Boolean> saveMedicineList(List<Medicine> medicineList) {
+//        Log.d(TAG, "saveMedicineList: " + medicineList.size());
         return dbHelper.saveMedicineList(medicineList);
     }
 

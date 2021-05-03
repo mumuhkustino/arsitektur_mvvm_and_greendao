@@ -2,13 +2,9 @@ package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data;
 
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.DbHelper;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Hospital;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Medical;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Medicine;
 
-import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.Single;
+import io.reactivex.Flowable;
 
 public interface DataManager extends DbHelper {
 
@@ -18,18 +14,18 @@ public interface DataManager extends DbHelper {
 
 //    Observable<Boolean> seedDatabaseHospital();
 
-    Observable<Boolean> seedDatabaseHospital(Long numOfData);
+    Flowable<Boolean> seedDatabaseHospital(Long numOfData);
 
-    Observable<Boolean> updateDatabaseHospital(Hospital hospital);
+    Flowable<Boolean> updateDatabaseHospital(Hospital hospital);
 
-    Observable<Boolean> deleteDatabaseHospital(Hospital hospital);
+    Flowable<Boolean> deleteDatabaseHospital(Hospital hospital);
 
 //    Observable<Boolean> seedDatabaseMedicine();
 
-    Observable<Boolean> seedDatabaseMedicine(Long numOfData);
+    Flowable<Boolean> seedDatabaseMedicine(Long numOfData);
 
-    Observable<Boolean> updateDatabaseMedicine(Medicine medicine);
+    Flowable<Boolean> updateDatabaseMedicine(Medicine medicine);
 
-    Observable<Boolean> deleteDatabaseMedicine(Medicine medicine);
+    Flowable<Boolean> deleteDatabaseMedicine(Medicine medicine);
 
 }

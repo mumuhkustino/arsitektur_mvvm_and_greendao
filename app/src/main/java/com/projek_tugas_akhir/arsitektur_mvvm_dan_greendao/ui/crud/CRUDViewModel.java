@@ -14,9 +14,9 @@ import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils.rx.SchedulerPro
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import io.reactivex.BackpressureStrategy;
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 
 public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
 
@@ -38,30 +38,30 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
         long startTime = System.currentTimeMillis();
         getCompositeDisposable().add(getDataManager()
                 .seedDatabaseHospital(numOfData)
-                .subscribeOn(getSchedulerProvider().computation())
-                .observeOn(getSchedulerProvider().single())
+                .subscribeOn(getSchedulerProvider().fromA())
                 .concatMap(aBoolean -> getDataManager().seedDatabaseMedicine(numOfData))
-                .toFlowable(BackpressureStrategy.DROP)
+                .observeOn(getSchedulerProvider().ui())
                 .subscribe(aBoolean -> {
-                            if (aBoolean) {
-                                this.numOfRecord.postValue((numOfData));
-                                long endTime = System.currentTimeMillis();
-                                long timeElapsed = endTime - startTime; //In MilliSeconds
-                                this.executionTime.postValue(timeElapsed); //To MilliSeconds
-                                Log.d("CVM", "insertDatabase: " + numOfData);
-                            }
-                            setIsLoading(false);
+                        if (aBoolean) {
+                            this.numOfRecord.postValue((numOfData));
+                            long endTime = System.currentTimeMillis();
+                            long timeElapsed = endTime - startTime; //In MilliSeconds
+                            this.executionTime.postValue(timeElapsed); //To MilliSeconds
+                            Log.d("CVM", "insertDatabase: " + numOfData);
                         }
+                        setIsLoading(false);
+                    }
                 , throwable -> {
                     setIsLoading(false);
                     getNavigator().handleError(throwable);
                 }
-                ));
+                )
+        );
     }
 
     public void refreshMedical(Long numOfData, List<Hospital> hospitalList) {
         this.medicalListLiveData.postValue(new ArrayList<>());
-        Long index = (long) 0;
+        int index = 0;
         int size = 0;
         List<Medical> medicals = new ArrayList<>();
         for (int i = 0; i < hospitalList.size(); i++) {
@@ -83,13 +83,12 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
     }
 
     public void selectDatabase(Long numOfData) {
-        setIsLoading(true);
+//        setIsLoading(true);
         long startTime = System.currentTimeMillis();
         getCompositeDisposable().add(getDataManager()
             .getAllHospital()
-            .subscribeOn(getSchedulerProvider().computation())
-            .observeOn(getSchedulerProvider().single())
-            .toFlowable(BackpressureStrategy.DROP)
+            .subscribeOn(getSchedulerProvider().fromA())
+            .observeOn(getSchedulerProvider().ui())
             .subscribe(hospitalList -> {
                 if (hospitalList != null) {
                     refreshMedical(numOfData, hospitalList);
@@ -98,18 +97,60 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
                     long timeElapsed = endTime - startTime; //In MilliSeconds
                     this.executionTime.postValue(timeElapsed); //To MilliSeconds
                 }
-                setIsLoading(false);
+//                setIsLoading(false);
             }, throwable -> {
                 Log.d("CVM", "selectDatabase: " + throwable.getMessage());
-                setIsLoading(false);
+//                setIsLoading(false);
             }));
     }
 
+//    public void updateMedical(Long numOfData, List<Hospital> hospitalList) {
+////        this.medicalListLiveData.postValue(new ArrayList<>());
+//        int index = 0;
+////        int size = 0;
+////        List<Medical> medicals = new ArrayList<>();
+//        List<Medicine> medicines;
+//        for (int i = 0; i < hospitalList.size(); i++) {
+//            medicines = new ArrayList<>();
+//            Hospital hospital = hospitalList.get(i);
+//            medicines.addAll(hospitalList.get(i).getMedicineList());
+//            if (hospital != null && medicines != null) {
+//                int j = 0;
+////                size += hospital.getMedicineList().size();
+//                while (j < medicines.size()) {
+//                    if (index < numOfData) {
+//                        medicines.get(j)
+//                                .setName(medicines.get(j).getName() + " NEW");
+//                        getCompositeDisposable().add(getDataManager()
+//                                .updateDatabaseMedicine(medicines
+//                                        .get(j))
+//                                .subscribeOn(getSchedulerProvider().fromA())
+////                                .observeOn(getSchedulerProvider().ui())
+//                                .subscribe(aBoolean -> {
+////                                    if (aBoolean) {
+////                                        Log.d("CVM", "updateMedical: " + aBoolean);
+////                                    }
+//                                }, throwable -> {
+//                                    Log.d("CVM", "updateMedical: " + throwable.getMessage());
+//                                }));
+//                        index++;
+//                    }
+////                    medicals.add(new Medical(hospitalList.get(i).getName(),
+////                            hospitalList.get(i).getMedicineList().get(j).getName()));
+//                    j++;
+//                }
+//            }
+//            if (index >= numOfData) break;
+//        }
+////        Log.d("CVM", "updateMedical = " + size);
+////        this.medicalListLiveData.postValue(medicals);
+//    }
+
     public void updateMedical(Long numOfData, List<Hospital> hospitalList) {
-        this.medicalListLiveData.postValue(new ArrayList<>());
-        Long index = (long) 0;
+//        this.medicalListLiveData.postValue(new ArrayList<>());
+        int index = 0;
         int size = 0;
-        List<Medical> medicals = new ArrayList<>();
+//        List<Medical> medicals = new ArrayList<>();
         for (int i = 0; i < hospitalList.size(); i++) {
             if (hospitalList.get(i) != null && hospitalList.get(i)
                     .getMedicineList() != null) {
@@ -119,61 +160,83 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
                     if (index < numOfData) {
                         hospitalList.get(i).getMedicineList().get(j)
                                 .setName(hospitalList.get(i).getMedicineList().get(j).getName() + " NEW");
-                        getCompositeDisposable().add(getDataManager()
-                                .updateDatabaseMedicine(hospitalList.get(i)
-                                        .getMedicineList()
-                                        .get(j))
-                                .subscribeOn(getSchedulerProvider().computation())
-                                .observeOn(getSchedulerProvider().single())
-                                .toFlowable(BackpressureStrategy.DROP)
-                                .subscribe(aBoolean -> {
-//                                    if (aBoolean) {
-//                                        Log.d("CVM", "updateMedical: " + aBoolean);
-//                                    }
-                                }, throwable -> {
-                                    Log.d("CVM", "updateMedical: " + throwable.getMessage());
-                                }));
-                        index++;
+//                        getCompositeDisposable().add(getDataManager()
+//                                .updateDatabaseMedicine(hospitalList.get(i)
+//                                        .getMedicineList()
+//                                        .get(j))
+//                                .subscribeOn(getSchedulerProvider().fromA())
+////                                .observeOn(getSchedulerProvider().ui())
+//                                .subscribe(aBoolean -> {
+////                                    if (aBoolean) {
+////                                        Log.d("CVM", "updateMedical: " + aBoolean);
+////                                    }
+//                                }, throwable -> {
+//                                    Log.d("CVM", "updateMedical: " + throwable.getMessage());
+//                                }));
+                        index = index + 1;
                     }
-                    medicals.add(new Medical(hospitalList.get(i).getName(),
-                            hospitalList.get(i).getMedicineList().get(j).getName()));
-                    j++;
+//                    medicals.add(new Medical(hospitalList.get(i).getName(),
+//                            hospitalList.get(i).getMedicineList().get(j).getName()));
+                    j = j + 1;
                 }
+
             }
-            if (index >= numOfData) break;
+            getCompositeDisposable().add(getDataManager()
+                    .saveMedicineList(hospitalList.get(i).getMedicineList())
+                    .subscribeOn(getSchedulerProvider().fromA())
+//                    .observeOn(getSchedulerProvider().ui())
+                    .subscribe(aBoolean -> {
+                        if (aBoolean) {
+//                            Log.d("CVM", "updateMedical: " + aBoolean);
+                        }
+                    }, throwable -> {
+                        Log.d("CVM", "updateMedical: " + throwable.getMessage());
+                    }));
+//            if (index >= numOfData) break;
         }
-        Log.d("CVM", "updateMedical = " + size);
-        this.medicalListLiveData.postValue(medicals);
+        Log.d("CVM", "updateMedical = " + size + " " + index);
+//        this.medicalListLiveData.postValue(medicals);
     }
 
     public void updateDatabase(Long numOfData) {
-        setIsLoading(true);
         long startTime = System.currentTimeMillis();
+        AtomicInteger index = new AtomicInteger();
         getCompositeDisposable().add(getDataManager()
                 .getAllHospital()
-                .subscribeOn(getSchedulerProvider().computation())
-                .observeOn(getSchedulerProvider().single())
-                .toFlowable(BackpressureStrategy.DROP)
-                .subscribe(hospitalList -> {
-                    if (hospitalList != null) {
-                        updateMedical(numOfData, hospitalList);
-                        this.numOfRecord.postValue(numOfData);
+                .subscribeOn(getSchedulerProvider().fromA())
+                .concatMap(hospitalList -> Flowable.fromIterable(hospitalList)
+                        .observeOn(getSchedulerProvider().ui())
+                        .subscribeOn(getSchedulerProvider().fromA())
+                        .concatMap(hospital -> Flowable.fromIterable(hospital.getMedicineList())
+                                .observeOn(getSchedulerProvider().ui())
+                                .subscribeOn(getSchedulerProvider().fromA())
+                                .concatMap(medicine -> {
+                                    if (index.get() < numOfData) {
+                                        medicine.setName(medicine.getName() + " NEW");
+                                        index.set(index.get() + 1);
+                                    }
+                                    return getDataManager().saveMedicine(medicine);
+                                })
+                        )
+                )
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(aBoolean -> {
+                    if (aBoolean) {
+                        this.numOfRecord.postValue((long) index.get());
                         long endTime = System.currentTimeMillis();
                         long timeElapsed = endTime - startTime; //In MilliSeconds
                         this.executionTime.postValue(timeElapsed); //To MilliSeconds
                     }
-                    setIsLoading(false);
                 }, throwable -> {
                     Log.d("CVM", "updateDatabase: " + throwable.getMessage());
-                    setIsLoading(false);
                 }));
     }
 
     public void deleteMedical(Long numOfData, List<Hospital> hospitalList) {
-        this.medicalListLiveData.postValue(new ArrayList<>());
-        Long index = (long) 0;
+//        this.medicalListLiveData.postValue(new ArrayList<>());
+        int index = 0;
         int size = 0;
-        List<Medical> medicals = new ArrayList<>();
+//        List<Medical> medicals = new ArrayList<>();
         for (int i = 0; i < hospitalList.size(); i++) {
             if (hospitalList.get(i) != null
                     && hospitalList.get(i).getMedicineList() != null) {
@@ -183,36 +246,52 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
                     if (index < numOfData) {
                         Medicine med = hospitalList.get(i).getMedicineList()
                             .remove(j);
-                        getCompositeDisposable().add(getDataManager()
-//                                .loadMedicine(med)
-                                .deleteDatabaseMedicine(med)
-                                .subscribeOn(getSchedulerProvider().computation())
-                                .observeOn(getSchedulerProvider().ui())
+//                        getCompositeDisposable().add(getDataManager()
+////                                .loadMedicine(med)
+//                                .deleteDatabaseMedicine(med)
+//                                .subscribeOn(getSchedulerProvider().fromA())
+////                                .observeOn(getSchedulerProvider().ui())
+////                                .concatMap(medicine -> {
+////                                    if (medicine != null)
+////                                        return getDataManager().deleteMedicine(medicine);
+////                                    return Observable.just(false);
+////                                    })
+//                                .subscribe(aBoolean -> {
+//                                    if (aBoolean) {
+////                                            Log.d("CVM", "deleteMedical 2 is " + aBoolean);
+//                                    }
+//                                }, throwable -> {
+//                                    Log.d("CVM", "deleteMedical: " + throwable.getMessage());
+//                                }));
+                        index++;
+                    } else {
+//                        medicals.add(new Medical(hospitalList.get(i).getName(),
+//                                hospitalList.get(i).getMedicineList().get(j).getName()));
+                        j++;
+                    }
+                }
+            }
+            getCompositeDisposable().add(getDataManager()
+                .saveMedicineList(hospitalList.get(i).getMedicineList())
+//                    .deleteDatabaseMedicine(med)
+                .subscribeOn(getSchedulerProvider().fromA())
+                .observeOn(getSchedulerProvider().ui())
 //                                .concatMap(medicine -> {
 //                                    if (medicine != null)
 //                                        return getDataManager().deleteMedicine(medicine);
 //                                    return Observable.just(false);
 //                                    })
-                                .toFlowable(BackpressureStrategy.DROP)
-                                .subscribe(aBoolean -> {
-                                    if (aBoolean) {
+                    .subscribe(aBoolean -> {
+                        if (aBoolean) {
 //                                            Log.d("CVM", "deleteMedical 2 is " + aBoolean);
-                                    }
-                                }, throwable -> {
-                                    Log.d("CVM", "deleteMedical: " + throwable.getMessage());
-                                }));
-                        index++;
-                    } else {
-                        medicals.add(new Medical(hospitalList.get(i).getName(),
-                                hospitalList.get(i).getMedicineList().get(j).getName()));
-                        j++;
-                    }
-                }
-            }
+                        }
+                    }, throwable -> {
+                        Log.d("CVM", "deleteMedical: " + throwable.getMessage());
+                    }));
             if (index >= numOfData) break;
         }
         Log.d("CVM", "deleteMedical = " + size);
-        this.medicalListLiveData.postValue(medicals);
+//        this.medicalListLiveData.postValue(medicals);
     }
 
 
@@ -221,9 +300,8 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
         long startTime = System.currentTimeMillis();
         getCompositeDisposable().add(getDataManager()
                 .getAllHospital()
-                .subscribeOn(getSchedulerProvider().computation())
-                .observeOn(getSchedulerProvider().single())
-                .toFlowable(BackpressureStrategy.DROP)
+                .subscribeOn(getSchedulerProvider().fromA())
+                .observeOn(getSchedulerProvider().ui())
                 .subscribe(hospitalList -> {
                     if (hospitalList != null) {
                         deleteMedical(numOfData, hospitalList);
