@@ -3,7 +3,7 @@ package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Medical;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.others.Medical;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDAdapter;
 
 import java.util.List;

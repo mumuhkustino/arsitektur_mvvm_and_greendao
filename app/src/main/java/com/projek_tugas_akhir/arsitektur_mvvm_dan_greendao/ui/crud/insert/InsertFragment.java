@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.BR;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.R;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Medical;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.others.Medical;
 
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.databinding.FragmentInsertBinding;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.di.component.FragmentComponent;

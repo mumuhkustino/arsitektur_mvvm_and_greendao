@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.DataManager;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Hospital;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Medical;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.others.Medical;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Medicine;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseViewModel;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils.rx.SchedulerProvider;
@@ -203,13 +203,13 @@ public class CRUDViewModel extends BaseViewModel<CRUDNavigator> {
         AtomicInteger index = new AtomicInteger();
         getCompositeDisposable().add(getDataManager()
                 .getAllHospital()
-                .subscribeOn(getSchedulerProvider().fromA())
+                .subscribeOn(getSchedulerProvider().io())
                 .concatMap(hospitalList -> Flowable.fromIterable(hospitalList)
                         .observeOn(getSchedulerProvider().ui())
-                        .subscribeOn(getSchedulerProvider().fromA())
+                        .subscribeOn(getSchedulerProvider().io())
                         .concatMap(hospital -> Flowable.fromIterable(hospital.getMedicineList())
                                 .observeOn(getSchedulerProvider().ui())
-                                .subscribeOn(getSchedulerProvider().fromA())
+                                .subscribeOn(getSchedulerProvider().io())
                                 .concatMap(medicine -> {
                                     if (index.get() < numOfData) {
                                         medicine.setName(medicine.getName() + " NEW");
