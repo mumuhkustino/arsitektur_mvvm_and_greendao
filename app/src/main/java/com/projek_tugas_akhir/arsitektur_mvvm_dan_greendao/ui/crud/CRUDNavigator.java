@@ -1,6 +1,6 @@
 package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud;
 
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.others.Medical;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.Medical;
 
 import java.util.List;
 

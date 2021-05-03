@@ -1,4 +1,4 @@
-package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.others;
+package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others;
 
 public class Medical {
 

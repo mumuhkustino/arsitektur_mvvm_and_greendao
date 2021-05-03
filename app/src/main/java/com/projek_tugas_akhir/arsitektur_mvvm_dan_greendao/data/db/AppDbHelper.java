@@ -106,13 +106,11 @@ public class AppDbHelper implements DbHelper {
 
     @Override
     public Flowable<List<Hospital>> getAllHospital() {
-//        return Flowable.fromCallable(() -> daoSession.getHospitalDao().queryBuilder().list());
         return Flowable.fromCallable(() -> daoSession.getHospitalDao().loadAll());
     }
 
     @Override
     public Flowable<List<Medicine>> getAllMedicine() {
-//        return Flowable.fromCallable(() -> daoSession.getMedicineDao().queryBuilder().list());
         return Flowable.fromCallable(() -> daoSession.getMedicineDao().loadAll());
     }
 

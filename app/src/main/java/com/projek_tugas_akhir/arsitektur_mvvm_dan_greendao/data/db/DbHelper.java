@@ -33,10 +33,6 @@ public interface DbHelper {
 
     Flowable<Boolean> isMedicineEmpty();
 
-//    Observable<Boolean> isDiseaseEmpty();
-
-//    Observable<Boolean> isSymptomEmpty();
-
     Flowable<Boolean> saveHospital(Hospital hospital);
 
     Flowable<Boolean> saveMedicine(Medicine medicine);

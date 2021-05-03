@@ -8,19 +8,11 @@ import io.reactivex.Flowable;
 
 public interface DataManager extends DbHelper {
 
-//    Single<List<Medical>> getMedical();
-
-//    Single<List<Medical>> getMedical(Long numOfData);
-
-//    Observable<Boolean> seedDatabaseHospital();
-
     Flowable<Boolean> seedDatabaseHospital(Long numOfData);
 
     Flowable<Boolean> updateDatabaseHospital(Hospital hospital);
 
     Flowable<Boolean> deleteDatabaseHospital(Hospital hospital);
-
-//    Observable<Boolean> seedDatabaseMedicine();
 
     Flowable<Boolean> seedDatabaseMedicine(Long numOfData);
 
