@@ -16,19 +16,18 @@ import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.Medical;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.databinding.FragmentDeleteBinding;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.di.component.FragmentComponent;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseFragment;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDAdapter;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDNavigator;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDViewModel;
 
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
-public class DeleteFragment extends BaseFragment<FragmentDeleteBinding, CRUDViewModel> implements CRUDNavigator,
-        CRUDAdapter.CRUDAdapterListener {
+public class DeleteFragment extends BaseFragment<FragmentDeleteBinding, DeleteViewModel> implements DeleteNavigator,
+        DeleteAdapter.DeleteAdapterListener {
 
     @Inject
-    CRUDAdapter deleteAdapter;
+    @Named("delete")
+    DeleteAdapter deleteAdapter;
 
     FragmentDeleteBinding fragmentDeleteBinding;
 
@@ -107,7 +106,7 @@ public class DeleteFragment extends BaseFragment<FragmentDeleteBinding, CRUDView
         if (fragmentDeleteBinding.editTextNumData.getText() != null) {
             try {
                 Long numOfData = Long.valueOf(fragmentDeleteBinding.editTextNumData.getText().toString());
-                viewModel.selectDatabase(numOfData);
+//                viewModel.selectDatabase(numOfData);
                 viewModel.deleteDatabase(numOfData);
             } catch (Exception e) {
                 Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();

@@ -17,19 +17,18 @@ import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.Medical;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.databinding.FragmentInsertBinding;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.di.component.FragmentComponent;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseFragment;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDAdapter;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDNavigator;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDViewModel;
 
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
-public class InsertFragment extends BaseFragment<FragmentInsertBinding, CRUDViewModel> implements CRUDNavigator,
-        CRUDAdapter.CRUDAdapterListener {
+public class InsertFragment extends BaseFragment<FragmentInsertBinding, InsertViewModel> implements InsertNavigator,
+        InsertAdapter.InsertAdapterListener {
 
     @Inject
-    CRUDAdapter insertAdapter;
+    @Named("insert")
+    InsertAdapter insertAdapter;
 
     FragmentInsertBinding insertFragmentBinding;
 
@@ -37,7 +36,6 @@ public class InsertFragment extends BaseFragment<FragmentInsertBinding, CRUDView
     LinearLayoutManager linearLayoutManager;
 
     public static InsertFragment newInstance() {
-        Log.d("IF", "setUp: Open Fragment");
         Bundle args = new Bundle();
         InsertFragment fragment = new InsertFragment();
         fragment.setArguments(args);
@@ -85,6 +83,7 @@ public class InsertFragment extends BaseFragment<FragmentInsertBinding, CRUDView
 
     @Override
     public void updateMedical(List<Medical> medicalList) {
+        insertAdapter.clearItems();
         insertAdapter.addItems(medicalList);
     }
 

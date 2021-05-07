@@ -16,19 +16,18 @@ import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.Medical;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.databinding.FragmentUpdateBinding;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.di.component.FragmentComponent;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseFragment;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDAdapter;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDNavigator;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDViewModel;
 
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
-public class UpdateFragment extends BaseFragment<FragmentUpdateBinding, CRUDViewModel> implements CRUDNavigator,
-        CRUDAdapter.CRUDAdapterListener {
+public class UpdateFragment extends BaseFragment<FragmentUpdateBinding, UpdateViewModel> implements UpdateNavigator,
+        UpdateAdapter.UpdateAdapterListener {
 
     @Inject
-    CRUDAdapter updateAdapter;
+    @Named("update")
+    UpdateAdapter updateAdapter;
 
     FragmentUpdateBinding fragmentUpdateBinding;
 

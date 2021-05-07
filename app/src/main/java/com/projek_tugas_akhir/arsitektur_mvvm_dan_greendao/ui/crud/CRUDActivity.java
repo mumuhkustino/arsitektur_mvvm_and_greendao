@@ -1,7 +1,5 @@
 package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
@@ -20,10 +18,6 @@ public class CRUDActivity extends BaseActivity<ActivityCrudBinding, CRUDViewMode
 
     private ActivityCrudBinding crudBinding;
 
-    public static Intent newIntent(Context context) {
-        return new Intent(context, CRUDActivity.class);
-    }
-
     @Override
     public int getBindingVariable() {
         return BR.viewModel;
@@ -33,22 +27,6 @@ public class CRUDActivity extends BaseActivity<ActivityCrudBinding, CRUDViewMode
     public int getLayoutId() {
         return R.layout.activity_crud;
     }
-
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        if (item.getItemId() == android.R.id.home) {
-//            Intent upIntent = NavUtils.getParentActivityIntent(this);
-//            upIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-//                TaskStackBuilder.create(this)
-//                        .addNextIntentWithParentStack(upIntent)
-//                        .startActivities();
-//            } else {
-//                NavUtils.navigateUpTo(this, upIntent);
-//            }
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +41,6 @@ public class CRUDActivity extends BaseActivity<ActivityCrudBinding, CRUDViewMode
     }
 
     private void setUp() {
-//        setSupportActionBar(crudBinding.toolbar);
-//        if (getSupportActionBar() != null) {
-//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//            getSupportActionBar().setDisplayShowHomeEnabled(true);
-//        }
-
         pagerAdapter.setCount(4);
 
         crudBinding.crudViewPager.setAdapter(pagerAdapter);
@@ -89,7 +61,6 @@ public class CRUDActivity extends BaseActivity<ActivityCrudBinding, CRUDViewMode
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-//                crudBinding.crudViewPager.setCurrentItem(tab.getPosition());
             }
 
             @Override
