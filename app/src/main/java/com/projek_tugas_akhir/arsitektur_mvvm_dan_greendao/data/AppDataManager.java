@@ -1,8 +1,6 @@
 package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data;
 
 import android.content.Context;
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.internal.$Gson$Types;
@@ -14,6 +12,7 @@ import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils.AppConstants;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils.CommonUtils;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -37,7 +36,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Flowable<Boolean> seedDatabaseHospital(Long numOfData) {
+    public Flowable<List<Hospital>> seedDatabaseHospital(Long numOfData) {
         GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         final Gson gson = builder.create();
         String pathJson;
@@ -51,16 +50,16 @@ public class AppDataManager implements DataManager {
             pathJson = AppConstants.SEED_DATABASE_HOSPITALS_1000;
         }
         try {
-                Type type = $Gson$Types
-                        .newParameterizedTypeWithOwner(null, List.class,
-                                Hospital.class);
-                List<Hospital> hospitalList = gson.fromJson(
-                        CommonUtils.loadJSONFromAsset(context,
-                                pathJson),
-                        type);
-                return saveHospitalList(hospitalList);
-            } catch (Exception e) {
-            return Flowable.just(false);
+            Type type = $Gson$Types
+                    .newParameterizedTypeWithOwner(null, List.class,
+                            Hospital.class);
+            List<Hospital> hospitalList = gson.fromJson(
+                    CommonUtils.loadJSONFromAsset(context,
+                            pathJson),
+                    type);
+            return Flowable.just(hospitalList);
+        } catch (Exception e) {
+            return Flowable.just(new ArrayList<>());
         }
     }
 
@@ -75,7 +74,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Flowable<Boolean> seedDatabaseMedicine(Long numOfData) {
+    public Flowable<List<Medicine>> seedDatabaseMedicine(Long numOfData) {
         GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         final Gson gson = builder.create();
         String pathJson;
@@ -89,14 +88,14 @@ public class AppDataManager implements DataManager {
             pathJson = AppConstants.SEED_DATABASE_MEDICINES_1000;
         }
         try {
-                Type type = new TypeToken<List<Medicine>>(){}.getType();
-                List<Medicine> medicineList = gson.fromJson(
-                        CommonUtils.loadJSONFromAsset(context,
-                                pathJson),
-                        type);
-                return saveMedicineList(medicineList);
+            Type type = new TypeToken<List<Medicine>>(){}.getType();
+            List<Medicine> medicineList = gson.fromJson(
+                    CommonUtils.loadJSONFromAsset(context,
+                            pathJson),
+                    type);
+            return Flowable.just(medicineList);
         } catch (Exception e) {
-            return Flowable.just(false);
+            return Flowable.just(new ArrayList<>());
         }
     }
 
@@ -111,12 +110,12 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Flowable<Long> insertHospital(Hospital hospital) {
+    public Flowable<Boolean> insertHospital(Hospital hospital) {
         return dbHelper.insertHospital(hospital);
     }
 
     @Override
-    public Flowable<Long> insertMedicine(Medicine medicine) {
+    public Flowable<Boolean> insertMedicine(Medicine medicine) {
         return dbHelper.insertMedicine(medicine);
     }
 
@@ -146,8 +145,18 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Flowable<List<Hospital>> getAllHospital(Long numOfData) {
+        return dbHelper.getAllHospital(numOfData);
+    }
+
+    @Override
     public Flowable<List<Medicine>> getAllMedicine() {
         return dbHelper.getAllMedicine();
+    }
+
+    @Override
+    public Flowable<List<Medicine>> getAllMedicine(Long numOfData) {
+        return dbHelper.getAllMedicine(numOfData);
     }
 
     @Override
@@ -177,13 +186,11 @@ public class AppDataManager implements DataManager {
 
     @Override
     public Flowable<Boolean> saveHospitalList(List<Hospital> hospitalList) {
-//        Log.d(TAG, "saveHospitalList: " + hospitalList.size());
         return dbHelper.saveHospitalList(hospitalList);
     }
 
     @Override
     public Flowable<Boolean> saveMedicineList(List<Medicine> medicineList) {
-//        Log.d(TAG, "saveMedicineList: " + medicineList.size());
         return dbHelper.saveMedicineList(medicineList);
     }
 

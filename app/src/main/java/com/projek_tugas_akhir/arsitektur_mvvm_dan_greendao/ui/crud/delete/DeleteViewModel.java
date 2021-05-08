@@ -36,40 +36,67 @@ public class DeleteViewModel extends BaseViewModel<DeleteNavigator> {
         AtomicInteger index = new AtomicInteger(0);
         List<Medical> medicals = new ArrayList<>();
         getCompositeDisposable().add(getDataManager()
-                .getAllHospital()
-//                .subscribeOn(getSchedulerProvider().io())
-                .concatMap(hospitalList -> hospitalList != null ? Flowable.fromIterable(hospitalList) : Flowable.fromIterable(new ArrayList<>()))
-//                    .observeOn(getSchedulerProvider().ui())
-//                    .subscribeOn(getSchedulerProvider().io())
-                    .concatMap(hospital -> hospital != null ? Flowable.fromIterable(hospital.getMedicineList())
-//                        .observeOn(getSchedulerProvider().ui())
-//                        .subscribeOn(getSchedulerProvider().io())
+                .getAllHospital(numOfData > 1000 ? numOfData / 1000 : numOfData)
+                .concatMap(hospitalList -> hospitalList != null ? Flowable.fromIterable(hospitalList)
+                        : Flowable.fromIterable(new ArrayList<>()))
+                .concatMap(hospital -> hospital != null ? getDataManager().getMedicineForHospitalId(hospital.getId())
+                        .concatMap(medicineList -> medicineList != null ? Flowable.fromIterable(medicineList)
+                                :Flowable.fromIterable(new ArrayList<>()))
                         .concatMap(medicine -> {
                             if (index.get() < numOfData) {
                                 index.getAndIncrement();
-//                                if (index.get() < 0)
-//                                    Log.d("CVM", "deleteDatabase: " + index.get());
                                 return getDataManager().deleteDatabaseMedicine(medicine);
                             } else
                                 medicals.add(new Medical(hospital.getName(), medicine.getName()));
-                                return Flowable.just(false);
+                            return Flowable.just(false);
                         }) : Flowable.just(false)
                 )
-//                .observeOn(getSchedulerProvider().ui())
                 .subscribe(aBoolean -> {
                     if (aBoolean) {
-//                        this.numOfRecord.postValue(index.longValue());
                         this.numOfRecord.setValue(index.longValue());
                         long endTime = System.currentTimeMillis();
                         long timeElapsed = endTime - startTime; //In MilliSeconds
-//                        this.executionTime.postValue(timeElapsed); //To MilliSeconds
                         this.executionTime.setValue(timeElapsed); //To MilliSeconds
+                    } else if (index.get() == numOfData) {
+                        Log.d("CVM", "deleteDatabase: " + index.get());
+                        index.getAndIncrement();
                     }
-//                    else if (index.get() < 0)
-//                        Log.d("CVM", "deleteDatabase: " + index.get());
-                }, throwable -> {
-//                    Log.d("CVM", "deleteDatabase: " + throwable.getMessage());
-                }));
+                }, throwable -> Log.d("CVM", "deleteDatabase: " + throwable.getMessage())));
+//        getCompositeDisposable().add(getDataManager()
+//                .getAllHospital()
+////                .subscribeOn(getSchedulerProvider().io())
+//                .concatMap(hospitalList -> hospitalList != null ? Flowable.fromIterable(hospitalList) : Flowable.fromIterable(new ArrayList<>()))
+////                    .observeOn(getSchedulerProvider().ui())
+////                    .subscribeOn(getSchedulerProvider().io())
+//                    .concatMap(hospital -> hospital != null ? Flowable.fromIterable(hospital.getMedicineList())
+////                        .observeOn(getSchedulerProvider().ui())
+////                        .subscribeOn(getSchedulerProvider().io())
+//                        .concatMap(medicine -> {
+//                            if (index.get() < numOfData) {
+//                                index.getAndIncrement();
+////                                if (index.get() < 0)
+////                                    Log.d("CVM", "deleteDatabase: " + index.get());
+//                                return getDataManager().deleteDatabaseMedicine(medicine);
+//                            } else
+//                                medicals.add(new Medical(hospital.getName(), medicine.getName()));
+//                                return Flowable.just(false);
+//                        }) : Flowable.just(false)
+//                )
+////                .observeOn(getSchedulerProvider().ui())
+//                .subscribe(aBoolean -> {
+//                    if (aBoolean) {
+////                        this.numOfRecord.postValue(index.longValue());
+//                        this.numOfRecord.setValue(index.longValue());
+//                        long endTime = System.currentTimeMillis();
+//                        long timeElapsed = endTime - startTime; //In MilliSeconds
+////                        this.executionTime.postValue(timeElapsed); //To MilliSeconds
+//                        this.executionTime.setValue(timeElapsed); //To MilliSeconds
+//                    }
+////                    else if (index.get() < 0)
+////                        Log.d("CVM", "deleteDatabase: " + index.get());
+//                }, throwable -> {
+////                    Log.d("CVM", "deleteDatabase: " + throwable.getMessage());
+//                }));
     }
 
     public void setMedicalListLiveData(MutableLiveData<List<Medical>> medicalListLiveData) {

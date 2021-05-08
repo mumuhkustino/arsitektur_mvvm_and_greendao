@@ -12,7 +12,6 @@ import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils.rx.SchedulerPro
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import io.reactivex.Flowable;
 
@@ -32,31 +31,33 @@ public class InsertViewModel extends BaseViewModel<InsertNavigator> {
     }
 
     public void insertDatabase(Long numOfData) {
-//        setIsLoading(true);
         long startTime = System.currentTimeMillis();
         getCompositeDisposable().add(getDataManager()
-                .seedDatabaseHospital(numOfData)
-//                .subscribeOn(getSchedulerProvider().io())
-                .concatMap(aBoolean -> getDataManager().seedDatabaseMedicine(numOfData))
-//                .observeOn(getSchedulerProvider().ui())
-                .subscribe(aBoolean -> {
+            .seedDatabaseHospital(numOfData)
+                .concatMap(hospitalList -> hospitalList != null ? Flowable.fromIterable(hospitalList)
+                        : Flowable.fromIterable(new ArrayList<>()))
+                    .concatMap(hospital -> hospital != null ? getDataManager().insertHospital(hospital)
+                            : Flowable.fromIterable(new ArrayList<>()))
+                        .subscribe(aBoolean -> {
+                            if (!aBoolean)
+                                Log.d("CVM", "insertDatabase: 1 " + numOfData);
+                        } , throwable -> getNavigator().handleError(throwable))
+        );
+        getCompositeDisposable().add(getDataManager()
+            .seedDatabaseMedicine(numOfData)
+                .concatMap(medicineList -> medicineList != null ? Flowable.fromIterable(medicineList)
+                        : Flowable.fromIterable(new ArrayList<>()))
+                    .concatMap(medicine -> medicine != null ? getDataManager().insertMedicine(medicine)
+                            : Flowable.fromIterable(new ArrayList<>()))
+                        .subscribe(aBoolean -> {
                             if (aBoolean) {
-//                                this.numOfRecord.postValue((numOfData));
                                 this.numOfRecord.setValue((numOfData));
                                 long endTime = System.currentTimeMillis();
                                 long timeElapsed = endTime - startTime; //In MilliSeconds
-//                                this.executionTime.postValue(timeElapsed); //To MilliSeconds
                                 this.executionTime.setValue(timeElapsed); //To MilliSeconds
-                                Log.d("CVM", "insertDatabase: " + numOfData);
                             } else
-                                Log.d("CVM", "insertDatabase: " + numOfData);
-//                            setIsLoading(false);
-                        }
-                        , throwable -> {
-//                            setIsLoading(false);
-                            getNavigator().handleError(throwable);
-                        }
-                )
+                                Log.d("CVM", "insertDatabase: 2 " + numOfData);
+                        } , throwable -> getNavigator().handleError(throwable))
         );
     }
 

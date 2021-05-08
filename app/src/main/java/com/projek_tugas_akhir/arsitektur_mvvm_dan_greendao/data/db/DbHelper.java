@@ -7,13 +7,12 @@ import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Medicin
 import java.util.List;
 
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
 
 public interface DbHelper {
 
-    Flowable<Long> insertHospital(Hospital hospital);
+    Flowable<Boolean> insertHospital(Hospital hospital);
 
-    Flowable<Long> insertMedicine( Medicine medicine);
+    Flowable<Boolean> insertMedicine( Medicine medicine);
 
     Flowable<Boolean> deleteHospital(Hospital hospital);
 
@@ -25,7 +24,11 @@ public interface DbHelper {
 
     Flowable<List<Hospital>> getAllHospital();
 
+    Flowable<List<Hospital>> getAllHospital(Long numOfData);
+
     Flowable<List<Medicine>> getAllMedicine();
+
+    Flowable<List<Medicine>> getAllMedicine(Long numOfData);
 
     Flowable<List<Medicine>> getMedicineForHospitalId(Long hospitalId);
 

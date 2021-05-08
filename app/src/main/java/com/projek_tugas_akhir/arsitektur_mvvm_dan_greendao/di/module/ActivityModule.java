@@ -26,17 +26,17 @@ public class ActivityModule {
         this.activity = activity;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Provides
-    CRUDViewModel provideCrudViewModel(DataManager dataManager, SchedulerProvider schedulerProvider) {
-        Supplier<CRUDViewModel> supplier = () -> new CRUDViewModel(dataManager, schedulerProvider);
-        ViewModelProviderFactory<CRUDViewModel> factory = new ViewModelProviderFactory<>(CRUDViewModel.class, supplier);
-        return new ViewModelProvider(activity, factory).get(CRUDViewModel.class);
-    }
-
-    @Provides
-    CRUDPagerAdapter providedCrudPagerAdapter() {
-        return new CRUDPagerAdapter(activity.getSupportFragmentManager());
-    }
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    @Provides
+//    CRUDViewModel provideCrudViewModel(DataManager dataManager, SchedulerProvider schedulerProvider) {
+//        Supplier<CRUDViewModel> supplier = () -> new CRUDViewModel(dataManager, schedulerProvider);
+//        ViewModelProviderFactory<CRUDViewModel> factory = new ViewModelProviderFactory<>(CRUDViewModel.class, supplier);
+//        return new ViewModelProvider(activity, factory).get(CRUDViewModel.class);
+//    }
+//
+//    @Provides
+//    CRUDPagerAdapter providedCrudPagerAdapter() {
+//        return new CRUDPagerAdapter(activity.getSupportFragmentManager());
+//    }
 
 }

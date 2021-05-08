@@ -36,42 +36,38 @@ public class UpdateViewModel extends BaseViewModel<UpdateNavigator> {
         AtomicInteger index = new AtomicInteger(0);
         List<Medical> medicals = new ArrayList<>();
         getCompositeDisposable().add(getDataManager()
-                .getAllHospital()
-//                .subscribeOn(getSchedulerProvider().io())
-                .concatMap(hospitalList -> hospitalList != null ? Flowable.fromIterable(hospitalList) : Flowable.fromIterable(new ArrayList<>()))
-//                .observeOn(getSchedulerProvider().ui())
-//                .subscribeOn(getSchedulerProvider().io())
-                .concatMap(hospital -> hospital != null ? Flowable.fromIterable(hospital.getMedicineList())
-//                                .observeOn(getSchedulerProvider().ui())
-//                                .subscribeOn(getSchedulerProvider().io())
-                                .concatMap(medicine -> {
-                                    if (index.get() < numOfData) {
-                                        medicine.setName(medicine.getName() + " NEW");
-                                        medicals.add(new Medical(hospital.getName(), medicine.getName()));
-                                        index.getAndIncrement();
-//                                        if (index.get() == numOfData)
-//                                        Log.d("CVM", "updateDatabase: " + index.get());
-                                        return getDataManager().updateDatabaseMedicine(medicine);
-                                    } else
-                                        return Flowable.just(false);
-                                }) : Flowable.just(false)
-                )
-//                .observeOn(getSchedulerProvider().ui())
+            .getAllHospital(numOfData > 1000 ? numOfData / 1000 : numOfData)
+                .concatMap(hospitalList -> hospitalList != null ? Flowable.fromIterable(hospitalList)
+                        : Flowable.fromIterable(new ArrayList<>()))
+                    .concatMap(hospital -> hospital != null ? getDataManager().getMedicineForHospitalId(hospital.getId())
+                        .concatMap(medicineList -> medicineList != null ? Flowable.fromIterable(medicineList)
+                                :Flowable.fromIterable(new ArrayList<>()))
+                                    .concatMap(medicine -> {
+                                        if (index.get() < numOfData) {
+                                            medicine.setName(medicine.getName() + " NEW");
+                                            medicals.add(new Medical(hospital.getName(), medicine.getName()));
+                                            index.getAndIncrement();
+                                            try {
+                                                return getDataManager().updateDatabaseMedicine(medicine)
+                                                        .concatMap(Flowable::just);
+                                            } catch (Exception e) {
+                                                return Flowable.just(false);
+                                            }
+                                        } else
+                                            return Flowable.just(false);
+                                    }) : Flowable.just(false))
                 .subscribe(aBoolean -> {
                     if (aBoolean) {
-//                        this.medicalListLiveData.postValue(medicals);
                         this.medicalListLiveData.setValue(medicals);
-//                        this.numOfRecord.postValue(index.longValue());
                         this.numOfRecord.setValue(index.longValue());
                         long endTime = System.currentTimeMillis();
                         long timeElapsed = endTime - startTime; //In MilliSeconds
-//                        this.executionTime.postValue(timeElapsed); //To MilliSeconds
                         this.executionTime.setValue(timeElapsed); //To MilliSeconds
-                    } else if (index.get() < numOfData)
+                    } else if (index.get() == numOfData) {
                         Log.d("CVM", "updateDatabase: " + index.get());
-                }, throwable -> {
-                    Log.d("CVM", "updateDatabase: " + throwable.getMessage());
-                }));
+                        index.getAndIncrement();
+                    }
+                }, throwable -> Log.d("CVM", "updateDatabase: " + throwable.getMessage())));
     }
 
     public void setMedicalListLiveData(MutableLiveData<List<Medical>> medicalListLiveData) {

@@ -25,25 +25,27 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Flowable<Long> insertHospital(Hospital hospital) {
+    public Flowable<Boolean> insertHospital(Hospital hospital) {
         return Flowable.fromCallable(() -> {
             try {
-                return daoSession.getHospitalDao().insertOrReplace(hospital);
+                daoSession.getHospitalDao().insertOrReplace(hospital);
+                return true;
             } catch (Exception e) {
                 e.printStackTrace();
-                return null;
+                return false;
             }
         });
     }
 
     @Override
-    public Flowable<Long> insertMedicine(Medicine medicine) {
+    public Flowable<Boolean> insertMedicine(Medicine medicine) {
         return Flowable.fromCallable(() -> {
             try {
-                return daoSession.getMedicineDao().insertOrReplace(medicine);
+                daoSession.getMedicineDao().insertOrReplace(medicine);
+                return true;
             } catch (Exception e) {
                 e.printStackTrace();
-                return null;
+                return false;
             }
         });
     }
@@ -110,8 +112,23 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
+    public Flowable<List<Hospital>> getAllHospital(Long numOfData) {
+        return Flowable.fromCallable(() -> daoSession.getHospitalDao()
+                .queryBuilder()
+                .limit(numOfData.intValue())
+                .list());
+    }
+
+    @Override
     public Flowable<List<Medicine>> getAllMedicine() {
         return Flowable.fromCallable(() -> daoSession.getMedicineDao().loadAll());
+    }
+
+    @Override
+    public Flowable<List<Medicine>> getAllMedicine(Long numOfData) {
+        return Flowable.fromCallable(() -> daoSession.getMedicineDao().queryBuilder()
+                .limit(numOfData.intValue())
+                .list());
     }
 
     @Override

@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ViewModelProviderFactory;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.DataManager;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseFragment;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.CRUDViewModel;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.delete.DeleteAdapter;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.delete.DeleteViewModel;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.insert.InsertAdapter;
