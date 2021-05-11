@@ -32,16 +32,8 @@ public interface DbHelper {
 
     Flowable<List<Medicine>> getMedicineForHospitalId(Long hospitalId);
 
-    Flowable<Boolean> isHospitalEmpty();
-
-    Flowable<Boolean> isMedicineEmpty();
-
     Flowable<Boolean> saveHospital(Hospital hospital);
 
     Flowable<Boolean> saveMedicine(Medicine medicine);
-
-    Flowable<Boolean> saveHospitalList(List<Hospital> hospitalList);
-
-    Flowable<Boolean> saveMedicineList(List<Medicine> medicineList);
 
 }

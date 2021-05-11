@@ -165,16 +165,6 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Flowable<Boolean> isHospitalEmpty() {
-        return dbHelper.isHospitalEmpty();
-    }
-
-    @Override
-    public Flowable<Boolean> isMedicineEmpty() {
-        return dbHelper.isMedicineEmpty();
-    }
-
-    @Override
     public Flowable<Boolean> saveHospital(Hospital hospital) {
         return dbHelper.saveHospital(hospital);
     }
@@ -182,16 +172,6 @@ public class AppDataManager implements DataManager {
     @Override
     public Flowable<Boolean> saveMedicine(Medicine medicine) {
         return dbHelper.saveMedicine(medicine);
-    }
-
-    @Override
-    public Flowable<Boolean> saveHospitalList(List<Hospital> hospitalList) {
-        return dbHelper.saveHospitalList(hospitalList);
-    }
-
-    @Override
-    public Flowable<Boolean> saveMedicineList(List<Medicine> medicineList) {
-        return dbHelper.saveMedicineList(medicineList);
     }
 
 }

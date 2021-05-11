@@ -137,16 +137,6 @@ public class AppDbHelper implements DbHelper {
     }
 
     @Override
-    public Flowable<Boolean> isHospitalEmpty() {
-        return Flowable.fromCallable(() -> daoSession.getHospitalDao().loadAll().isEmpty());
-    }
-
-    @Override
-    public Flowable<Boolean> isMedicineEmpty() {
-        return Flowable.fromCallable(() -> daoSession.getMedicineDao().loadAll().isEmpty());
-    }
-
-    @Override
     public Flowable<Boolean> saveHospital(Hospital hospital) {
         return Flowable.fromCallable(() -> {
             try {
@@ -169,22 +159,6 @@ public class AppDbHelper implements DbHelper {
                 e.printStackTrace();
                 return false;
             }
-        });
-    }
-
-    @Override
-    public Flowable<Boolean> saveHospitalList(List<Hospital> hospitalList) {
-        return Flowable.fromCallable(() -> {
-            daoSession.getHospitalDao().insertOrReplaceInTx(hospitalList);
-            return true;
-        });
-    }
-
-    @Override
-    public Flowable<Boolean> saveMedicineList(List<Medicine> medicineList) {
-        return Flowable.fromCallable(() -> {
-            daoSession.getMedicineDao().insertOrReplaceInTx(medicineList);
-            return true;
         });
     }
 
