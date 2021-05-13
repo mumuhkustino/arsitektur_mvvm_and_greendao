@@ -94,6 +94,18 @@ public class SelectFragment extends BaseFragment<FragmentSelectBinding, SelectVi
         selectFragmentBinding.selectRecyclerView.setLayoutManager(linearLayoutManager);
         selectFragmentBinding.selectRecyclerView.setItemAnimator(new DefaultItemAnimator());
         selectFragmentBinding.selectRecyclerView.setAdapter(selectAdapter);
+
+        selectFragmentBinding.fabDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectFragmentBinding.selectRecyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        selectFragmentBinding.selectRecyclerView.scrollToPosition(selectAdapter.getItemCount() - 1);
+                    }
+                });
+            }
+        });
     }
 
     @Override

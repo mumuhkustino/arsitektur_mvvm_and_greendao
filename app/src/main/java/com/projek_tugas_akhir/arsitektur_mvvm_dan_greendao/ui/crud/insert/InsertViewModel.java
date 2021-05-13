@@ -48,13 +48,25 @@ public class InsertViewModel extends BaseViewModel<InsertNavigator> {
                 .concatMap(medicineList -> medicineList != null ? Flowable.fromIterable(medicineList)
                         : Flowable.fromIterable(new ArrayList<>()))
                     .concatMap(medicine -> medicine != null ? getDataManager().insertMedicine(medicine)
+//                                    .subscribeOn(getSchedulerProvider().io())
+//                                    .concatMap(medicine -> medicine != null ? getDataManager().insertMedicine(medicine).concatMap(aBoolean -> {
+//                                        try {
+//                                            index.getAndIncrement();
+//                                            return Flowable.just(true);
+//                                        } catch (Exception e) {
+//                                            return Flowable.just(false);
+//                                        }
+//                                    })
                             : Flowable.fromIterable(new ArrayList<>()))
+//                    .observeOn(getSchedulerProvider().ui())
                         .subscribe(aBoolean -> {
                             if (aBoolean) {
                                 this.numOfRecord.setValue((numOfData));
+//                                this.numOfRecord.postValue(index.longValue());
                                 long endTime = System.currentTimeMillis();
                                 long timeElapsed = endTime - startTime; //In MilliSeconds
                                 this.executionTime.setValue(timeElapsed); //To MilliSeconds
+//                                this.executionTime.postValue(timeElapsed); //To MilliSeconds
                             } else
                                 Log.d("CVM", "insertDatabase: 2 " + numOfData);
                         } , throwable -> getNavigator().handleError(throwable))
