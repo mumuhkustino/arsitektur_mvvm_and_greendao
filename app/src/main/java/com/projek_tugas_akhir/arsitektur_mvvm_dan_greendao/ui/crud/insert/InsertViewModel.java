@@ -10,7 +10,6 @@ import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.Medical;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseViewModel;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils.rx.SchedulerProvider;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Flowable;
@@ -32,44 +31,31 @@ public class InsertViewModel extends BaseViewModel<InsertNavigator> {
 
     public void insertDatabase(Long numOfData) {
         long startTime = System.currentTimeMillis();
+        //Insert Hospital JSON to DB
         getCompositeDisposable().add(getDataManager()
             .seedDatabaseHospital(numOfData)
-                .concatMap(hospitalList -> hospitalList != null ? Flowable.fromIterable(hospitalList)
-                        : Flowable.fromIterable(new ArrayList<>()))
-                    .concatMap(hospital -> hospital != null ? getDataManager().insertHospital(hospital)
-                            : Flowable.fromIterable(new ArrayList<>()))
-                        .subscribe(aBoolean -> {
-                            if (!aBoolean)
-                                Log.d("CVM", "insertDatabase: 1 " + numOfData);
-                        } , throwable -> getNavigator().handleError(throwable))
+                .concatMap(Flowable::fromIterable)
+                    .concatMap(hospital -> getDataManager().insertHospital(hospital))
+            .observeOn(getSchedulerProvider().ui())
+            .subscribe(aBoolean -> {
+                } , throwable -> Log.d("IVM", "insertDatabase 1: " + throwable.getMessage())
+            )
         );
+        //Insert Medicine JSON to DB
         getCompositeDisposable().add(getDataManager()
             .seedDatabaseMedicine(numOfData)
-                .concatMap(medicineList -> medicineList != null ? Flowable.fromIterable(medicineList)
-                        : Flowable.fromIterable(new ArrayList<>()))
-                    .concatMap(medicine -> medicine != null ? getDataManager().insertMedicine(medicine)
-//                                    .subscribeOn(getSchedulerProvider().io())
-//                                    .concatMap(medicine -> medicine != null ? getDataManager().insertMedicine(medicine).concatMap(aBoolean -> {
-//                                        try {
-//                                            index.getAndIncrement();
-//                                            return Flowable.just(true);
-//                                        } catch (Exception e) {
-//                                            return Flowable.just(false);
-//                                        }
-//                                    })
-                            : Flowable.fromIterable(new ArrayList<>()))
-//                    .observeOn(getSchedulerProvider().ui())
-                        .subscribe(aBoolean -> {
-                            if (aBoolean) {
-                                this.numOfRecord.setValue((numOfData));
-//                                this.numOfRecord.postValue(index.longValue());
-                                long endTime = System.currentTimeMillis();
-                                long timeElapsed = endTime - startTime; //In MilliSeconds
-                                this.executionTime.setValue(timeElapsed); //To MilliSeconds
-//                                this.executionTime.postValue(timeElapsed); //To MilliSeconds
-                            } else
-                                Log.d("CVM", "insertDatabase: 2 " + numOfData);
-                        } , throwable -> getNavigator().handleError(throwable))
+                .concatMap(Flowable::fromIterable)
+                    .concatMap(medicine -> getDataManager().insertMedicine(medicine))
+            .observeOn(getSchedulerProvider().ui())
+            .subscribe(aBoolean -> {
+                if (aBoolean) {
+                    this.numOfRecord.setValue(numOfData); //Change number of record
+                    long endTime = System.currentTimeMillis();
+                    long timeElapsed = endTime - startTime; //In MilliSeconds
+                    this.executionTime.setValue(timeElapsed); //Change execution time
+                }
+            } , throwable -> Log.d("IVM", "insertDatabase 2: " + throwable.getMessage())
+            )
         );
     }
 

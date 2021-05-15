@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.DataManager;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Medicine;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.Medical;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseViewModel;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils.rx.SchedulerProvider;
@@ -36,33 +37,37 @@ public class SelectViewModel extends BaseViewModel<SelectNavigator> {
         AtomicInteger index = new AtomicInteger(0);
         List<Medical> medicals = new ArrayList<>();
         getCompositeDisposable().add(getDataManager()
-            .getAllHospital(numOfData > 1000 ? numOfData / 1000 : numOfData)
-                .concatMap(hospitalList -> hospitalList != null ? Flowable.fromIterable(hospitalList)
-                        : Flowable.fromIterable(new ArrayList<>()))
-                    .concatMap(hospital -> hospital != null ? getDataManager().getMedicineForHospitalId(hospital.getId())
-                        .concatMap(medicineList -> medicineList != null ? Flowable.fromIterable(medicineList)
-                                : Flowable.fromIterable(new ArrayList<>()))
-                            .concatMap(medicine -> {
-                                if (index.get() < numOfData) {
-                                    medicals.add(new Medical(hospital.getName(),
-                                            medicine.getName()));
-                                    index.getAndIncrement();
-                                    return Flowable.just(true);
-                                } else
-                                    return Flowable.just(false);
-                            }) : Flowable.just(false))
-                .subscribe(aBoolean -> {
-                    if (aBoolean) {
-                        this.medicalListLiveData.setValue(medicals);
-                        this.numOfRecord.setValue(index.longValue());
-                        long endTime = System.currentTimeMillis();
-                        long timeElapsed = endTime - startTime; //In MilliSeconds
-                        this.executionTime.setValue(timeElapsed); //To MilliSeconds
-                    } else if (index.get() == numOfData) {
-                        Log.d("CVM", "selectDatabase: " + index.get());
-                        index.getAndIncrement();
-                    }
-                }, throwable -> Log.d("CVM", "selectDatabase: " + throwable.getMessage())));
+            //Get All Hospital with Limit
+            .getAllHospital(numOfData >= 1000 ? numOfData / 1000 : 1)
+                .concatMap(Flowable::fromIterable)
+                    //Get All Medicine with same hospital Id
+                    .concatMap(hospital -> Flowable.zip(
+                            getDataManager().getMedicineForHospitalId(hospital.getId()),
+                            Flowable.just(hospital),
+                            ((medicineList, h) -> {
+                                for (Medicine m : medicineList) {
+                                    if (index.get() < numOfData) {
+                                        medicals.add(new Medical(h.getName(), m.getName()));
+                                        index.getAndIncrement();
+                                    }
+                                }
+                                return medicals;
+                            })
+                    ))
+            .observeOn(getSchedulerProvider().ui())
+            .subscribe(medicalList -> {
+                if (medicalList != null && index.get() == numOfData) {
+                    this.medicalListLiveData.setValue(medicalList); //Change data list
+                    this.numOfRecord.setValue(index.longValue()); //Change number of record
+                    long endTime = System.currentTimeMillis();
+                    long timeElapsed = endTime - startTime; //In MilliSeconds
+                    this.executionTime.setValue(timeElapsed); //Change execution time
+                    Log.d("SVM", "selectDatabase: " + index.get());
+                    index.getAndIncrement();
+                }
+            }, throwable -> Log.d("SVM", "selectDatabase: " + throwable.getMessage())
+            )
+        );
     }
 
     public void setMedicalListLiveData(MutableLiveData<List<Medical>> medicalListLiveData) {
