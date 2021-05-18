@@ -101,12 +101,12 @@ public class AppDataManager implements DataManager {
 
     @Override
     public Flowable<Boolean> updateDatabaseMedicine(Medicine medicine) {
-        return dbHelper.loadMedicine(medicine).concatMap(medicine1 -> saveMedicine(medicine));
+        return dbHelper.saveMedicine(medicine);
     }
 
     @Override
     public Flowable<Boolean> deleteDatabaseMedicine(Medicine medicine) {
-        return dbHelper.loadMedicine(medicine).concatMap(medicine1 -> deleteMedicine(medicine));
+        return dbHelper.deleteMedicine(medicine);
     }
 
     @Override
