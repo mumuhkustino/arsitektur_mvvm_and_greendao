@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
-//apply from: '../config/quality/quality.gradle'
 
 android {
     compileSdkVersion 30
@@ -42,32 +41,6 @@ greendao {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    //UI
-//    implementation "androidx.appcompat:appcompat:$appCompatVersion"
-//    implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
-
-//    implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
-//    implementation "com.google.android.material:material:$materialVersion"
-
-    //TESTING
-//    testImplementation "junit:junit:$junitVersion"
-//    androidTestImplementation "junit:junit:$junitVersion"
-//    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
-//    androidTestImplementation "androidx.test:runner:$androidTestVersion"
-//    androidTestImplementation "androidx.test:rules:$androidTestVersion"
-//    androidTestImplementation "androidx.test.ext:junit:$junitExtversion"
-
-//    implementation 'androidx.appcompat:appcompat:1.2.0'
-//    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-//    implementation 'com.google.android.material:material:1.3.0'
-//    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-//    implementation 'androidx.navigation:navigation-fragment:2.3.3'
-//    implementation 'androidx.navigation:navigation-ui:2.3.3'
-//    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-//    testImplementation 'junit:junit:4.13.1'
-//    testImplementation 'org.mockito:mockito-core:3.4.0'
-//    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     // android support libraries
     implementation "androidx.appcompat:appcompat:$rootProject.supportLibraryVersion"
@@ -77,43 +50,20 @@ dependencies {
     implementation "androidx.vectordrawable:vectordrawable-animated:$rootProject.animatedVectorDrawableVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
 
-    // java faker
-    implementation 'com.github.javafaker:javafaker:1.0.2'
-
     // database
     implementation "org.greenrobot:greendao:$rootProject.greenDaoVersion"
-
-    // image
-    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
 
     // parser
     implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
 
-    // debug database
-//    debugImplementation "com.amitshekhar.android:debug-db:$rootProject.debugDBVersion"
-
     // dependency injection
     implementation "com.google.dagger:dagger:$rootProject.dagger2Version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.3.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.dagger2Version"
 
     // reactive
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjava2Version"
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
-
-    // code generator for view
-//    implementation "com.jakewharton:butterknife:$rootProject.butterKnifeVersion"
-//    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterKnifeVersion"
-
-    // swipe view
-//    implementation "com.mindorks:placeholderview:$rootProject.placeholderviewVersion"
-
-    // logger
-//    implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
 
     // dependencies for local unit tests
     testImplementation "junit:junit:$rootProject.ext.junitVersion"
@@ -129,11 +79,5 @@ dependencies {
     // view model
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycleVersion"
-//    implementation 'androidx.navigation:navigation-fragment:2.3.4'
-//    implementation 'androidx.navigation:navigation-ui:2.3.4'
 }
-
-//configurations.all {
-//    resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
-//}
 
