@@ -72,19 +72,19 @@ public class UpdateViewModel extends BaseViewModel<UpdateNavigator> {
                     })
                 .doOnNext(aBoolean -> {
                     if (aBoolean)
-                        updateDbTime.set(updateDbTime.get() + (System.currentTimeMillis() - updateTime.get()));
+                        updateDbTime.set(updateDbTime.longValue() + (System.currentTimeMillis() - updateTime.longValue()));
                 })
             .observeOn(getSchedulerProvider().ui())
             .subscribe(aBoolean -> {
                 if (index.get() == numOfData) {
                     this.numOfRecord.setValue(index.longValue()); //Change number of record
-                    this.databaseUpdateTime.setValue(updateDbTime.get()); //Change execution time
+                    this.databaseUpdateTime.setValue(updateDbTime.longValue()); //Change execution time
                     AtomicLong endTime = new AtomicLong(System.currentTimeMillis());
-                    AtomicLong timeElapsed = new AtomicLong(endTime.get() - allUpdateTime.get());
-                    viewUpdateTime.set(timeElapsed.get() - updateDbTime.get());
-                    this.viewUpdateTime.setValue(viewUpdateTime.get());
-                    this.allUpdateTime.setValue(timeElapsed.get());
-                    Log.d("UVM", "updateDatabase: " + index.get());
+                    AtomicLong timeElapsed = new AtomicLong(endTime.longValue() - allUpdateTime.longValue());
+                    viewUpdateTime.set(timeElapsed.longValue() - updateDbTime.longValue());
+                    this.viewUpdateTime.setValue(viewUpdateTime.longValue());
+                    this.allUpdateTime.setValue(timeElapsed.longValue());
+                    Log.d("UVM", "updateDatabase: " + index.longValue());
                     index.getAndIncrement();
                 }
             }, throwable -> Log.d("UVM", "updateDatabase: " + throwable.getMessage())

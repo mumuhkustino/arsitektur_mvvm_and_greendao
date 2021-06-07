@@ -69,20 +69,20 @@ public class SelectViewModel extends BaseViewModel<SelectNavigator> {
                     })
                 .doOnNext(medicalList -> {
                     if (!medicalList.isEmpty())
-                        selectDbTime.set(selectDbTime.get() + (System.currentTimeMillis() - selectTime.get()));
+                        selectDbTime.set(selectDbTime.longValue() + (System.currentTimeMillis() - selectTime.longValue()));
                 })
             .observeOn(getSchedulerProvider().ui())
             .subscribe(medicalList -> {
                 if (medicalList != null && index.get() == numOfData) {
                     this.medicalListLiveData.setValue(medicalList); //Change data list
                     this.numOfRecord.setValue(index.longValue()); //Change number of record
-                    this.databaseSelectTime.setValue(selectDbTime.get()); //Change execution time
+                    this.databaseSelectTime.setValue(selectDbTime.longValue()); //Change execution time
                     AtomicLong endTime = new AtomicLong(System.currentTimeMillis());
-                    AtomicLong timeElapsed = new AtomicLong(endTime.get() - allSelectTime.get());
-                    viewSelectTime.set(timeElapsed.get() - selectDbTime.get());
-                    this.viewSelectTime.setValue(viewSelectTime.get());
-                    this.allSelectTime.setValue(timeElapsed.get());
-                    Log.d("SVM", "selectDatabase: " + index.get());
+                    AtomicLong timeElapsed = new AtomicLong(endTime.longValue() - allSelectTime.longValue());
+                    viewSelectTime.set(timeElapsed.longValue() - selectDbTime.longValue());
+                    this.viewSelectTime.setValue(viewSelectTime.longValue());
+                    this.allSelectTime.setValue(timeElapsed.longValue());
+                    Log.d("SVM", "selectDatabase: " + index.longValue());
                     index.getAndIncrement();
                 }
             }, throwable -> Log.d("SVM", "selectDatabase: " + throwable.getMessage())

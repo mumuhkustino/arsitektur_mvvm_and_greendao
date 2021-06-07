@@ -51,7 +51,7 @@ public class InsertViewModel extends BaseViewModel<InsertNavigator> {
                     })
                 .doOnNext(aBoolean -> {
                     if (aBoolean) {
-                        insertDbTime.set(insertDbTime.get() + (System.currentTimeMillis() - insertTime.get()));
+                        insertDbTime.set(insertDbTime.longValue() + (System.currentTimeMillis() - insertTime.longValue()));
                     }
                 })
             .observeOn(getSchedulerProvider().ui())
@@ -69,19 +69,19 @@ public class InsertViewModel extends BaseViewModel<InsertNavigator> {
                     })
                 .doOnNext(aBoolean -> {
                     if (aBoolean) {
-                        insertDbTime.set(insertDbTime.get() + (System.currentTimeMillis() - insertTime.get()));
+                        insertDbTime.set(insertDbTime.longValue() + (System.currentTimeMillis() - insertTime.longValue()));
                     }
                 })
             .observeOn(getSchedulerProvider().ui())
             .subscribe(aBoolean -> {
                 if (aBoolean) {
                     this.numOfRecord.setValue(numOfData); //Change number of record
-                    this.databaseInsertTime.setValue(insertDbTime.get()); //Change execution time
+                    this.databaseInsertTime.setValue(insertDbTime.longValue()); //Change execution time
                     AtomicLong endTime = new AtomicLong(System.currentTimeMillis());
-                    AtomicLong timeElapsed = new AtomicLong(endTime.get() - allInsertTime.get());
-                    viewInsertTime.set(timeElapsed.get() - insertDbTime.get());
-                    this.viewInsertTime.setValue(viewInsertTime.get());
-                    this.allInsertTime.setValue(timeElapsed.get());
+                    AtomicLong timeElapsed = new AtomicLong(endTime.longValue() - allInsertTime.longValue());
+                    viewInsertTime.set(timeElapsed.longValue() - insertDbTime.longValue());
+                    this.viewInsertTime.setValue(viewInsertTime.longValue());
+                    this.allInsertTime.setValue(timeElapsed.longValue());
                 }
             } , throwable -> Log.d("IVM", "insertDatabase 2: " + throwable.getMessage())
             )
