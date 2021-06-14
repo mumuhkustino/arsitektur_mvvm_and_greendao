@@ -70,7 +70,7 @@
                     tools:text="TIME VIEW (MS) : XXXXXX"/>
 
                 <TextView
-                    android:id="@+id/textViewTimeUpdateAll"
+                    android:id="@+id/textViewTimeDeleteAll"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
