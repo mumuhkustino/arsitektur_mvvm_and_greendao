@@ -1,6 +1,12 @@
 package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud;
 
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
 
 import com.google.android.material.tabs.TabLayout;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.BR;
@@ -38,6 +44,27 @@ public class CRUDActivity extends BaseActivity<ActivityCrudBinding, CRUDViewMode
     @Override
     public void performDependencyInjection(ActivityComponent buildComponent) {
         buildComponent.inject(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.right_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Drawable drawable = item.getIcon();
+        if (drawable instanceof Animatable)
+            ((Animatable) drawable).start();
+        switch (item.getItemId()) {
+            case R.id.action_export:
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void setUp() {
