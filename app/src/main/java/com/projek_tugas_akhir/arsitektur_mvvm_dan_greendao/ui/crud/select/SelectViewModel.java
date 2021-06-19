@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.DataManager;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.db.model.Medicine;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.ExecutionTime;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.ExecutionTimePreference;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.Medical;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseViewModel;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils.rx.SchedulerProvider;
@@ -39,7 +41,7 @@ public class SelectViewModel extends BaseViewModel<SelectNavigator> {
         this.medicalListLiveData = new MutableLiveData<>();
     }
 
-    public void selectDatabase(Long numOfData) {
+    public void selectDatabase(ExecutionTimePreference executionTimePreference, Long numOfData) {
         AtomicLong viewSelectTime = new AtomicLong(0);
         AtomicLong selectDbTime = new AtomicLong(0);
         AtomicLong selectTime = new AtomicLong(0);
@@ -84,6 +86,13 @@ public class SelectViewModel extends BaseViewModel<SelectNavigator> {
                     this.allSelectTime.setValue(timeElapsed.longValue());
                     Log.d("SVM", "selectDatabase: " + index.longValue());
                     index.getAndIncrement();
+
+                    ExecutionTime executionTime = new ExecutionTime();
+                    executionTime.setDatabaseSelectTime(selectDbTime.toString());
+                    executionTime.setAllSelectTime(timeElapsed.toString());
+                    executionTime.setViewSelectTime(viewSelectTime.toString());
+                    executionTime.setNumOfRecordSelect(numOfData.toString());
+                    executionTimePreference.setExecutionTime(executionTime);
                 }
             }, throwable -> Log.d("SVM", "selectDatabase: " + throwable.getMessage())
             )
