@@ -4,27 +4,31 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class ExecutionTime implements Parcelable {
-    String databaseDeleteTime, allDeleteTime, viewDeleteTime;
-    String databaseInsertTime, allInsertTime, viewInsertTime;
-    String databaseSelectTime, allSelectTime, viewSelectTime;
-    String databaseUpdateTime, allUpdateTime, viewUpdateTime;
+    String databaseDeleteTime, allDeleteTime, viewDeleteTime, numOfRecordDelete;
+    String databaseInsertTime, allInsertTime, viewInsertTime, numOfRecordInsert;
+    String databaseSelectTime, allSelectTime, viewSelectTime, numOfRecordSelect;
+    String databaseUpdateTime, allUpdateTime, viewUpdateTime, numOfRecordUpdate;
+
+    public ExecutionTime() {
+    }
 
     protected ExecutionTime(Parcel in) {
         databaseDeleteTime = in.readString();
         allDeleteTime = in.readString();
         viewDeleteTime = in.readString();
+        numOfRecordDelete = in.readString();
         databaseInsertTime = in.readString();
         allInsertTime = in.readString();
         viewInsertTime = in.readString();
+        numOfRecordInsert = in.readString();
         databaseSelectTime = in.readString();
         allSelectTime = in.readString();
         viewSelectTime = in.readString();
+        numOfRecordSelect = in.readString();
         databaseUpdateTime = in.readString();
         allUpdateTime = in.readString();
         viewUpdateTime = in.readString();
-    }
-
-    public ExecutionTime() {
+        numOfRecordUpdate = in.readString();
     }
 
     @Override
@@ -32,15 +36,19 @@ public class ExecutionTime implements Parcelable {
         dest.writeString(databaseDeleteTime);
         dest.writeString(allDeleteTime);
         dest.writeString(viewDeleteTime);
+        dest.writeString(numOfRecordDelete);
         dest.writeString(databaseInsertTime);
         dest.writeString(allInsertTime);
         dest.writeString(viewInsertTime);
+        dest.writeString(numOfRecordInsert);
         dest.writeString(databaseSelectTime);
         dest.writeString(allSelectTime);
         dest.writeString(viewSelectTime);
+        dest.writeString(numOfRecordSelect);
         dest.writeString(databaseUpdateTime);
         dest.writeString(allUpdateTime);
         dest.writeString(viewUpdateTime);
+        dest.writeString(numOfRecordUpdate);
     }
 
     @Override
@@ -59,6 +67,38 @@ public class ExecutionTime implements Parcelable {
             return new ExecutionTime[size];
         }
     };
+
+    public String getNumOfRecordDelete() {
+        return numOfRecordDelete;
+    }
+
+    public void setNumOfRecordDelete(String numOfRecordDelete) {
+        this.numOfRecordDelete = numOfRecordDelete;
+    }
+
+    public String getNumOfRecordInsert() {
+        return numOfRecordInsert;
+    }
+
+    public void setNumOfRecordInsert(String numOfRecordInsert) {
+        this.numOfRecordInsert = numOfRecordInsert;
+    }
+
+    public String getNumOfRecordSelect() {
+        return numOfRecordSelect;
+    }
+
+    public void setNumOfRecordSelect(String numOfRecordSelect) {
+        this.numOfRecordSelect = numOfRecordSelect;
+    }
+
+    public String getNumOfRecordUpdate() {
+        return numOfRecordUpdate;
+    }
+
+    public void setNumOfRecordUpdate(String numOfRecordUpdate) {
+        this.numOfRecordUpdate = numOfRecordUpdate;
+    }
 
     public String getDatabaseDeleteTime() {
         return databaseDeleteTime;
