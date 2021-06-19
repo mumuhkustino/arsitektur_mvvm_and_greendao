@@ -29,7 +29,9 @@ import org.apache.poi.ss.usermodel.Cell;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -82,7 +84,9 @@ public class CRUDActivity extends BaseActivity<ActivityCrudBinding, CRUDViewMode
         switch (item.getItemId()) {
             case R.id.action_export:
                 HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
-                HSSFSheet hssfSheet = hssfWorkbook.createSheet("Execution Time");
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yy HH.mm.ss");
+                Date date = new Date();
+                HSSFSheet hssfSheet = hssfWorkbook.createSheet(formatter.format(date));
 
                 List<List<String>> listExecutionTime = new ArrayList<>();
                 List<String> dataExecutionTime = new ArrayList<>();
