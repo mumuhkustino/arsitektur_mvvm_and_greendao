@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.BR;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.R;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.ExecutionTimePreference;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.Medical;
 
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.databinding.FragmentInsertBinding;
@@ -34,6 +35,8 @@ public class InsertFragment extends BaseFragment<FragmentInsertBinding, InsertVi
     @Inject
     LinearLayoutManager linearLayoutManager;
 
+    private ExecutionTimePreference executionTimePreference;
+
     public static InsertFragment newInstance() {
         Bundle args = new Bundle();
         InsertFragment fragment = new InsertFragment();
@@ -56,6 +59,7 @@ public class InsertFragment extends BaseFragment<FragmentInsertBinding, InsertVi
         super.onCreate(savedInstanceState);
         viewModel.setNavigator(this);
         insertAdapter.setListener(this);
+        executionTimePreference = new ExecutionTimePreference(getBaseActivity());
     }
 
     @Override
@@ -91,6 +95,23 @@ public class InsertFragment extends BaseFragment<FragmentInsertBinding, InsertVi
         insertFragmentBinding.insertRecyclerView.setLayoutManager(linearLayoutManager);
         insertFragmentBinding.insertRecyclerView.setItemAnimator(new DefaultItemAnimator());
         insertFragmentBinding.insertRecyclerView.setAdapter(insertAdapter);
+
+        if (!executionTimePreference.getExecutionTime().getDatabaseInsertTime().isEmpty())
+            insertFragmentBinding.textViewTimeInsertDB
+                    .setText("TIME DB (MS) : " +
+                            executionTimePreference.getExecutionTime().getDatabaseInsertTime());
+        if (!executionTimePreference.getExecutionTime().getAllInsertTime().isEmpty())
+            insertFragmentBinding.textViewTimeInsertAll
+                    .setText("TIME ALL (MS) : " +
+                            executionTimePreference.getExecutionTime().getAllInsertTime());
+        if (!executionTimePreference.getExecutionTime().getViewInsertTime().isEmpty())
+            insertFragmentBinding.textViewTimeInsertView
+                    .setText("TIME VIEW (MS) : " +
+                            executionTimePreference.getExecutionTime().getViewInsertTime());
+        if (!executionTimePreference.getExecutionTime().getNumOfRecordInsert().isEmpty())
+            insertFragmentBinding.textViewRecord
+                    .setText("RECORD : " +
+                            executionTimePreference.getExecutionTime().getNumOfRecordInsert());
     }
 
     @Override
@@ -98,7 +119,7 @@ public class InsertFragment extends BaseFragment<FragmentInsertBinding, InsertVi
         if (insertFragmentBinding.editTextNumData.getText() != null) {
             try {
                 Long numOfData = Long.valueOf(insertFragmentBinding.editTextNumData.getText().toString());
-                viewModel.insertDatabase(numOfData);
+                viewModel.insertDatabase(executionTimePreference, numOfData);
             } catch (Exception e) {
                 Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
             }

@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.DataManager;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.ExecutionTime;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.ExecutionTimePreference;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.Medical;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseViewModel;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils.rx.SchedulerProvider;
@@ -36,7 +38,7 @@ public class InsertViewModel extends BaseViewModel<InsertNavigator> {
         this.medicalListLiveData = new MutableLiveData<>();
     }
 
-    public void insertDatabase(Long numOfData) {
+    public void insertDatabase(ExecutionTimePreference executionTimePreference, Long numOfData) {
         AtomicLong viewInsertTime = new AtomicLong(0);
         AtomicLong insertDbTime = new AtomicLong(0);
         AtomicLong insertTime = new AtomicLong(0);
@@ -82,6 +84,13 @@ public class InsertViewModel extends BaseViewModel<InsertNavigator> {
                     viewInsertTime.set(timeElapsed.longValue() - insertDbTime.longValue());
                     this.viewInsertTime.setValue(viewInsertTime.longValue());
                     this.allInsertTime.setValue(timeElapsed.longValue());
+
+                    ExecutionTime executionTime = new ExecutionTime();
+                    executionTime.setDatabaseInsertTime(insertDbTime.toString());
+                    executionTime.setAllInsertTime(timeElapsed.toString());
+                    executionTime.setViewInsertTime(viewInsertTime.toString());
+                    executionTime.setNumOfRecordInsert(numOfData.toString());
+                    executionTimePreference.setExecutionTime(executionTime);
                 }
             } , throwable -> Log.d("IVM", "insertDatabase 2: " + throwable.getMessage())
             )
