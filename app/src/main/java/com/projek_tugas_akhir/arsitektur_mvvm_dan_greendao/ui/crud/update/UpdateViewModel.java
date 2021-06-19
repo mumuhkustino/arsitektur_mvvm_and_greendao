@@ -89,7 +89,7 @@ public class UpdateViewModel extends BaseViewModel<UpdateNavigator> {
                     Log.d("UVM", "updateDatabase: " + index.longValue());
                     index.getAndIncrement();
 
-                    ExecutionTime executionTime = new ExecutionTime();
+                    ExecutionTime executionTime = executionTimePreference.getExecutionTime();
                     executionTime.setDatabaseUpdateTime(updateDbTime.toString());
                     executionTime.setAllUpdateTime(timeElapsed.toString());
                     executionTime.setViewUpdateTime(viewUpdateTime.toString());

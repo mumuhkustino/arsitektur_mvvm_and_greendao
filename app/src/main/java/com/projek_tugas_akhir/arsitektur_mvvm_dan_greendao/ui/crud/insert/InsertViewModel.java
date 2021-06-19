@@ -85,7 +85,7 @@ public class InsertViewModel extends BaseViewModel<InsertNavigator> {
                     this.viewInsertTime.setValue(viewInsertTime.longValue());
                     this.allInsertTime.setValue(timeElapsed.longValue());
 
-                    ExecutionTime executionTime = new ExecutionTime();
+                    ExecutionTime executionTime = executionTimePreference.getExecutionTime();
                     executionTime.setDatabaseInsertTime(insertDbTime.toString());
                     executionTime.setAllInsertTime(timeElapsed.toString());
                     executionTime.setViewInsertTime(viewInsertTime.toString());

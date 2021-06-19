@@ -87,7 +87,7 @@ public class SelectViewModel extends BaseViewModel<SelectNavigator> {
                     Log.d("SVM", "selectDatabase: " + index.longValue());
                     index.getAndIncrement();
 
-                    ExecutionTime executionTime = new ExecutionTime();
+                    ExecutionTime executionTime = executionTimePreference.getExecutionTime();
                     executionTime.setDatabaseSelectTime(selectDbTime.toString());
                     executionTime.setAllSelectTime(timeElapsed.toString());
                     executionTime.setViewSelectTime(viewSelectTime.toString());

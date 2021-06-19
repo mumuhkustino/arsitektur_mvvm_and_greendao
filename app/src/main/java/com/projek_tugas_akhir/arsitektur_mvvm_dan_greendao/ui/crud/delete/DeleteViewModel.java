@@ -86,7 +86,7 @@ public class DeleteViewModel extends BaseViewModel<DeleteNavigator> {
                     Log.d("DVM", "deleteDatabase: " + index.longValue());
                     index.getAndIncrement();
 
-                    ExecutionTime executionTime = new ExecutionTime();
+                    ExecutionTime executionTime = executionTimePreference.getExecutionTime();
                     executionTime.setDatabaseDeleteTime(deleteDbTime.toString());
                     executionTime.setAllDeleteTime(timeElapsed.toString());
                     executionTime.setViewDeleteTime(viewDeleteTime.toString());
