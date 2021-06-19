@@ -1,11 +1,16 @@
 package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.delete;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.DataManager;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.ExecutionTime;
+import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.ExecutionTimePreference;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.Medical;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseViewModel;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils.rx.SchedulerProvider;
@@ -37,7 +42,7 @@ public class DeleteViewModel extends BaseViewModel<DeleteNavigator> {
         this.medicalListLiveData = new MutableLiveData<>();
     }
 
-    public void deleteDatabase(Long numOfData) {
+    public void deleteDatabase(ExecutionTimePreference executionTimePreference, Long numOfData) {
         AtomicLong viewDeleteTime = new AtomicLong(0);
         AtomicLong deleteDbTime = new AtomicLong(0);
         AtomicLong deleteTime = new AtomicLong(0);
@@ -80,6 +85,13 @@ public class DeleteViewModel extends BaseViewModel<DeleteNavigator> {
                     this.allDeleteTime.setValue(timeElapsed.longValue());
                     Log.d("DVM", "deleteDatabase: " + index.longValue());
                     index.getAndIncrement();
+
+                    ExecutionTime executionTime = new ExecutionTime();
+                    executionTime.setDatabaseDeleteTime(deleteDbTime.toString());
+                    executionTime.setAllDeleteTime(timeElapsed.toString());
+                    executionTime.setViewDeleteTime(viewDeleteTime.toString());
+                    executionTime.setNumOfRecordDelete(numOfData.toString());
+                    executionTimePreference.setExecutionTime(executionTime);
                 }
             }, throwable -> Log.d("DVM", "deleteDatabase: " + throwable.getMessage())
             )
