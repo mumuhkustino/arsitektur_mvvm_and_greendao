@@ -36,12 +36,7 @@ public class DeleteFragment extends BaseFragment<FragmentDeleteBinding, DeleteVi
     @Inject
     LinearLayoutManager linearLayoutManager;
 
-    public static final String EXTRA_RESULT_EXECUTION_TIME = "extra_execution_time";
-    public static final int RESULT_CODE = 101;
-
     private ExecutionTimePreference executionTimePreference;
-    private ExecutionTime executionTime;
-    private boolean isPreferenceEmpty = false;
 
     public static DeleteFragment newInstance() {
         Bundle args = new Bundle();

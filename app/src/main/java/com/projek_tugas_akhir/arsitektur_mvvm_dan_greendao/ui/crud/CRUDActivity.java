@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
@@ -148,6 +149,7 @@ public class CRUDActivity extends BaseActivity<ActivityCrudBinding, CRUDViewMode
                         fileOutputStream.flush();
                         fileOutputStream.close();
                     }
+                    Toast.makeText(this, "SAVE FILE SUCCESS", Toast.LENGTH_SHORT).show();
                     Log.d("TAG", "onOptionsItemSelected: SAVE FILE SUCCESS");
                 } catch (Exception e) {
                     e.printStackTrace();
