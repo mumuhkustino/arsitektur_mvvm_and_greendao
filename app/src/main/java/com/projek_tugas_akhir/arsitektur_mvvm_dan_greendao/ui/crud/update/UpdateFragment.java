@@ -99,10 +99,10 @@ public class UpdateFragment extends BaseFragment<FragmentUpdateBinding, UpdateVi
                 Long numOfData = Long.valueOf(fragmentUpdateBinding.editTextNumData.getText().toString());
                 viewModel.updateDatabase(executionTimePreference, numOfData);
             } catch (Exception e) {
-                Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Amount Of Data is Not Valid", Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Amount Of Data is Not Valid", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -131,7 +131,7 @@ public class UpdateFragment extends BaseFragment<FragmentUpdateBinding, UpdateVi
                             executionTimePreference.getExecutionTime().getViewUpdateTime());
         if (!executionTimePreference.getExecutionTime().getNumOfRecordUpdate().isEmpty())
             fragmentUpdateBinding.textViewRecord
-                    .setText("RECORD : " +
+                    .setText("RECORDS : " +
                             executionTimePreference.getExecutionTime().getNumOfRecordUpdate());
     }
 }

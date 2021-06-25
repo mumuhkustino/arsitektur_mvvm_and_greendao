@@ -88,10 +88,10 @@ public class DeleteFragment extends BaseFragment<FragmentDeleteBinding, DeleteVi
                 Long numOfData = Long.valueOf(fragmentDeleteBinding.editTextNumData.getText().toString());
                 viewModel.deleteDatabase(executionTimePreference, numOfData);
             } catch (Exception e) {
-                Toast.makeText(getContext(), "Data is Not Valid", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Amount Of Data is Not Valid", Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Amount Of Data is Not Valid", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -123,7 +123,7 @@ public class DeleteFragment extends BaseFragment<FragmentDeleteBinding, DeleteVi
 
         if (!executionTimePreference.getExecutionTime().getNumOfRecordDelete().isEmpty())
             fragmentDeleteBinding.textViewRecord
-                    .setText("RECORD : " +
+                    .setText("RECORDS : " +
                             executionTimePreference.getExecutionTime().getNumOfRecordDelete());
     }
 
@@ -135,10 +135,10 @@ public class DeleteFragment extends BaseFragment<FragmentDeleteBinding, DeleteVi
 //                viewModel.selectDatabase(numOfData);
                 viewModel.deleteDatabase(executionTimePreference, numOfData);
             } catch (Exception e) {
-                Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Amount Of Data is Not Valid", Toast.LENGTH_SHORT).show();
             }
         } else {
-            Toast.makeText(getContext(), "Num Of Data is Not Valid", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Amount Of Data is Not Valid", Toast.LENGTH_SHORT).show();
         }
     }
 }
