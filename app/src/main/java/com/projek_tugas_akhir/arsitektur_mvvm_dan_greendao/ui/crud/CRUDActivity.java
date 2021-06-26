@@ -100,10 +100,10 @@ public class CRUDActivity extends BaseActivity<ActivityCrudBinding, CRUDViewMode
                 List<List<String>> listExecutionTime = new ArrayList<>();
                 List<String> dataExecutionTime = new ArrayList<>();
                 dataExecutionTime.add("TYPE CRUD");
-                dataExecutionTime.add("AMOUNT OF RECORD");
-                dataExecutionTime.add("EXECUTION TIME DB (MS)");
-                dataExecutionTime.add("EXECUTION TIME VIEW (MS)");
-                dataExecutionTime.add("EXECUTION TIME ALL (MS)");
+                dataExecutionTime.add("NUMBER OF RECORD");
+                dataExecutionTime.add("TIME DB (MS)");
+                dataExecutionTime.add("TIME VIEW (MS)");
+                dataExecutionTime.add("TIME ALL (MS)");
                 listExecutionTime.add(dataExecutionTime);
                 dataExecutionTime = new ArrayList<>();
                 dataExecutionTime.add("INSERT");

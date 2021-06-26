@@ -13,7 +13,6 @@ import androidx.fragment.app.DialogFragment;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.R;
 
 public class InformationDialogFragment extends DialogFragment {
-    private TextView mInformationText;
     private Button mCloseButton;
 
     public InformationDialogFragment() {
