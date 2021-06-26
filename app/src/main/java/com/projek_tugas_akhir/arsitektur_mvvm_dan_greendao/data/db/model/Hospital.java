@@ -12,29 +12,31 @@ import org.greenrobot.greendao.annotation.ToMany;
 import java.util.List;
 import org.greenrobot.greendao.DaoException;
 
+// Model dari Object Hospital
 @Entity(nameInDb = "hospitals")
 public class Hospital {
 
-    @Expose
-    @SerializedName("id")
-    @Id
+    // Attribute id berupa integer (long)
+    @Expose                 //Annotation untuk
+    @SerializedName("id")   //Pemrosesan konversi file json ke dalam objek
+    @Id                     //Annotation untuk menyatakan attribut ini sebagai id atau primary key
     private Long id;
 
     @Expose
     @SerializedName("hospitalName")
-    @Property(nameInDb = "name")
+    @Property(nameInDb = "name")        //Annotation untuk menyatakan attribut ini merupakan property atau bukan attribute primary key
     private String name;
 
-    @ToMany(referencedJoinProperty = "hospitalId")
-    private List<Medicine> medicineList;
+    @ToMany(referencedJoinProperty = "hospitalId")  //Annotation untuk menyatakan satu object hospital
+    private List<Medicine> medicineList;            //memiliki banyak medicine dengan foreign key hospitalId
 
     /** Used to resolve relations */
     @Generated(hash = 2040040024)
-    private transient DaoSession daoSession;
+    private transient DaoSession daoSession;    //Hasil generate otomatis dari library greendao untuk annotation ToMany
 
     /** Used for active entity operations. */
     @Generated(hash = 679648518)
-    private transient HospitalDao myDao;
+    private transient HospitalDao myDao;        //Hasil generate otomatis dari library greendao untuk annotation ToMany
 
     @Generated(hash = 714822730)
     public Hospital(Long id, String name) {
@@ -74,8 +76,7 @@ public class Hospital {
                 throw new DaoException("Entity is detached from DAO context");
             }
             MedicineDao targetDao = daoSession.getMedicineDao();
-            List<Medicine> medicineListNew = targetDao
-                    ._queryHospital_MedicineList(id);
+            List<Medicine> medicineListNew = targetDao._queryHospital_MedicineList(id);
             synchronized (this) {
                 if (medicineList == null) {
                     medicineList = medicineListNew;

@@ -8,22 +8,24 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Property;
 
+// Model dari Object Medicine
 @Entity(nameInDb = "medicines")
 public class Medicine {
 
-    @Expose
-    @SerializedName("id")
-    @Id
+    // Attribute id berupa integer (long)
+    @Expose                 //Annotation untuk
+    @SerializedName("id")   //Pemrosesan konversi file json ke dalam objek
+    @Id                     //Annotation untuk menyatakan attribut ini sebagai id atau primary key
     private Long id;
 
     @Expose
     @SerializedName("hospitalId")
-    @Property(nameInDb = "hospitalId")
+    @Property(nameInDb = "hospitalId")  //Annotation untuk menyatakan attribut ini merupakan foreign key atau bukan attribute primary key
     private Long hospitalId;
 
     @Expose
     @SerializedName("medicineName")
-    @Property(nameInDb = "name")
+    @Property(nameInDb = "name")        //Annotation untuk menyatakan attribut ini merupakan property atau bukan attribute primary key
     private String name;
 
     @Generated(hash = 1489536452)
