@@ -40,6 +40,7 @@ public class UpdateViewModel extends BaseViewModel<UpdateNavigator> {
         this.medicalListLiveData = new MutableLiveData<>();
     }
 
+    // Method yang digunakan untuk update data
     public void updateDatabase(ExecutionTimePreference executionTimePreference, Long numOfData) {
         AtomicLong viewUpdateTime = new AtomicLong(0);
         AtomicLong updateDbTime = new AtomicLong(0);

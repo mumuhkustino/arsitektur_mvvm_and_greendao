@@ -17,15 +17,15 @@ import org.greenrobot.greendao.DaoException;
 public class Hospital {
 
     // Attribute id berupa integer (long)
-    @Expose                 //Annotation untuk
-    @SerializedName("id")   //Pemrosesan konversi file json ke dalam objek
-    @Id                     //Annotation untuk menyatakan attribut ini sebagai id atau primary key
-    private Long id;
+    @Expose
+    @SerializedName("id") // Pemrosesan konversi file json ke dalam objek
+    @Id // Annotation untuk menyatakan attribut ini sebagai id
+    private Long id; // atau primary key
 
     @Expose
     @SerializedName("hospitalName")
-    @Property(nameInDb = "name")        //Annotation untuk menyatakan attribut ini merupakan property atau bukan attribute primary key
-    private String name;
+    @Property(nameInDb = "name") // Annotation untuk menyatakan
+    private String name; // attribut ini merupakan property
 
     @ToMany(referencedJoinProperty = "hospitalId")  //Annotation untuk menyatakan satu object hospital
     private List<Medicine> medicineList;            //memiliki banyak medicine dengan foreign key hospitalId

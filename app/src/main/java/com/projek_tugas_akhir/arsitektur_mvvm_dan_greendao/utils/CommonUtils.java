@@ -1,12 +1,10 @@
 package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.provider.Settings;
 
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.R;
 
@@ -33,12 +31,6 @@ public final class CommonUtils {
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
         return progressDialog;
-    }
-
-    @SuppressLint("all")
-    public static String getDeviceId(Context context) {
-        return Settings.Secure.getString(context.getContentResolver(),
-                Settings.Secure.ANDROID_ID);
     }
 
     public static String loadJSONFromAsset(Context context, String jsonFileName)

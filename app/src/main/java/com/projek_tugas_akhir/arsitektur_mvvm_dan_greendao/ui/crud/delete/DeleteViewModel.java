@@ -1,10 +1,6 @@
 package com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.crud.delete;
 
-import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
-
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -42,6 +38,7 @@ public class DeleteViewModel extends BaseViewModel<DeleteNavigator> {
         this.medicalListLiveData = new MutableLiveData<>();
     }
 
+    // Method yang digunakan untuk delete data
     public void deleteDatabase(ExecutionTimePreference executionTimePreference, Long numOfData) {
         AtomicLong viewDeleteTime = new AtomicLong(0);
         AtomicLong deleteDbTime = new AtomicLong(0);

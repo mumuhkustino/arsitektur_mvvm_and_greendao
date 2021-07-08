@@ -12,14 +12,10 @@ import android.widget.Toast;
 
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.BR;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.R;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.ExecutionTime;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.ExecutionTimePreference;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.Medical;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.databinding.FragmentDeleteBinding;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.di.component.FragmentComponent;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseFragment;
-
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -27,9 +23,9 @@ import javax.inject.Named;
 public class DeleteFragment extends BaseFragment<FragmentDeleteBinding, DeleteViewModel> implements DeleteNavigator,
         DeleteAdapter.DeleteAdapterListener {
 
-    @Inject
+    @Inject //Penggunaan dependency injection untuk adapter delete
     @Named("delete")
-    DeleteAdapter deleteAdapter;
+    DeleteAdapter deleteAdapter; //Deklarasi Adapter pada view Delete
 
     FragmentDeleteBinding fragmentDeleteBinding;
 
@@ -77,11 +73,6 @@ public class DeleteFragment extends BaseFragment<FragmentDeleteBinding, DeleteVi
     }
 
     @Override
-    public void handleError(Throwable throwable) {
-
-    }
-
-    @Override
     public void onClick() {
         if (fragmentDeleteBinding.editTextNumData.getText() != null) {
             try {
@@ -93,11 +84,6 @@ public class DeleteFragment extends BaseFragment<FragmentDeleteBinding, DeleteVi
         } else {
             Toast.makeText(getContext(), "Amount Of Data is Not Valid", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    public void updateMedical(List<Medical> medicalList) {
-        deleteAdapter.deleteItems(medicalList);
     }
 
     private void setUp() {
@@ -132,7 +118,6 @@ public class DeleteFragment extends BaseFragment<FragmentDeleteBinding, DeleteVi
         if (fragmentDeleteBinding.editTextNumData.getText() != null) {
             try {
                 Long numOfData = Long.valueOf(fragmentDeleteBinding.editTextNumData.getText().toString());
-//                viewModel.selectDatabase(numOfData);
                 viewModel.deleteDatabase(executionTimePreference, numOfData);
             } catch (Exception e) {
                 Toast.makeText(getContext(), "Amount Of Data is Not Valid", Toast.LENGTH_SHORT).show();

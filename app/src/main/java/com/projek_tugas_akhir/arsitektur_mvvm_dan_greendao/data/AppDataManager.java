@@ -23,8 +23,6 @@ import io.reactivex.Flowable;
 @Singleton
 public class AppDataManager implements DataManager {
 
-    private static final String TAG = "AppDataManager";
-
     private final Context context;
     private final DbHelper dbHelper;
 

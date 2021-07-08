@@ -38,6 +38,7 @@ public class InsertViewModel extends BaseViewModel<InsertNavigator> {
         this.medicalListLiveData = new MutableLiveData<>();
     }
 
+    // Method yang digunakan untuk insert data
     public void insertDatabase(ExecutionTimePreference executionTimePreference, Long numOfData) {
         AtomicLong viewInsertTime = new AtomicLong(0);
         AtomicLong insertDbTime = new AtomicLong(0);

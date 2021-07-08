@@ -12,13 +12,10 @@ import android.widget.Toast;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.BR;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.R;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.ExecutionTimePreference;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.Medical;
 
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.databinding.FragmentInsertBinding;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.di.component.FragmentComponent;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseFragment;
-
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -26,9 +23,9 @@ import javax.inject.Named;
 public class InsertFragment extends BaseFragment<FragmentInsertBinding, InsertViewModel> implements InsertNavigator,
         InsertAdapter.InsertAdapterListener {
 
-    @Inject
+    @Inject //Penggunaan dependency injection untuk adapter insert
     @Named("insert")
-    InsertAdapter insertAdapter;
+    InsertAdapter insertAdapter; //Deklarasi Adapter pada view Insert
 
     FragmentInsertBinding insertFragmentBinding;
 
@@ -77,17 +74,6 @@ public class InsertFragment extends BaseFragment<FragmentInsertBinding, InsertVi
         super.onViewCreated(view, savedInstanceState);
         insertFragmentBinding = getViewDataBinding();
         setUp();
-    }
-
-    @Override
-    public void handleError(Throwable throwable) {
-
-    }
-
-    @Override
-    public void updateMedical(List<Medical> medicalList) {
-        insertAdapter.clearItems();
-        insertAdapter.addItems(medicalList);
     }
 
     private void setUp() {

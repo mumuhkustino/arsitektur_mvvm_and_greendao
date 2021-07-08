@@ -41,6 +41,7 @@ public class SelectViewModel extends BaseViewModel<SelectNavigator> {
         this.medicalListLiveData = new MutableLiveData<>();
     }
 
+    // Method yang digunakan untuk select data
     public void selectDatabase(ExecutionTimePreference executionTimePreference, Long numOfData) {
         AtomicLong viewSelectTime = new AtomicLong(0);
         AtomicLong selectDbTime = new AtomicLong(0);

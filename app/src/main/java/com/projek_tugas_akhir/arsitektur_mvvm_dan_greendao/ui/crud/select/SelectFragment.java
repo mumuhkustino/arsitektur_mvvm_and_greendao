@@ -13,12 +13,9 @@ import android.widget.Toast;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.BR;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.R;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.ExecutionTimePreference;
-import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.data.others.Medical;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.databinding.FragmentSelectBinding;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.di.component.FragmentComponent;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.ui.base.BaseFragment;
-
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -26,9 +23,9 @@ import javax.inject.Named;
 public class SelectFragment extends BaseFragment<FragmentSelectBinding, SelectViewModel> implements SelectNavigator,
         SelectAdapter.SelectAdapterListener {
 
-    @Inject
+    @Inject //Penggunaan dependency injection untuk adapter select
     @Named("select")
-    SelectAdapter selectAdapter;
+    SelectAdapter selectAdapter; //Deklarasi Adapter pada view Select
 
     FragmentSelectBinding selectFragmentBinding;
 
@@ -78,16 +75,6 @@ public class SelectFragment extends BaseFragment<FragmentSelectBinding, SelectVi
         super.onViewCreated(view, savedInstanceState);
         selectFragmentBinding = getViewDataBinding();
         setUp();
-    }
-
-    @Override
-    public void handleError(Throwable throwable) {
-
-    }
-
-    @Override
-    public void updateMedical(List<Medical> medicalList) {
-        selectAdapter.selectItems(medicalList);
     }
 
     private void setUp() {
