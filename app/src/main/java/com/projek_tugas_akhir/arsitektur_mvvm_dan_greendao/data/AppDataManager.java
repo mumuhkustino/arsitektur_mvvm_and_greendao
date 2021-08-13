@@ -38,12 +38,12 @@ public class AppDataManager implements DataManager {
         GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         final Gson gson = builder.create();
         String pathJson;
-        if (numOfData < 100000) {
+        if (numOfData < 10000) {
+            pathJson = AppConstants.SEED_DATABASE_HOSPITALS_1;
+        } else if (numOfData < 100000) {
             pathJson = AppConstants.SEED_DATABASE_HOSPITALS_10;
-        } else if (numOfData < 500000) {
-            pathJson = AppConstants.SEED_DATABASE_HOSPITALS_100;
         } else if (numOfData < 1000000) {
-            pathJson = AppConstants.SEED_DATABASE_HOSPITALS_500;
+            pathJson = AppConstants.SEED_DATABASE_HOSPITALS_100;
         } else {
             pathJson = AppConstants.SEED_DATABASE_HOSPITALS_1000;
         }
@@ -76,12 +76,12 @@ public class AppDataManager implements DataManager {
         GsonBuilder builder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation();
         final Gson gson = builder.create();
         String pathJson;
-        if (numOfData < 100000) {
+        if (numOfData < 10000) {
+            pathJson = AppConstants.SEED_DATABASE_MEDICINES_1;
+        } else if (numOfData < 100000) {
             pathJson = AppConstants.SEED_DATABASE_MEDICINES_10;
-        } else if (numOfData < 500000) {
-            pathJson = AppConstants.SEED_DATABASE_MEDICINES_100;
         } else if (numOfData < 1000000) {
-            pathJson = AppConstants.SEED_DATABASE_MEDICINES_500;
+            pathJson = AppConstants.SEED_DATABASE_MEDICINES_100;
         } else {
             pathJson = AppConstants.SEED_DATABASE_MEDICINES_1000;
         }
