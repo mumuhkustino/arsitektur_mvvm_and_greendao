@@ -12,7 +12,6 @@ import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils.AppConstants;
 import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils.CommonUtils;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -57,18 +56,18 @@ public class AppDataManager implements DataManager {
                     type);
             return Flowable.just(hospitalList);
         } catch (Exception e) {
-            return Flowable.just(new ArrayList<>());
+            return Flowable.just(null);
         }
     }
 
     @Override
-    public Flowable<Boolean> updateDatabaseHospital(Hospital hospital) {
-        return dbHelper.loadHospital(hospital).concatMap(this::saveHospital);
+    public Flowable<Boolean> updateDatabaseHospital(Hospital hospital){
+        return dbHelper.saveHospital(hospital);
     }
 
     @Override
-    public Flowable<Boolean> deleteDatabaseHospital(Hospital hospital) {
-        return dbHelper.loadHospital(hospital).concatMap(this::deleteHospital);
+    public Flowable<Boolean> deleteDatabaseHospital(Hospital hospital){
+        return dbHelper.deleteHospital(hospital);
     }
 
     @Override
@@ -93,7 +92,7 @@ public class AppDataManager implements DataManager {
                     type);
             return Flowable.just(medicineList);
         } catch (Exception e) {
-            return Flowable.just(new ArrayList<>());
+            return Flowable.just(null);
         }
     }
 
