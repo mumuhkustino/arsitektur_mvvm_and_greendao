@@ -15,8 +15,6 @@ import com.projek_tugas_akhir.arsitektur_mvvm_dan_greendao.utils.rx.SchedulerPro
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-import io.reactivex.Flowable;
-
 public class InsertViewModel extends BaseViewModel<InsertNavigator> {
 
     private final MutableLiveData<Long> numOfRecord;
@@ -46,37 +44,35 @@ public class InsertViewModel extends BaseViewModel<InsertNavigator> {
         AtomicLong allInsertTime = new AtomicLong(System.currentTimeMillis());
         //Insert Hospital JSON to DB
         getCompositeDisposable().add(getDataManager()
-            .seedDatabaseHospital(numOfData)
-                .concatMap(Flowable::fromIterable)
-                    .concatMap(hospital -> {
-                        insertTime.set(System.currentTimeMillis());
-                        return getDataManager().insertHospital(hospital);
-                    })
+                .seedDatabaseHospital(numOfData)
+                .concatMap(hospitals -> {
+                    insertTime.set(System.currentTimeMillis());
+                    return getDataManager().insertHospitals(hospitals);
+                })
                 .doOnNext(aBoolean -> {
                     if (aBoolean) {
                         insertDbTime.set(insertDbTime.longValue() + (System.currentTimeMillis() - insertTime.longValue()));
                     }
                 })
-            .observeOn(getSchedulerProvider().ui())
-            .subscribe(aBoolean -> {
-                } , throwable -> Log.d("IVM", "insertDatabase 1: " + throwable.getMessage())
-            )
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(aBoolean -> {
+                        } , throwable -> Log.d("IVM", "insertDatabase 1: " + throwable.getMessage())
+                )
         );
         //Insert Medicine JSON to DB
         getCompositeDisposable().add(getDataManager()
-            .seedDatabaseMedicine(numOfData)
-                .concatMap(Flowable::fromIterable)
-                    .concatMap(medicine -> {
-                        insertTime.set(System.currentTimeMillis());
-                        return getDataManager().insertMedicine(medicine);
-                    })
+                .seedDatabaseMedicine(numOfData)
+                .concatMap(medicines -> {
+                    insertTime.set(System.currentTimeMillis());
+                    return getDataManager().insertMedicines(medicines);
+                })
                 .doOnNext(aBoolean -> {
                     if (aBoolean) {
                         insertDbTime.set(insertDbTime.longValue() + (System.currentTimeMillis() - insertTime.longValue()));
                     }
                 })
-            .observeOn(getSchedulerProvider().ui())
-            .subscribe(aBoolean -> {
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(aBoolean -> {
                 if (aBoolean) {
                     this.numOfRecord.setValue(numOfData); //Change number of record
                     this.databaseInsertTime.setValue(insertDbTime.longValue()); //Change execution time

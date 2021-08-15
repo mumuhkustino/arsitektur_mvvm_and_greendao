@@ -47,17 +47,16 @@ public class UpdateViewModel extends BaseViewModel<UpdateNavigator> {
         AtomicLong updateTime = new AtomicLong(0);
         AtomicLong allUpdateTime = new AtomicLong(System.currentTimeMillis());
         AtomicInteger index = new AtomicInteger(0);
-        List<Medical> medicals = new ArrayList<>();
         getCompositeDisposable().add(getDataManager()
-            //Get All Hospital with Limit
-            .getAllHospital(numOfData >= 1000 ? numOfData / 1000 : 1)
+                //Get All Hospital with Limit
+                .getAllHospital(numOfData >= 1000 ? numOfData / 1000 : 1)
                 .concatMap(Flowable::fromIterable)
-                    //Get All Medicine with same hospital Id
-                    .concatMap(hospital -> Flowable.zip(
+                //Get All Medicine with same hospital Id
+                .concatMap(hospital -> Flowable.zip(
                         getDataManager().getMedicineForHospitalId(hospital.getId()),
                         Flowable.just(hospital),
                         ((medicineList, hospital1) -> medicineList)
-                    ))
+                ))
                 //Update medicine name with addition new
                 .concatMap(medicineList -> {
                     for (int i = 0; i < medicineList.size(); i++) {
@@ -67,18 +66,18 @@ public class UpdateViewModel extends BaseViewModel<UpdateNavigator> {
                         } else
                             break;
                     }
-                    return Flowable.fromIterable(medicineList);
+                    return Flowable.just(medicineList);
                 })
-                    .concatMap(medicine -> {
-                        updateTime.set(System.currentTimeMillis());
-                        return getDataManager().updateDatabaseMedicine(medicine);
-                    })
+                .concatMap(medicines -> {
+                    updateTime.set(System.currentTimeMillis());
+                    return getDataManager().updateDatabaseMedicine(medicines);
+                })
                 .doOnNext(aBoolean -> {
                     if (aBoolean)
                         updateDbTime.set(updateDbTime.longValue() + (System.currentTimeMillis() - updateTime.longValue()));
                 })
-            .observeOn(getSchedulerProvider().ui())
-            .subscribe(aBoolean -> {
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(aBoolean -> {
                 if (index.get() == numOfData) {
                     this.numOfRecord.setValue(index.longValue()); //Change number of record
                     this.databaseUpdateTime.setValue(updateDbTime.longValue()); //Change execution time
@@ -87,8 +86,6 @@ public class UpdateViewModel extends BaseViewModel<UpdateNavigator> {
                     viewUpdateTime.set(timeElapsed.longValue() - updateDbTime.longValue());
                     this.viewUpdateTime.setValue(viewUpdateTime.longValue());
                     this.allUpdateTime.setValue(timeElapsed.longValue());
-                    Log.d("UVM", "updateDatabase: " + index.longValue());
-                    index.getAndIncrement();
 
                     ExecutionTime executionTime = executionTimePreference.getExecutionTime();
                     executionTime.setDatabaseUpdateTime(updateDbTime.toString());
@@ -96,6 +93,9 @@ public class UpdateViewModel extends BaseViewModel<UpdateNavigator> {
                     executionTime.setViewUpdateTime(viewUpdateTime.toString());
                     executionTime.setNumOfRecordUpdate(numOfData.toString());
                     executionTimePreference.setExecutionTime(executionTime);
+
+                    Log.d("UVM", "updateDatabase: " + index.longValue());
+                    index.getAndIncrement();
                 }
             }, throwable -> Log.d("UVM", "updateDatabase: " + throwable.getMessage())
             )

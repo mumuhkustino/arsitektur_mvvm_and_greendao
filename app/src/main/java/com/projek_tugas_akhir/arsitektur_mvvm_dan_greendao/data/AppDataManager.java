@@ -57,18 +57,18 @@ public class AppDataManager implements DataManager {
                     type);
             return Flowable.just(hospitalList);
         } catch (Exception e) {
-            return Flowable.just(new ArrayList<>());
+            return Flowable.just(null);
         }
     }
 
     @Override
-    public Flowable<Boolean> updateDatabaseHospital(Hospital hospital) {
-        return dbHelper.loadHospital(hospital).concatMap(this::saveHospital);
+    public Flowable<Boolean> updateDatabaseHospital(List<Hospital> hospitals) {
+        return dbHelper.saveHospitals(hospitals);
     }
 
     @Override
-    public Flowable<Boolean> deleteDatabaseHospital(Hospital hospital) {
-        return dbHelper.loadHospital(hospital).concatMap(this::deleteHospital);
+    public Flowable<Boolean> deleteDatabaseHospital(List<Hospital> hospitals) {
+        return dbHelper.deleteHospitals(hospitals);
     }
 
     @Override
@@ -93,38 +93,38 @@ public class AppDataManager implements DataManager {
                     type);
             return Flowable.just(medicineList);
         } catch (Exception e) {
-            return Flowable.just(new ArrayList<>());
+            return Flowable.just(null);
         }
     }
 
     @Override
-    public Flowable<Boolean> updateDatabaseMedicine(Medicine medicine) {
-        return dbHelper.saveMedicine(medicine);
+    public Flowable<Boolean> updateDatabaseMedicine(List<Medicine> medicines) {
+        return dbHelper.saveMedicines(medicines);
     }
 
     @Override
-    public Flowable<Boolean> deleteDatabaseMedicine(Medicine medicine) {
-        return dbHelper.deleteMedicine(medicine);
+    public Flowable<Boolean> deleteDatabaseMedicine(List<Medicine> medicines) {
+        return dbHelper.deleteMedicines(medicines);
     }
 
     @Override
-    public Flowable<Boolean> insertHospital(Hospital hospital) {
-        return dbHelper.insertHospital(hospital);
+    public Flowable<Boolean> insertHospitals(List<Hospital> hospitals) {
+        return dbHelper.insertHospitals(hospitals);
     }
 
     @Override
-    public Flowable<Boolean> insertMedicine(Medicine medicine) {
-        return dbHelper.insertMedicine(medicine);
+    public Flowable<Boolean> insertMedicines(List<Medicine> medicines) {
+        return dbHelper.insertMedicines(medicines);
     }
 
     @Override
-    public Flowable<Boolean> deleteHospital(Hospital hospital) {
-        return dbHelper.deleteHospital(hospital);
+    public Flowable<Boolean> deleteHospitals(List<Hospital> hospitals) {
+        return dbHelper.deleteHospitals(hospitals);
     }
 
     @Override
-    public Flowable<Boolean> deleteMedicine(Medicine medicine) {
-        return dbHelper.deleteMedicine(medicine);
+    public Flowable<Boolean> deleteMedicines(List<Medicine> medicines) {
+        return dbHelper.deleteMedicines(medicines);
     }
 
     @Override
@@ -163,13 +163,13 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Flowable<Boolean> saveHospital(Hospital hospital) {
-        return dbHelper.saveHospital(hospital);
+    public Flowable<Boolean> saveHospitals(List<Hospital> hospitals) {
+        return dbHelper.saveHospitals(hospitals);
     }
 
     @Override
-    public Flowable<Boolean> saveMedicine(Medicine medicine) {
-        return dbHelper.saveMedicine(medicine);
+    public Flowable<Boolean> saveMedicines(List<Medicine> medicines) {
+        return dbHelper.saveMedicines(medicines);
     }
 
 }
